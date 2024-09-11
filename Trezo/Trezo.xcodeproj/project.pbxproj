@@ -16,6 +16,8 @@
 		592467592C91CD68000DC49F /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467582C91CD68000DC49F /* Onboarding.swift */; };
 		5924675C2C91CDD9000DC49F /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5924675B2C91CDD9000DC49F /* OnboardingViewModel.swift */; };
 		5924675E2C9208B1000DC49F /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5924675D2C9208B1000DC49F /* WelcomeView.swift */; };
+		592467612C921260000DC49F /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467602C921260000DC49F /* SignUpView.swift */; };
+		592467632C92126F000DC49F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467622C92126F000DC49F /* SignInView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		592467582C91CD68000DC49F /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		5924675B2C91CDD9000DC49F /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		5924675D2C9208B1000DC49F /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		592467602C921260000DC49F /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		592467622C92126F000DC49F /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +90,7 @@
 		5924674F2C917804000DC49F /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				5924675F2C92124C000DC49F /* Auth */,
 				592467512C917D64000DC49F /* Onboarding */,
 			);
 			path = Screens;
@@ -122,6 +127,15 @@
 				5924675B2C91CDD9000DC49F /* OnboardingViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		5924675F2C92124C000DC49F /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				592467602C921260000DC49F /* SignUpView.swift */,
+				592467622C92126F000DC49F /* SignInView.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,10 +208,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				592467632C92126F000DC49F /* SignInView.swift in Sources */,
 				592467552C91CBDC000DC49F /* OnboardingItemView.swift in Sources */,
 				5924675C2C91CDD9000DC49F /* OnboardingViewModel.swift in Sources */,
 				592467532C917F24000DC49F /* OnboardingView.swift in Sources */,
 				592467592C91CD68000DC49F /* Onboarding.swift in Sources */,
+				592467612C921260000DC49F /* SignUpView.swift in Sources */,
 				592467442C917719000DC49F /* ContentView.swift in Sources */,
 				592467422C917719000DC49F /* TrezoApp.swift in Sources */,
 				5924675E2C9208B1000DC49F /* WelcomeView.swift in Sources */,
