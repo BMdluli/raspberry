@@ -14,11 +14,12 @@ struct OnboardingItemView: View {
     
     
     var body: some View {
-        VStack {
+        VStack(spacing: 20) {
             
             Image(image)
                 .resizable()
-                .frame(height: 521)
+                .scaledToFill()
+                .frame(height: 460)
             
             Text(title)
                 .font(.system(size: 28, weight: .bold))
