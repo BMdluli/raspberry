@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
@@ -12,7 +12,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "express": "^4.20.0",
+    "firebase": "^10.13.1",
+    "firebase-admin": "^12.4.0",
     "mongoose": "^8.6.1"
   },
   "devDependencies": {
