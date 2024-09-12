@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5921B97A2C92FA6500C7CF4D /* TextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5921B9792C92FA6500C7CF4D /* TextFieldWithLabel.swift */; };
 		592467422C917719000DC49F /* TrezoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467412C917719000DC49F /* TrezoApp.swift */; };
 		592467442C917719000DC49F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467432C917719000DC49F /* ContentView.swift */; };
 		592467462C91771B000DC49F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 592467452C91771B000DC49F /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5921B9792C92FA6500C7CF4D /* TextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithLabel.swift; sourceTree = "<group>"; };
 		5924673E2C917719000DC49F /* Trezo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trezo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		592467412C917719000DC49F /* TrezoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrezoApp.swift; sourceTree = "<group>"; };
 		592467432C917719000DC49F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				592467542C91CBDC000DC49F /* OnboardingItemView.swift */,
+				5921B9792C92FA6500C7CF4D /* TextFieldWithLabel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 				592467552C91CBDC000DC49F /* OnboardingItemView.swift in Sources */,
 				5924675C2C91CDD9000DC49F /* OnboardingViewModel.swift in Sources */,
 				592467532C917F24000DC49F /* OnboardingView.swift in Sources */,
+				5921B97A2C92FA6500C7CF4D /* TextFieldWithLabel.swift in Sources */,
 				592467592C91CD68000DC49F /* Onboarding.swift in Sources */,
 				592467612C921260000DC49F /* SignUpView.swift in Sources */,
 				592467442C917719000DC49F /* ContentView.swift in Sources */,
