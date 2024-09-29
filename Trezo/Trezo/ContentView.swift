@@ -6,17 +6,34 @@
 //
 
 import SwiftUI
+import FirebaseAuth
+
 
 struct ContentView: View {
+    @StateObject var authManager = AuthViewModel()
     @AppStorage("isOnboardingComplete") var isOnboardingComplete: Bool = false
+    
 
     var body: some View {
-        if isOnboardingComplete {
-            WelcomeView()
-        } else {
-            OnboardingView()
+       
+        VStack {
+            if authManager.isSignedIn {
+                TabBar()
+            }
+            else if isOnboardingComplete {
+                WelcomeView()
+            } else {
+                OnboardingView()
+            }
         }
+            .onAppear {
+                print(authManager.isSignedIn)
+            }
+            
+
+
     }
+    
 }
 
 #Preview {

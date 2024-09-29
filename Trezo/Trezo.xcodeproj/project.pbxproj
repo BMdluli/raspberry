@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		591329C72C9B1C9200C38232 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591329C62C9B1C9200C38232 /* TabBar.swift */; };
+		591329C92C9B1D0200C38232 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591329C82C9B1D0200C38232 /* ProfileView.swift */; };
+		591329CB2C9B264E00C38232 /* FirebaseAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591329CA2C9B264E00C38232 /* FirebaseAuthManager.swift */; };
 		5921B97A2C92FA6500C7CF4D /* TextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5921B9792C92FA6500C7CF4D /* TextFieldWithLabel.swift */; };
 		592467422C917719000DC49F /* TrezoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467412C917719000DC49F /* TrezoApp.swift */; };
 		592467442C917719000DC49F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467432C917719000DC49F /* ContentView.swift */; };
@@ -19,9 +22,16 @@
 		5924675E2C9208B1000DC49F /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5924675D2C9208B1000DC49F /* WelcomeView.swift */; };
 		592467612C921260000DC49F /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467602C921260000DC49F /* SignUpView.swift */; };
 		592467632C92126F000DC49F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467622C92126F000DC49F /* SignInView.swift */; };
+		5943FBAD2C95AA7E000C7007 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5943FBAC2C95AA7E000C7007 /* GoogleService-Info.plist */; };
+		596683BB2C96130300096C6C /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 596683BA2C96130300096C6C /* FirebaseAuth */; };
+		596683C02C9617FC00096C6C /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596683BF2C9617FC00096C6C /* AuthViewModel.swift */; };
+		596683C32C96189800096C6C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596683C22C96189800096C6C /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		591329C62C9B1C9200C38232 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
+		591329C82C9B1D0200C38232 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		591329CA2C9B264E00C38232 /* FirebaseAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthManager.swift; sourceTree = "<group>"; };
 		5921B9792C92FA6500C7CF4D /* TextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithLabel.swift; sourceTree = "<group>"; };
 		5924673E2C917719000DC49F /* Trezo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trezo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		592467412C917719000DC49F /* TrezoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrezoApp.swift; sourceTree = "<group>"; };
@@ -36,6 +46,9 @@
 		5924675D2C9208B1000DC49F /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		592467602C921260000DC49F /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		592467622C92126F000DC49F /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		5943FBAC2C95AA7E000C7007 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		596683BF2C9617FC00096C6C /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		596683C22C96189800096C6C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				596683BB2C96130300096C6C /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +82,8 @@
 		592467402C917719000DC49F /* Trezo */ = {
 			isa = PBXGroup;
 			children = (
+				596683BC2C96162300096C6C /* Managers */,
+				5943FBAC2C95AA7E000C7007 /* GoogleService-Info.plist */,
 				5924675A2C91CDC4000DC49F /* ViewModels */,
 				592467572C91CD58000DC49F /* Models */,
 				592467562C91CBED000DC49F /* Views */,
@@ -92,8 +108,10 @@
 		5924674F2C917804000DC49F /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				596683C12C96188800096C6C /* Main */,
 				5924675F2C92124C000DC49F /* Auth */,
 				592467512C917D64000DC49F /* Onboarding */,
+				591329C62C9B1C9200C38232 /* TabBar.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -128,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				5924675B2C91CDD9000DC49F /* OnboardingViewModel.swift */,
+				596683BF2C9617FC00096C6C /* AuthViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -139,6 +158,23 @@
 				592467622C92126F000DC49F /* SignInView.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		596683BC2C96162300096C6C /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				591329CA2C9B264E00C38232 /* FirebaseAuthManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		596683C12C96188800096C6C /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				596683C22C96189800096C6C /* HomeView.swift */,
+				591329C82C9B1D0200C38232 /* ProfileView.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,6 +193,9 @@
 			dependencies = (
 			);
 			name = Trezo;
+			packageProductDependencies = (
+				596683BA2C96130300096C6C /* FirebaseAuth */,
+			);
 			productName = Trezo;
 			productReference = 5924673E2C917719000DC49F /* Trezo.app */;
 			productType = "com.apple.product-type.application";
@@ -185,6 +224,9 @@
 				Base,
 			);
 			mainGroup = 592467352C917719000DC49F;
+			packageReferences = (
+				596683B92C96130300096C6C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 5924673F2C917719000DC49F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -201,6 +243,7 @@
 			files = (
 				592467492C91771B000DC49F /* Preview Assets.xcassets in Resources */,
 				592467462C91771B000DC49F /* Assets.xcassets in Resources */,
+				5943FBAD2C95AA7E000C7007 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,13 +256,18 @@
 			files = (
 				592467632C92126F000DC49F /* SignInView.swift in Sources */,
 				592467552C91CBDC000DC49F /* OnboardingItemView.swift in Sources */,
+				596683C32C96189800096C6C /* HomeView.swift in Sources */,
 				5924675C2C91CDD9000DC49F /* OnboardingViewModel.swift in Sources */,
 				592467532C917F24000DC49F /* OnboardingView.swift in Sources */,
 				5921B97A2C92FA6500C7CF4D /* TextFieldWithLabel.swift in Sources */,
 				592467592C91CD68000DC49F /* Onboarding.swift in Sources */,
 				592467612C921260000DC49F /* SignUpView.swift in Sources */,
+				596683C02C9617FC00096C6C /* AuthViewModel.swift in Sources */,
+				591329CB2C9B264E00C38232 /* FirebaseAuthManager.swift in Sources */,
+				591329C72C9B1C9200C38232 /* TabBar.swift in Sources */,
 				592467442C917719000DC49F /* ContentView.swift in Sources */,
 				592467422C917719000DC49F /* TrezoApp.swift in Sources */,
+				591329C92C9B1D0200C38232 /* ProfileView.swift in Sources */,
 				5924675E2C9208B1000DC49F /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -368,7 +416,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bekithembamdluli.Trezo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bekithembamdluli.PennyWise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -398,7 +446,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bekithembamdluli.Trezo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bekithembamdluli.PennyWise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -428,6 +476,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		596683B92C96130300096C6C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		596683BA2C96130300096C6C /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 596683B92C96130300096C6C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 592467362C917719000DC49F /* Project object */;
 }

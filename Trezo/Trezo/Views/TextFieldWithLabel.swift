@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct TextFieldWithLabel: View {
-    @State var text: String
+    @Binding var text: String
+    
     let title: String
     let placeholder: String
     var body: some View {
@@ -23,6 +24,6 @@ struct TextFieldWithLabel: View {
     }
 }
 
-#Preview {
-    TextFieldWithLabel(text: "some text", title: "test", placeholder: "test")
-}
+//#Preview {
+//    TextFieldWithLabel(text: Binding<String>, title: "test", placeholder: "test")
+//}

@@ -8,10 +8,27 @@
 import SwiftUI
 
 struct TabBar: View {
+    @StateObject var authViewModel = AuthViewModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            TabView {
+                HomeView()
+                    .tabItem {
+                        Label("Home", systemImage: "house.fill")
+                    }
+                
+                ProfileView()
+                    .tabItem {
+                        Label("Profile", systemImage: "person.fill")
+                    }
+            }
+            .navigationBarBackButtonHidden(true)
+        }
     }
+    
 }
+
 
 #Preview {
     TabBar()
