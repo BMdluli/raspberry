@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var showModal = false
+    
+    
     var body: some View {
         VStack {
             Spacer()
@@ -38,7 +41,7 @@ struct HomeView: View {
             HStack {
                 Spacer()
                 Button {
-                    print("Clicked")
+                    showModal = true
                 } label: {
                     Image(systemName: "plus")
                         .foregroundStyle(.white)
@@ -49,6 +52,9 @@ struct HomeView: View {
             }
             .padding()
             
+        }
+        .fullScreenCover(isPresented: $showModal) {
+            CreateGoalView(showModal: $showModal)
         }
     }
 }

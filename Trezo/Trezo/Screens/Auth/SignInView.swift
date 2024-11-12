@@ -17,44 +17,46 @@ struct SignInView: View {
                 TabBar()// Show ProfileView or TabBar on successful sign-in
             } else {
                 NavigationStack {
-                    VStack(alignment: .leading, spacing: 25) {
-                        Text("Sign in to continue saving.")
-                            .foregroundStyle(.gray)
-                            .font(.system(size: 16))
-                        
-                        TextFieldWithLabel(text: $email, title: "Email", placeholder: "Email")
-                        TextFieldWithLabel(text: $password, title: "Password", placeholder: "Password")
-                        
-                        HStack {
-                            Text("Don't have an account?")
-                            NavigationLink {
-                                SignUpView() // Navigate to sign-up view
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 25) {
+                            Text("Sign in to continue saving.")
+                                .foregroundStyle(.gray)
+                                .font(.system(size: 16))
+                            
+                            TextFieldWithLabel(text: $email, title: "Email", placeholder: "Email")
+                            SecureTextFieldWithLabel(text: $password, title: "Password", placeholder: "Password")
+                            
+                            HStack {
+                                Text("Don't have an account?")
+                                NavigationLink {
+                                    SignUpView() // Navigate to sign-up view
+                                } label: {
+                                    Text("Sign up")
+                                        .foregroundStyle(.primaryPurple)
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                            
+                            Spacer()
+                            
+                            
+                            Divider()
+                            Button {
+                                Task {
+                                    await authViewModel.signIn(with: email, password: password)
+                                }
                             } label: {
-                                Text("Sign up")
-                                    .foregroundStyle(.primaryPurple)
+                                Text("Sign in")
+                                    .frame(maxWidth: .infinity)
                             }
+                            .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
+                            .padding()
+                            
                         }
-                        .frame(maxWidth: .infinity)
-                        
-                        Spacer()
-                        
-                        
-                        Divider()
-                        Button {
-                            Task {
-                                await authViewModel.signIn(with: email, password: password)
-                            }
-                        } label: {
-                            Text("Sign in")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
-                        .padding()
-                        
+                        .navigationTitle("Welcome back! 👋")
+                        .navigationBarTitleDisplayMode(.large)
+                        .padding(.horizontal)
                     }
-                    .navigationTitle("Welcome back! 👋")
-                    .navigationBarTitleDisplayMode(.large)
-                    .padding(.horizontal)
                 }
                 // Show loading screen as an overlay if isLoading is true
                 if authViewModel.isLoading {

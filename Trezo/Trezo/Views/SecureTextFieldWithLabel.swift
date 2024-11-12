@@ -1,13 +1,13 @@
 //
-//  TextFieldWithLabel.swift
+//  SecureTextFieldWithLabel.swift
 //  Trezo
 //
-//  Created by Bekithemba Mdluli on 2024/09/12.
+//  Created by Bekithemba Mdluli on 2024/09/29.
 //
 
 import SwiftUI
 
-struct TextFieldWithLabel: View {
+struct SecureTextFieldWithLabel: View {
     @Binding var text: String
     
     let title: String
@@ -15,7 +15,7 @@ struct TextFieldWithLabel: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(title)
-            TextField(placeholder, text: $text)
+            SecureField(placeholder, text: $text)
                 .padding()
                 .frame(height: 65)
                 .background(.textField)
@@ -25,5 +25,5 @@ struct TextFieldWithLabel: View {
 }
 
 //#Preview {
-//    TextFieldWithLabel(text: Binding<String>, title: "test", placeholder: "test")
+//    SecureTextFieldWithLabel()
 //}
