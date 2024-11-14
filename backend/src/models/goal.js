@@ -13,6 +13,10 @@ const goalSchema = mongoose.Schema({
     type: Number,
     required: [true, "Goals should have an amount"],
   },
+  goalAmountContributed: {
+    type: Number,
+    default: 0,
+  },
   goalCurrency: {
     type: String,
     required: [true, "Goals should have currencies specified"],

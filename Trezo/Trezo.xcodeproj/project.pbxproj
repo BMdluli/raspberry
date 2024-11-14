@@ -25,6 +25,9 @@
 		592D7C682CA94A4600D07C4E /* CreateGoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592D7C672CA94A4500D07C4E /* CreateGoalView.swift */; };
 		592D7C6A2CA9702800D07C4E /* SecureTextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592D7C692CA9702800D07C4E /* SecureTextFieldWithLabel.swift */; };
 		592D7C6C2CA973AA00D07C4E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 592D7C6B2CA973AA00D07C4E /* GoogleService-Info.plist */; };
+		59397FFC2CE34A130076CCE5 /* GoalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59397FFB2CE34A130076CCE5 /* GoalManager.swift */; };
+		59397FFE2CE34F550076CCE5 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59397FFD2CE34F550076CCE5 /* Goal.swift */; };
+		593980002CE4943A0076CCE5 /* GoalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59397FFF2CE494310076CCE5 /* GoalViewModel.swift */; };
 		596683BB2C96130300096C6C /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 596683BA2C96130300096C6C /* FirebaseAuth */; };
 		596683C02C9617FC00096C6C /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596683BF2C9617FC00096C6C /* AuthViewModel.swift */; };
 		596683C32C96189800096C6C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596683C22C96189800096C6C /* HomeView.swift */; };
@@ -51,6 +54,9 @@
 		592D7C672CA94A4500D07C4E /* CreateGoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGoalView.swift; sourceTree = "<group>"; };
 		592D7C692CA9702800D07C4E /* SecureTextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureTextFieldWithLabel.swift; sourceTree = "<group>"; };
 		592D7C6B2CA973AA00D07C4E /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		59397FFB2CE34A130076CCE5 /* GoalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalManager.swift; sourceTree = "<group>"; };
+		59397FFD2CE34F550076CCE5 /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
+		59397FFF2CE494310076CCE5 /* GoalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewModel.swift; sourceTree = "<group>"; };
 		596683BF2C9617FC00096C6C /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		596683C22C96189800096C6C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -143,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				592467582C91CD68000DC49F /* Onboarding.swift */,
+				59397FFD2CE34F550076CCE5 /* Goal.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -150,6 +157,7 @@
 		5924675A2C91CDC4000DC49F /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				59397FFF2CE494310076CCE5 /* GoalViewModel.swift */,
 				5924675B2C91CDD9000DC49F /* OnboardingViewModel.swift */,
 				596683BF2C9617FC00096C6C /* AuthViewModel.swift */,
 			);
@@ -168,6 +176,7 @@
 		596683BC2C96162300096C6C /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				59397FFB2CE34A130076CCE5 /* GoalManager.swift */,
 				591329CA2C9B264E00C38232 /* FirebaseAuthManager.swift */,
 			);
 			path = Managers;
@@ -269,13 +278,16 @@
 				592467532C917F24000DC49F /* OnboardingView.swift in Sources */,
 				5921B97A2C92FA6500C7CF4D /* TextFieldWithLabel.swift in Sources */,
 				592467592C91CD68000DC49F /* Onboarding.swift in Sources */,
+				593980002CE4943A0076CCE5 /* GoalViewModel.swift in Sources */,
 				592467612C921260000DC49F /* SignUpView.swift in Sources */,
 				596683C02C9617FC00096C6C /* AuthViewModel.swift in Sources */,
 				591329CB2C9B264E00C38232 /* FirebaseAuthManager.swift in Sources */,
 				591329C72C9B1C9200C38232 /* TabBar.swift in Sources */,
 				592467442C917719000DC49F /* ContentView.swift in Sources */,
+				59397FFE2CE34F550076CCE5 /* Goal.swift in Sources */,
 				592467422C917719000DC49F /* TrezoApp.swift in Sources */,
 				591329C92C9B1D0200C38232 /* ProfileView.swift in Sources */,
+				59397FFC2CE34A130076CCE5 /* GoalManager.swift in Sources */,
 				5924675E2C9208B1000DC49F /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -31,3 +31,22 @@ exports.CreateGoal = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.DeleteGoal = async (req, res) => {
+  try {
+    const result = await Goal.findByIdAndDelete(req.params.id);
+
+    if (!result) {
+      res.status(404).json({
+        status: "fail",
+        message: "Goal could not be found",
+      });
+    }
+
+    res.status(204).json({
+      status: "success",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
