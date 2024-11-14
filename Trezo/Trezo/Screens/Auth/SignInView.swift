@@ -41,6 +41,7 @@ struct SignInView: View {
                             
                             
                             Divider()
+                            
                             Button {
                                 Task {
                                     await authViewModel.signIn(with: email, password: password)
