@@ -6,10 +6,16 @@
 //
 
 import SwiftUI
-
+import FirebaseAuth
 
 
 struct CreateGoalView: View {
+    
+    let userID = Auth.auth().currentUser?.uid
+    
+    @StateObject private var viewModel = GoalViewModel()
+    
+    var swiftTV = 556959600;
     
     @Binding var showModal: Bool
     
@@ -88,6 +94,7 @@ struct CreateGoalView: View {
                     TextFieldWithLabel(text: $goalName, title: "Goal Name", placeholder: "e.g. Vacation, New car, etc.")
                     
                     TextFieldWithLabel(text: $amount, title: "Goal Amount", placeholder: "10.000")
+                        .keyboardType(.numberPad)
                     
                     
                     VStack(alignment: .leading) {
@@ -150,7 +157,11 @@ struct CreateGoalView: View {
                 .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
                 
                 Button {
+                    if let amountDbl = Double(amount) {
+                        viewModel.createNewGoal(goal: CreateGoal(coverImage: "😄", goalName: goalName, goalAmount: amountDbl, goalAmountContributed: 0, goalCurrency: selectedCurrency.rawValue, goalDeadline: date.timeIntervalSince1970 * 1000, goalNote: note, goalColour: "BrandGreen", userId: userID!))
+                    }
                     
+
                 } label: {
                     Text("Save")
                         .frame(maxWidth: .infinity)
@@ -161,6 +172,16 @@ struct CreateGoalView: View {
             
         }
         .padding(.horizontal)
+        .onChange(of: viewModel.isCreated) { oldValue, newValue in
+            print("onChange triggered: isCreated changed from \(oldValue) to \(newValue)")
+            if newValue {
+                showModal = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    viewModel.isCreated = false
+                }
+            }
+        }
+
     }
 }
 

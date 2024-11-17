@@ -21,11 +21,9 @@ class GoalManager {
     static let shared = GoalManager()
     let baseUrl = ""
     private init() {}
-    
+    private let urlString = "http://localhost:3000/api/v1/goals"
     
     func getGoals(completed: @escaping ([Goal]?, ErrorMessage?) -> Void) {
-        print("called")
-        let urlString = "http://localhost:3000/api/v1/goals"
         
         guard let url = URL(string: urlString) else {
             completed(nil, .invalidData)
@@ -68,6 +66,61 @@ class GoalManager {
         }
         
         task.resume()
+    }
+    
+    func createGoal(newGoal: CreateGoal ,completed: @escaping (CreatedGoalResponse?, ErrorMessage?) -> Void) {
+        guard let url = URL(string: urlString) else {
+            completed(nil, .invalidData)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        
+        guard let httpBody = try? JSONEncoder().encode(newGoal) else {
+            print("Failed to encode data")
+            completed(nil, .invalidData)
+            return
+        }
+        request.httpBody = httpBody
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error making request:", error)
+                completed(nil, .invalidData)
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completed(nil, .unableToComplete)
+                return
+            }
+            
+            guard let data = data else {
+                completed(nil, .invalidData)
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // Ensure it interprets the 'Z' as UTC
+                decoder.dateDecodingStrategy = .formatted(dateFormatter)
+                
+                let goalsResponse = try decoder.decode(CreatedGoalResponse.self, from: data)
+                completed(goalsResponse, nil)
+            } catch {
+                print("Decoding error: \(error)")
+            }
+            
+//            completed(data, nil)
+            
+        }.resume()
+        
+        
     }
 
 }

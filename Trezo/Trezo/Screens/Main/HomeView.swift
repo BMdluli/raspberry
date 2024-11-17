@@ -47,7 +47,7 @@ struct HomeView: View {
                         }
                     }
                 }
-                .padding()
+                .padding(.top, 16)
                 .background(.treBackground)
                 
                 // Floating Action Button

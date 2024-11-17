@@ -18,7 +18,7 @@ exports.GetGoals = async (req, res) => {
 
 exports.CreateGoal = async (req, res) => {
   try {
-    // console.log(req.body);
+    console.log(req.body);
     const newGoal = await Goal.create(req.body);
 
     res.status(200).json({
@@ -27,6 +27,8 @@ exports.CreateGoal = async (req, res) => {
         newGoal,
       },
     });
+
+    // console.log(req.body.goalDeadline + 556959600 * 1000);
   } catch (err) {
     console.log(err);
   }

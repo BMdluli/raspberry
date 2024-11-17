@@ -11,6 +11,8 @@ class GoalViewModel: ObservableObject {
     
     @Published var goals: [Goal] = []
     @Published var isLoading: Bool = false
+    @Published var isCreated: Bool = false
+    
     
     
     func fetchGoals() {
@@ -30,7 +32,7 @@ class GoalViewModel: ObservableObject {
                 // Ensure UI updates happen on the main thread
                 DispatchQueue.main.async {
                     self.goals = response
-                    print("Goals updated:", self.goals)
+//                    print("Goals updated:", self.goals)
                 }
             }
             
@@ -42,5 +44,58 @@ class GoalViewModel: ObservableObject {
         }
         
     }
+    
+    
+    func createNewGoal(goal: CreateGoal) {
+        
+        if let validationError = goal.validate() {
+            print("Validation Error: \(validationError)")
+            return
+        }
+        
+        GoalManager.shared.createGoal(newGoal: goal) { [weak self] response, error in
+            guard let self = self else {
+                return
+            }
+            
+            if let error = error {
+                print("Error creating goal: \(error)")
+                return
+            }
+            
+                
+            if let response = response {
+                DispatchQueue.main.async {
+                    self.isCreated = true
+                    print("Goal created successfully. isCreated set to \(self.isCreated)")
+                }
+            }
+        }
+    }
 
+}
+
+
+extension CreateGoal {
+    func validate() -> String? {
+        if coverImage.isEmpty {
+            return "Cover image is required."
+        }
+        if goalName.isEmpty {
+            return "Goal name is required."
+        }
+        if goalAmount <= 0 {
+            return "Goal amount must be greater than zero."
+        }
+        if goalCurrency.isEmpty {
+            return "Currency is required."
+        }
+        if goalColour.isEmpty {
+            return "Colour is required."
+        }
+        if userId.isEmpty {
+            return "User ID is required."
+        }
+        return nil // Validation passed
+    }
 }
