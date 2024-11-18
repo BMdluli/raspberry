@@ -16,6 +16,23 @@ exports.GetGoals = async (req, res) => {
   } catch (err) {}
 };
 
+exports.GetGoal = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const goal = await Goal.findById(id);
+
+    res.status(200).json({
+      status: "success",
+      data: goal,
+    });
+
+    console.log(id);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 exports.CreateGoal = async (req, res) => {
   try {
     console.log(req.body);
