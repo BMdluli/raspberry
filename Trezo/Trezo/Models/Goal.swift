@@ -30,4 +30,18 @@ struct Goal: Decodable {
     let goalNote: String?
     let goalColour: String
     let userId: String
+    
+    
+    init(_id: String = "", coverImage: String = "", goalName: String = "", goalAmount: Double = 0.0, goalAmountContributed: Double = 0.0, goalCurrency: String = "", goalDeadline: Date? = Date(), goalNote: String? = "", goalColour: String = "", userId: String = "") {
+        self._id = _id
+        self.coverImage = coverImage
+        self.goalName = goalName
+        self.goalAmount = goalAmount
+        self.goalAmountContributed = goalAmountContributed
+        self.goalCurrency = goalCurrency
+        self.goalDeadline = goalDeadline
+        self.goalNote = goalNote
+        self.goalColour = goalColour
+        self.userId = userId
+    }
 }

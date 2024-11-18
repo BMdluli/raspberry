@@ -10,6 +10,7 @@ import Foundation
 class GoalViewModel: ObservableObject {
     
     @Published var goals: [Goal] = []
+    @Published var goal: Goal = Goal()
     @Published var isLoading: Bool = false
     @Published var isCreated: Bool = false
     
@@ -43,6 +44,36 @@ class GoalViewModel: ObservableObject {
             
         }
         
+    }
+    
+    func fetchGoal(id: String) {
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        GoalManager.shared.getGoal(id: id) { [weak self] response, error in
+            guard let self = self else { return }
+
+            if let error = error {
+                print("Error fetching goals: \(error)")
+                return
+            }
+
+            // Successfully received response
+            if let response = response {
+                // Ensure UI updates happen on the main thread
+                DispatchQueue.main.async {
+                    self.goal = response
+//                    print("Goals updated:", self.goals)
+//                    print(response)
+                }
+            }
+            
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+            
+        }
     }
     
     

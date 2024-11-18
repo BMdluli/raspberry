@@ -13,21 +13,30 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("Welcome to your profile!")
-                    .font(.largeTitle)
-                    .padding()
+                Text("Account")
+                    .font(.system(size: 20, weight: .bold))
+                    .padding(.bottom)
                 
-                Button {
-                    authViewModel.signOut()
-                    isLoggedOut = true // Set to true on logout
-                    authViewModel.isSignedIn = false
-                } label: {
-                    Text("Logout")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.red)
-                        .cornerRadius(10)
+                List {
+                    
+                    Button {
+                        authViewModel.signOut()
+                        isLoggedOut = true // Set to true on logout
+                        authViewModel.isSignedIn = false
+                    } label: {
+//                        Text("Logout")
+//                            .foregroundColor(.white)
+//                            .padding()
+//                            .background(Color.red)
+//                            .cornerRadius(10)
+                        
+                        Label("Logout", image: "rectangle.portrait.and.arrow.right")
+                            .foregroundStyle(.brandRed)
+                    }
                 }
+
+                
+
             }
             // Navigate back to the WelcomeView when logged out
             .navigationDestination(isPresented: $isLoggedOut) {

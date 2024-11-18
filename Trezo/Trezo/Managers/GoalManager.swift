@@ -68,6 +68,54 @@ class GoalManager {
         task.resume()
     }
     
+    func getGoal(id: String, completed: @escaping (Goal?, ErrorMessage?) -> Void) {
+        
+        let goalUrl = urlString + "/\(id)"
+        
+        guard let url = URL(string: goalUrl) else {
+            completed(nil, .invalidData)
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            // Handle error first
+            if let error = error {
+                completed(nil, .invalidData)
+                return
+            }
+            
+            // Check response status code
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completed(nil, .unableToComplete)
+                return
+            }
+            
+            // Check that data exists
+            guard let data = data else {
+                completed(nil, .invalidData)
+                return
+            }
+            
+            // Decode JSON data
+            do {
+                let decoder = JSONDecoder()
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // Ensure it interprets the 'Z' as UTC
+                decoder.dateDecodingStrategy = .formatted(dateFormatter)
+                
+                let goal = try decoder.decode(GoalResponse.self, from: data)
+//                print(goalsResponse.data.goals)
+                completed(goal.data, nil)
+                print("GETTING ONE GOAL", goal)
+            } catch {
+                print("Decoding error: \(error)")
+            }
+        }
+        
+        task.resume()
+    }
+    
     func createGoal(newGoal: CreateGoal ,completed: @escaping (CreatedGoalResponse?, ErrorMessage?) -> Void) {
         guard let url = URL(string: urlString) else {
             completed(nil, .invalidData)

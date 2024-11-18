@@ -10,6 +10,7 @@
 		591329C72C9B1C9200C38232 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591329C62C9B1C9200C38232 /* TabBar.swift */; };
 		591329C92C9B1D0200C38232 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591329C82C9B1D0200C38232 /* ProfileView.swift */; };
 		591329CB2C9B264E00C38232 /* FirebaseAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591329CA2C9B264E00C38232 /* FirebaseAuthManager.swift */; };
+		592194CA2CEA2C01003CC5C0 /* GoalResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592194C92CEA2BFA003CC5C0 /* GoalResponse.swift */; };
 		5921B97A2C92FA6500C7CF4D /* TextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5921B9792C92FA6500C7CF4D /* TextFieldWithLabel.swift */; };
 		592467422C917719000DC49F /* TrezoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467412C917719000DC49F /* TrezoApp.swift */; };
 		592467442C917719000DC49F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467432C917719000DC49F /* ContentView.swift */; };
@@ -33,12 +34,15 @@
 		596683C02C9617FC00096C6C /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596683BF2C9617FC00096C6C /* AuthViewModel.swift */; };
 		596683C32C96189800096C6C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596683C22C96189800096C6C /* HomeView.swift */; };
 		59A565A32CE9DFB9008E2A98 /* CreatedGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A565A22CE9DFB3008E2A98 /* CreatedGoal.swift */; };
+		59A565A52CEA10B4008E2A98 /* GoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A565A42CEA10B4008E2A98 /* GoalView.swift */; };
+		59A565A72CEA1615008E2A98 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A565A62CEA1615008E2A98 /* CircularProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		591329C62C9B1C9200C38232 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		591329C82C9B1D0200C38232 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		591329CA2C9B264E00C38232 /* FirebaseAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthManager.swift; sourceTree = "<group>"; };
+		592194C92CEA2BFA003CC5C0 /* GoalResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalResponse.swift; sourceTree = "<group>"; };
 		5921B9792C92FA6500C7CF4D /* TextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithLabel.swift; sourceTree = "<group>"; };
 		5924673E2C917719000DC49F /* Trezo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trezo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		592467412C917719000DC49F /* TrezoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrezoApp.swift; sourceTree = "<group>"; };
@@ -63,6 +67,8 @@
 		596683BF2C9617FC00096C6C /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		596683C22C96189800096C6C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		59A565A22CE9DFB3008E2A98 /* CreatedGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedGoal.swift; sourceTree = "<group>"; };
+		59A565A42CEA10B4008E2A98 /* GoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalView.swift; sourceTree = "<group>"; };
+		59A565A62CEA1615008E2A98 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +151,7 @@
 				592467542C91CBDC000DC49F /* OnboardingItemView.swift */,
 				5921B9792C92FA6500C7CF4D /* TextFieldWithLabel.swift */,
 				592D7C692CA9702800D07C4E /* SecureTextFieldWithLabel.swift */,
+				59A565A62CEA1615008E2A98 /* CircularProgressView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -152,6 +159,7 @@
 		592467572C91CD58000DC49F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				592194C92CEA2BFA003CC5C0 /* GoalResponse.swift */,
 				59A565A22CE9DFB3008E2A98 /* CreatedGoal.swift */,
 				592467582C91CD68000DC49F /* Onboarding.swift */,
 				59397FFD2CE34F550076CCE5 /* Goal.swift */,
@@ -194,6 +202,7 @@
 				596683C22C96189800096C6C /* HomeView.swift */,
 				591329C82C9B1D0200C38232 /* ProfileView.swift */,
 				592D7C672CA94A4500D07C4E /* CreateGoalView.swift */,
+				59A565A42CEA10B4008E2A98 /* GoalView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -285,6 +294,8 @@
 				5921B97A2C92FA6500C7CF4D /* TextFieldWithLabel.swift in Sources */,
 				592467592C91CD68000DC49F /* Onboarding.swift in Sources */,
 				593980002CE4943A0076CCE5 /* GoalViewModel.swift in Sources */,
+				592194CA2CEA2C01003CC5C0 /* GoalResponse.swift in Sources */,
+				59A565A72CEA1615008E2A98 /* CircularProgressView.swift in Sources */,
 				592467612C921260000DC49F /* SignUpView.swift in Sources */,
 				59A565A32CE9DFB9008E2A98 /* CreatedGoal.swift in Sources */,
 				596683C02C9617FC00096C6C /* AuthViewModel.swift in Sources */,
@@ -296,6 +307,7 @@
 				592467422C917719000DC49F /* TrezoApp.swift in Sources */,
 				591329C92C9B1D0200C38232 /* ProfileView.swift in Sources */,
 				59397FFC2CE34A130076CCE5 /* GoalManager.swift in Sources */,
+				59A565A52CEA10B4008E2A98 /* GoalView.swift in Sources */,
 				5924675E2C9208B1000DC49F /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

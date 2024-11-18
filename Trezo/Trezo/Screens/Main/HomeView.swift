@@ -41,7 +41,13 @@ struct HomeView: View {
                         ScrollView {
                             VStack(spacing: 20) {
                                 ForEach(viewModel.goals, id: \._id) { goal in
-                                    GoalCardView(goal: goal)
+                                    NavigationLink {
+                                        GoalView(id: goal._id)
+                                    } label: {
+                                        // TODO: Prevent forefround colour from changing
+                                        GoalCardView(goal: goal)
+                                            .foregroundStyle(.black)
+                                    }
                                 }
                             }
                         }
