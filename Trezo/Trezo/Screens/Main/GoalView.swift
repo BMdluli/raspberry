@@ -9,11 +9,12 @@ import SwiftUI
 
 struct GoalView: View {
     @Environment(\.dismiss) var dismiss
-
+    
     var id: String
     @State private var selectedView = 1
     @StateObject private var viewModel = GoalViewModel()
-    @State private var showingSheet = false
+    @State private var showingDeleteSheet = false
+    @State private var showingArchiveSheet = false
     
     
     var body: some View {
@@ -88,7 +89,7 @@ struct GoalView: View {
                         .background(.white)
                     }
                     
-
+                    
                     
                     
                 }
@@ -129,7 +130,7 @@ struct GoalView: View {
         .onChange(of: viewModel.isUpdated) { oldValue, newValue in
             print("onChange triggered: isCreated changed from \(oldValue) to \(newValue)")
             if newValue {
-                showingSheet = false
+                showingDeleteSheet = false
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     viewModel.isUpdated = false
                     dismiss()
@@ -144,15 +145,15 @@ struct GoalView: View {
                     }) {
                         Label("Edit", systemImage: "pencil.line")
                     }
-
+                    
                     Button(action: {
-                        print("Option 2 selected")
+                        showingArchiveSheet = true
                     }) {
                         Label("Archive", systemImage: "square.and.arrow.down.on.square")
                     }
-
+                    
                     Button(action: {
-                        showingSheet = true
+                        showingDeleteSheet = true
                     }) {
                         Label("Delete", systemImage: "trash")
                     }
@@ -162,54 +163,28 @@ struct GoalView: View {
                 }
             }
         }
-        .sheet(isPresented:$showingSheet) {
-            VStack(spacing: 30) {
-                Text("Delete")
-                    .font(.system(size: 22, weight: .bold))
-                    .foregroundStyle(.red)
-                
-                Divider()
-                
+        .sheet(isPresented:$showingDeleteSheet) {
+            ModalWithDescription(title: "Delete", actionButtonText: "Yes, Delete", id: id, height: 350, showingSheet: $showingDeleteSheet, viewModel: viewModel, middleSection: {
                 Text("Sure you want to delete this goal?")
                     .font(.system(size: 22, weight: .bold))
                 
                 Text("You will lose all  savings progress. \n This action can not be undone.")
                     .fontWeight(.light)
                     .foregroundStyle(.gray)
-                
-                Divider()
-                
-                    HStack(spacing: 20) {
-                        Button {
-                            showingSheet = false
-                        } label: {
-                            Text("Cancel")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
-                        
-                        
-                        Button {
-                            viewModel.deleteGoal(id: id)
-                        } label: {
-                            Text("Yes, Delete")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
-                        
-                        
-                }
-            }
-            .padding()
-            .presentationDetents([.height(350)])
-            .presentationDragIndicator(.visible)
+            })
+        }
+        .sheet(isPresented: $showingArchiveSheet){
+            ModalWithDescription(title: "Archive", actionButtonText: "Yes, Archive", id: id, height: 290, showingSheet: $showingArchiveSheet, viewModel: viewModel, middleSection: {
+                Text("Sure you want to archive this goal?")
+                    .font(.system(size: 22, weight: .bold))
+            })
         }
     }
 }
 
 #Preview {
     NavigationStack {
-        GoalView(id: "6739aad1fd11df244f4f1bd6")
+        GoalView(id: "6739aad1fd11df244f4f1bd8")
     }
 }
 
@@ -238,5 +213,53 @@ struct GoalDetailTitle: View {
                 Divider()
             }
         }
+    }
+}
+
+struct ModalWithDescription<Content: View>: View {
+    let title: String
+    let actionButtonText: String
+    let id: String
+    let height: CGFloat
+    @Binding var showingSheet: Bool
+    @ObservedObject var viewModel: GoalViewModel
+    @ViewBuilder var middleSection: Content
+    
+    var body: some View {
+        VStack(spacing: 30) {
+            Text(title)
+                .font(.system(size: 22, weight: .bold))
+                .foregroundStyle(.red)
+            
+            Divider()
+            
+            middleSection
+            
+            Divider()
+            
+            HStack(spacing: 20) {
+                Button {
+                    showingSheet = false
+                } label: {
+                    Text("Cancel")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
+                
+                
+                Button {
+                    viewModel.deleteGoal(id: id)
+                } label: {
+                    Text(actionButtonText)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
+                
+                
+            }
+        }
+        .padding()
+        .presentationDetents([.height(height)])
+        .presentationDragIndicator(.visible)
     }
 }
