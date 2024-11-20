@@ -172,12 +172,12 @@ struct CreateGoalView: View {
             
         }
         .padding(.horizontal)
-        .onChange(of: viewModel.isCreated) { oldValue, newValue in
+        .onChange(of: viewModel.isUpdated) { oldValue, newValue in
             print("onChange triggered: isCreated changed from \(oldValue) to \(newValue)")
             if newValue {
                 showModal = false
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    viewModel.isCreated = false
+                    viewModel.isUpdated = false
                 }
             }
         }

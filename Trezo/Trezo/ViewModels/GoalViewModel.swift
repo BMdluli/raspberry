@@ -12,7 +12,7 @@ class GoalViewModel: ObservableObject {
     @Published var goals: [Goal] = []
     @Published var goal: Goal = Goal()
     @Published var isLoading: Bool = false
-    @Published var isCreated: Bool = false
+    @Published var isUpdated: Bool = false
     
     
     
@@ -95,10 +95,30 @@ class GoalViewModel: ObservableObject {
             }
             
                 
-            if let response = response {
+            if let _ = response {
                 DispatchQueue.main.async {
-                    self.isCreated = true
-                    print("Goal created successfully. isCreated set to \(self.isCreated)")
+                    self.isUpdated = true
+                    print("Goal created successfully. isCreated set to \(self.isUpdated)")
+                }
+            }
+        }
+    }
+    
+    func deleteGoal(id: String) {
+        GoalManager.shared.deleteGoal(id: id) { [weak self] response, error in
+            guard let self = self else {
+                return
+            }
+            
+            if let error = error {
+                print("Error creating goal: \(error)")
+                return
+            }
+            
+                
+            if let _ = response {
+                DispatchQueue.main.async {
+                    self.isUpdated = true
                 }
             }
         }

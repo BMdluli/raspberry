@@ -33,6 +33,7 @@
 		596683BB2C96130300096C6C /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 596683BA2C96130300096C6C /* FirebaseAuth */; };
 		596683C02C9617FC00096C6C /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596683BF2C9617FC00096C6C /* AuthViewModel.swift */; };
 		596683C32C96189800096C6C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596683C22C96189800096C6C /* HomeView.swift */; };
+		598189582CEC77F600CB79A2 /* DeleteResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598189572CEC77EF00CB79A2 /* DeleteResponse.swift */; };
 		59A565A32CE9DFB9008E2A98 /* CreatedGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A565A22CE9DFB3008E2A98 /* CreatedGoal.swift */; };
 		59A565A52CEA10B4008E2A98 /* GoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A565A42CEA10B4008E2A98 /* GoalView.swift */; };
 		59A565A72CEA1615008E2A98 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A565A62CEA1615008E2A98 /* CircularProgressView.swift */; };
@@ -66,6 +67,7 @@
 		59635DDA2CE67F4C00E7A552 /* CreateGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGoal.swift; sourceTree = "<group>"; };
 		596683BF2C9617FC00096C6C /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		596683C22C96189800096C6C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		598189572CEC77EF00CB79A2 /* DeleteResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteResponse.swift; sourceTree = "<group>"; };
 		59A565A22CE9DFB3008E2A98 /* CreatedGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedGoal.swift; sourceTree = "<group>"; };
 		59A565A42CEA10B4008E2A98 /* GoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalView.swift; sourceTree = "<group>"; };
 		59A565A62CEA1615008E2A98 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 		592467572C91CD58000DC49F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				598189572CEC77EF00CB79A2 /* DeleteResponse.swift */,
 				592194C92CEA2BFA003CC5C0 /* GoalResponse.swift */,
 				59A565A22CE9DFB3008E2A98 /* CreatedGoal.swift */,
 				592467582C91CD68000DC49F /* Onboarding.swift */,
@@ -199,12 +202,20 @@
 		596683C12C96188800096C6C /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				598189562CEB50FB00CB79A2 /* Goal */,
 				596683C22C96189800096C6C /* HomeView.swift */,
 				591329C82C9B1D0200C38232 /* ProfileView.swift */,
 				592D7C672CA94A4500D07C4E /* CreateGoalView.swift */,
 				59A565A42CEA10B4008E2A98 /* GoalView.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		598189562CEB50FB00CB79A2 /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Goal;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,6 +300,7 @@
 				592467552C91CBDC000DC49F /* OnboardingItemView.swift in Sources */,
 				592D7C6A2CA9702800D07C4E /* SecureTextFieldWithLabel.swift in Sources */,
 				596683C32C96189800096C6C /* HomeView.swift in Sources */,
+				598189582CEC77F600CB79A2 /* DeleteResponse.swift in Sources */,
 				5924675C2C91CDD9000DC49F /* OnboardingViewModel.swift in Sources */,
 				592467532C917F24000DC49F /* OnboardingView.swift in Sources */,
 				5921B97A2C92FA6500C7CF4D /* TextFieldWithLabel.swift in Sources */,

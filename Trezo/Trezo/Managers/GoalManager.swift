@@ -164,7 +164,45 @@ class GoalManager {
                 print("Decoding error: \(error)")
             }
             
-//            completed(data, nil)
+        }.resume()
+        
+        
+    }
+    
+    
+    
+    func deleteGoal(id: String ,completed: @escaping (String?, ErrorMessage?) -> Void) {
+        let deleteUrl = urlString + "/\(id)"
+        
+        guard let url = URL(string: deleteUrl) else {
+            completed(nil, .invalidData)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error making request:", error)
+                completed(nil, .invalidData)
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 204 else {
+                completed(nil, .unableToComplete)
+                return
+            }
+            
+            guard let data = data else {
+                completed(nil, .invalidData)
+                return
+            }
+            
+            completed("Deleted", nil)
             
         }.resume()
         
