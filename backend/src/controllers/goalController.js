@@ -35,7 +35,6 @@ exports.GetGoal = async (req, res) => {
 
 exports.CreateGoal = async (req, res) => {
   try {
-    console.log(req.body);
     const newGoal = await Goal.create(req.body);
 
     res.status(200).json({
@@ -48,6 +47,39 @@ exports.CreateGoal = async (req, res) => {
     // console.log(req.body.goalDeadline + 556959600 * 1000);
   } catch (err) {
     console.log(err);
+  }
+};
+
+exports.UpdateGoal = async (req, res) => {
+  try {
+    const id = { _id: req.params.id }; // Filter to find the document by ID
+    const update = req.body; // Update data from the request body
+
+    // Find the document by ID and update it
+    const updatedGoal = await Goal.findOneAndUpdate(id, update, { new: true });
+
+    if (!updatedGoal) {
+      // Handle case when no document is found
+      return res.status(404).json({
+        status: "fail",
+        message: "Goal not found",
+      });
+    }
+
+    // Return the updated goal
+    res.status(200).json({
+      status: "success",
+      data: {
+        updatedGoal,
+      },
+    });
+  } catch (error) {
+    // Log the error and send a 500 Internal Server Error response
+    console.error(error);
+    res.status(500).json({
+      status: "error",
+      message: "An error occurred while updating the goal",
+    });
   }
 };
 
