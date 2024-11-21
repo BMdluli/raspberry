@@ -11,10 +11,11 @@ struct GoalView: View {
     @Environment(\.dismiss) var dismiss
     
     var id: String
-    @State private var selectedView = 1
+    @State private var selectedView = 0
     @StateObject private var viewModel = GoalViewModel()
     @State private var showingDeleteSheet = false
     @State private var showingArchiveSheet = false
+    @State private var showingEditSheet = false
     
     
     var body: some View {
@@ -141,7 +142,7 @@ struct GoalView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     Button(action: {
-                        print("Option 1 selected")
+                        showingEditSheet = true
                     }) {
                         Label("Edit", systemImage: "pencil.line")
                     }
@@ -163,6 +164,9 @@ struct GoalView: View {
                 }
             }
         }
+        .fullScreenCover(isPresented: $showingEditSheet) {
+            EditGoalView(id: id, showModal: $showingEditSheet)
+        }
         .sheet(isPresented:$showingDeleteSheet) {
             ModalWithDescription(title: "Delete", actionButtonText: "Yes, Delete", id: id, height: 350, showingSheet: $showingDeleteSheet, viewModel: viewModel, middleSection: {
                 Text("Sure you want to delete this goal?")
@@ -179,6 +183,7 @@ struct GoalView: View {
                     .font(.system(size: 22, weight: .bold))
             })
         }
+
     }
 }
 

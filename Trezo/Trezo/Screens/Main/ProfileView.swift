@@ -30,7 +30,7 @@ struct ProfileView: View {
 //                            .background(Color.red)
 //                            .cornerRadius(10)
                         
-                        Label("Logout", image: "rectangle.portrait.and.arrow.right")
+                        Label("Logout", systemImage: "rectangle.portrait.and.arrow.right")
                             .foregroundStyle(.brandRed)
                     }
                 }

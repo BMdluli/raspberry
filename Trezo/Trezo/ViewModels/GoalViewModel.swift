@@ -72,7 +72,7 @@ class GoalViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.isLoading = false
             }
-            
+//            
         }
     }
     
@@ -99,6 +99,28 @@ class GoalViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.isUpdated = true
                     print("Goal created successfully. isCreated set to \(self.isUpdated)")
+                }
+            }
+        }
+    }
+    
+    func updateGoal(id: String, updateGoal: UpdateGoalBody) {
+        
+        GoalManager.shared.UpdateGoal(id: id, updatedGoal: updateGoal) { [weak self] response, error in
+            guard let self = self else {
+                return
+            }
+            
+            if let error = error {
+                print("Error creating goal: \(error)")
+                return
+            }
+            
+                
+            if let _ = response {
+                DispatchQueue.main.async {
+                    self.isUpdated = true
+                    print("Goal updated successfully. isCreated set to \(self.isUpdated)")
                 }
             }
         }
