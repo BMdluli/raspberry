@@ -15,6 +15,10 @@ struct CreateGoalView: View {
     
     @StateObject private var viewModel = GoalViewModel()
     
+    @State private var showEmojiModal = false
+    
+    @State private var selectedEmoji = ""
+    
     var swiftTV = 556959600;
     
     @Binding var showModal: Bool
@@ -68,7 +72,7 @@ struct CreateGoalView: View {
             }
             
             Button {
-                
+                showEmojiModal = true
             } label: {
                 VStack(spacing: 10) {
                     ZStack {
@@ -78,7 +82,15 @@ struct CreateGoalView: View {
                             .background(Color(.systemBackground))
                         
                         
-                        Image("Plus")
+                        if selectedEmoji.isEmpty {
+                            Image("Plus")
+                        } else {
+                            Text(selectedEmoji)
+                                .font(.system(size: 50))
+                                .frame(width: 80, height: 80)
+                        }
+                        
+                        
                         
                     }
                     
@@ -158,7 +170,7 @@ struct CreateGoalView: View {
                 
                 Button {
                     if let amountDbl = Double(amount) {
-                        viewModel.createNewGoal(goal: CreateGoal(coverImage: "😄", goalName: goalName, goalAmount: amountDbl, goalAmountContributed: [], goalCurrency: selectedCurrency.rawValue, goalDeadline: date.timeIntervalSince1970 * 1000, goalNote: note, goalColour: "BrandGreen", userId: userID!))
+                        viewModel.createNewGoal(goal: CreateGoal(coverImage: selectedEmoji, goalName: goalName, goalAmount: amountDbl, goalAmountContributed: [], goalCurrency: selectedCurrency.rawValue, goalDeadline: date.timeIntervalSince1970 * 1000, goalNote: note, goalColour: "BrandGreen", userId: userID!))
                     }
                     
 
@@ -181,6 +193,11 @@ struct CreateGoalView: View {
                 }
             }
         }
+        .sheet(isPresented: $showEmojiModal) {
+            EmojiGrid(showModal: $showEmojiModal, selectedEmoji: $selectedEmoji)
+        }
+        .padding()
+
 
     }
 }

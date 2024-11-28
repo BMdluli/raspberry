@@ -42,6 +42,7 @@
 		59B3D1272CEF793E00E2A4B7 /* UpdateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B3D1262CEF793800E2A4B7 /* UpdateResponse.swift */; };
 		59B3D1292CEF7BB100E2A4B7 /* UpdateGoalBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B3D1282CEF7BA300E2A4B7 /* UpdateGoalBody.swift */; };
 		59B3D12B2CEFC66200E2A4B7 /* GoalsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B3D12A2CEFC65100E2A4B7 /* GoalsResponse.swift */; };
+		59BE3B0C2CF85CEF006736AA /* EmojiGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BE3B0B2CF85CEE006736AA /* EmojiGrid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +82,7 @@
 		59B3D1262CEF793800E2A4B7 /* UpdateResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateResponse.swift; sourceTree = "<group>"; };
 		59B3D1282CEF7BA300E2A4B7 /* UpdateGoalBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGoalBody.swift; sourceTree = "<group>"; };
 		59B3D12A2CEFC65100E2A4B7 /* GoalsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsResponse.swift; sourceTree = "<group>"; };
+		59BE3B0B2CF85CEE006736AA /* EmojiGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiGrid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +166,7 @@
 				5921B9792C92FA6500C7CF4D /* TextFieldWithLabel.swift */,
 				592D7C692CA9702800D07C4E /* SecureTextFieldWithLabel.swift */,
 				59A565A62CEA1615008E2A98 /* CircularProgressView.swift */,
+				59BE3B0B2CF85CEE006736AA /* EmojiGrid.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -314,6 +317,7 @@
 				592D7C682CA94A4600D07C4E /* CreateGoalView.swift in Sources */,
 				592467552C91CBDC000DC49F /* OnboardingItemView.swift in Sources */,
 				592D7C6A2CA9702800D07C4E /* SecureTextFieldWithLabel.swift in Sources */,
+				59BE3B0C2CF85CEF006736AA /* EmojiGrid.swift in Sources */,
 				596683C32C96189800096C6C /* HomeView.swift in Sources */,
 				59B3D1272CEF793E00E2A4B7 /* UpdateResponse.swift in Sources */,
 				598189582CEC77F600CB79A2 /* DeleteResponse.swift in Sources */,

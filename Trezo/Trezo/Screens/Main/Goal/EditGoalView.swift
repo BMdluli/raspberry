@@ -13,6 +13,8 @@ struct EditGoalView: View {
     let id: String
     let userID = Auth.auth().currentUser?.uid
     
+    @Binding var shouldRefetch: Bool
+    
     @StateObject private var viewModel = GoalViewModel()
     
     var swiftTV = 556959600;
@@ -51,6 +53,10 @@ struct EditGoalView: View {
         "PrimaryOrange"
     ]
     
+    @State private var selectedEmoji = ""
+    @State private var showEmojiModal = false
+    
+    
     var body: some View {
         
         VStack {
@@ -82,7 +88,7 @@ struct EditGoalView: View {
                     }
                     
                     Button {
-                        
+                        showEmojiModal = true
                     } label: {
                         VStack(spacing: 10) {
                             ZStack {
@@ -91,8 +97,10 @@ struct EditGoalView: View {
                                     .frame(width: 100, height: 100)
                                     .background(Color(.systemBackground))
                                 
-                                
-                                Image("Plus")
+                                    Text(selectedEmoji)
+                                        .font(.system(size: 50))
+                                        .frame(width: 80, height: 80)
+
                                 
                             }
                             
@@ -173,7 +181,7 @@ struct EditGoalView: View {
                         Button {
                             if let amountDbl = Double(amount) {
                                 //                                viewModel.createNewGoal(goal: CreateGoal(coverImage: "😄", goalName: goalName, goalAmount: amountDbl, goalAmountContributed: 0, goalCurrency: selectedCurrency.rawValue, goalDeadline: , goalNote: note, goalColour: "BrandGreen", userId: userID!))
-                                viewModel.updateGoal(id: id, updateGoal: UpdateGoalBody(coverImage: "😏", goalName: goalName, goalAmount: amountDbl, goalCurrency: selectedCurrency.rawValue, goalDeadline: date.timeIntervalSince1970 * 1000, goalColour: "BrandRed", goalNote: note))
+                                viewModel.updateGoal(id: id, updateGoal: UpdateGoalBody(coverImage: selectedEmoji, goalName: goalName, goalAmount: amountDbl, goalCurrency: selectedCurrency.rawValue, goalDeadline: date.timeIntervalSince1970 * 1000, goalColour: "BrandRed", goalNote: note))
                             }
                             
                             
@@ -190,11 +198,13 @@ struct EditGoalView: View {
                 }
                 .padding(.horizontal)
                 .onChange(of: viewModel.isUpdated) { oldValue, newValue in
-                    print("onChange triggered: isCreated changed from \(oldValue) to \(newValue)")
+                    print("onChange triggered: isUpdated changed from \(oldValue) to \(newValue)")
                     if newValue {
                         showModal = false
+                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             viewModel.isUpdated = false
+                            shouldRefetch = true
                         }
                     }
                 }
@@ -206,7 +216,12 @@ struct EditGoalView: View {
                     amount = String(goal.goalAmount)
                     date = goal.goalDeadline ?? Date.now
                     note = goal.goalNote ?? ""
+                    selectedEmoji = goal.coverImage
                 }
+                .sheet(isPresented: $showEmojiModal) {
+                    EmojiGrid(showModal: $showEmojiModal, selectedEmoji: $selectedEmoji)
+                }
+                .padding()
             }
         }
     }
@@ -224,7 +239,7 @@ private struct ContentPreviewWrapperr: View {
     var body: some View {
         ContentView()
             .fullScreenCover(isPresented: $showModal) {
-                EditGoalView(id: "6739aad1fd11df244f4f1bd8", showModal: $showModal)
+                EditGoalView(id: "6739aad1fd11df244f4f1bd8", shouldRefetch: $showModal, showModal: $showModal)
             }
     }
 }

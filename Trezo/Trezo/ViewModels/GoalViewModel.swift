@@ -118,7 +118,6 @@ class GoalViewModel: ObservableObject {
             if let _ = response {
                 DispatchQueue.main.async {
                     self.isUpdated = true
-                    print("Goal updated successfully. isCreated set to \(self.isUpdated)")
                 }
             }
         }

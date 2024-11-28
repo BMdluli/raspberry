@@ -143,8 +143,9 @@ struct GoalCardView: View {
                 
                     .frame(width: 72, height: 72)
                 
-                Image(systemName: "sailboat")
-            }
+                Text(goal.coverImage)
+                    .font(.system(size: 40))
+                    .frame(width: 70, height: 70)            }
             
             VStack {
                 HStack {

@@ -24,7 +24,7 @@ struct GoalView: View {
     @State private var amount: String = ""
     @State private var date = Date.now
     
-    
+    @State private var shouldRefetch = false
     
     var body: some View {
         let total = viewModel.goal.goalAmountContributed.count > 0 ? viewModel.goal.goalAmountContributed.reduce(0) { $0 + $1.amount } : 0
@@ -71,9 +71,9 @@ struct GoalView: View {
                                         
                                             .frame(width: 130, height: 130)
                                         
-                                        Image(systemName: "sailboat")
-                                            .resizable()
-                                            .frame(width: 50, height: 50)
+                                        Text(viewModel.goal.coverImage)
+                                            .font(.system(size: 50))
+                                            .frame(width: 80, height: 80)
                                         
                                     }
                                     .padding(.top, 30)
@@ -153,7 +153,7 @@ struct GoalView: View {
             viewModel.fetchGoal(id: id)
         }
         .onChange(of: viewModel.isDeleted) { oldValue, newValue in
-            print("onChange triggered: isCreated changed from \(oldValue) to \(newValue)")
+            print("onChange triggered: isDeleted changed from \(oldValue) to \(newValue)")
             if newValue {
                 showingDeleteSheet = false
                 
@@ -165,7 +165,7 @@ struct GoalView: View {
             }
         }
         .onChange(of: viewModel.isUpdated) { oldValue, newValue in
-            print("onChange triggered: isCreated changed from \(oldValue) to \(newValue)")
+            print("onChange triggered: isUpdated <><> changed from \(oldValue) to \(newValue)")
             if newValue {
                 isShowingSavingsSheet = false
                 
@@ -174,6 +174,12 @@ struct GoalView: View {
                         viewModel.fetchGoal(id: id)
                     }
 
+            }
+        }
+        .onChange(of: shouldRefetch) { newValue in
+            if newValue {
+                viewModel.fetchGoal(id: id)
+                shouldRefetch = false // Reset the flag after fetching
             }
         }
         .toolbar {
@@ -203,7 +209,7 @@ struct GoalView: View {
             }
         }
         .fullScreenCover(isPresented: $showingEditSheet) {
-            EditGoalView(id: id, showModal: $showingEditSheet)
+            EditGoalView(id: id, shouldRefetch: $shouldRefetch, showModal: $showingEditSheet)
         }
         .sheet(isPresented:$showingDeleteSheet) {
             ModalWithDescription(title: "Delete", actionButtonText: "Yes, Delete", id: id, height: 350, showingSheet: $showingDeleteSheet, viewModel: viewModel, middleSection: {
@@ -241,7 +247,7 @@ struct GoalView: View {
 
 #Preview {
     NavigationStack {
-        GoalView(id: "67420db5859baf688be86b99")
+        GoalView(id: "67483955f95f4e8f650ba21f")
     }
 }
 

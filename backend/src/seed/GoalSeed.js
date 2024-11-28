@@ -1,6 +1,6 @@
 module.exports = [
   {
-    coverImage: "https://example.com/image1.jpg",
+    coverImage: "🐈",
     goalName: "Vacation in Hawaii",
     goalAmount: 5000,
     goalAmountContributed: [
@@ -22,7 +22,7 @@ module.exports = [
     userId: "jvQTKTpWqWbWZOizGT2q1e62xyk2",
   },
   {
-    coverImage: "https://example.com/image2.jpg",
+    coverImage: "🍼",
     goalName: "Buy a New Laptop",
     goalAmount: 1200,
     goalAmountContributed: [
@@ -39,7 +39,7 @@ module.exports = [
     userId: "jvQTKTpWqWbWZOizGT2q1e62xyk2",
   },
   {
-    coverImage: "https://example.com/image3.jpg",
+    coverImage: "🎉",
     goalName: "Wedding Savings",
     goalAmount: 15000,
     goalAmountContributed: [
@@ -61,7 +61,7 @@ module.exports = [
     userId: "jvQTKTpWqWbWZOizGT2q1e62xyk2",
   },
   {
-    coverImage: "https://example.com/image4.jpg",
+    coverImage: "😄",
     goalName: "Emergency Fund",
     goalAmount: 10000,
     goalAmountContributed: [],
@@ -72,7 +72,7 @@ module.exports = [
     userId: "jvQTKTpWqWbWZOizGT2q1e62xyk2",
   },
   {
-    coverImage: "https://example.com/image5.jpg",
+    coverImage: "🛒",
     goalName: "Car Down Payment",
     goalAmount: 8000,
     goalAmountContributed: [
@@ -89,7 +89,7 @@ module.exports = [
     userId: "jvQTKTpWqWbWZOizGT2q1e62xyk2",
   },
   {
-    coverImage: "https://example.com/image6.jpg",
+    coverImage: "🎉",
     goalName: "Home Renovation",
     goalAmount: 20000,
     goalAmountContributed: [
@@ -111,7 +111,7 @@ module.exports = [
     userId: "jvQTKTpWqWbWZOizGT2q1e62xyk2",
   },
   {
-    coverImage: "https://example.com/image7.jpg",
+    coverImage: "🏠",
     goalName: "Retirement Fund",
     goalAmount: 200000,
     goalAmountContributed: [
@@ -128,7 +128,7 @@ module.exports = [
     userId: "jvQTKTpWqWbWZOizGT2q1e62xyk2",
   },
   {
-    coverImage: "https://example.com/image8.jpg",
+    coverImage: "😄",
     goalName: "Travel to Europe",
     goalAmount: 7000,
     goalAmountContributed: [
@@ -145,7 +145,7 @@ module.exports = [
     userId: "jvQTKTpWqWbWZOizGT2q1e62xyk2",
   },
   {
-    coverImage: "https://example.com/image9.jpg",
+    coverImage: "📚",
     goalName: "College Tuition",
     goalAmount: 30000,
     goalAmountContributed: [
@@ -162,7 +162,7 @@ module.exports = [
     userId: "jvQTKTpWqWbWZOizGT2q1e62xyk2",
   },
   {
-    coverImage: "https://example.com/image10.jpg",
+    coverImage: "🌟",
     goalName: "Charity Contribution",
     goalAmount: 5000,
     goalAmountContributed: [
