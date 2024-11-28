@@ -104,3 +104,47 @@ exports.DeleteGoal = async (req, res) => {
     });
   }
 };
+
+// Create a new contribution
+exports.AddContribution = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { amount, date, note } = req.body;
+
+    // Validate required fields
+    if (!amount || !date || !note) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Amount, date, and note are required.",
+      });
+    }
+
+    // Find the goal by ID
+    const goal = await Goal.findById(id);
+    if (!goal) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Goal not found.",
+      });
+    }
+
+    // Add the new contribution to the goal
+    const newContribution = { amount, date, note };
+    goal.goalAmountContributed.push(newContribution);
+
+    // Save the updated goal
+    await goal.save();
+
+    res.status(201).json({
+      status: "success",
+      message: "Contribution added successfully.",
+      data: goal,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "An error occurred while adding the contribution.",
+      error: error.message,
+    });
+  }
+};

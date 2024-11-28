@@ -1,5 +1,17 @@
 const mongoose = require("mongoose");
 
+const contributionSchema = mongoose.Schema({
+  amount: {
+    type: Number,
+    required: [true, "Contribution must have an amount"],
+  },
+  date: {
+    type: Date,
+    default: Date.now, // Automatically set the contribution date
+  },
+  note: String,
+});
+
 const goalSchema = mongoose.Schema({
   coverImage: {
     type: String,
@@ -14,8 +26,8 @@ const goalSchema = mongoose.Schema({
     required: [true, "Goals should have an amount"],
   },
   goalAmountContributed: {
-    type: Number,
-    default: 0,
+    type: [contributionSchema], // Array of contributions
+    default: [],
   },
   goalCurrency: {
     type: String,
@@ -29,7 +41,7 @@ const goalSchema = mongoose.Schema({
   },
   userId: {
     type: String,
-    required: [true, "Goals can not be created without a user"],
+    required: [true, "Goals cannot be created without a user"],
   },
 });
 
