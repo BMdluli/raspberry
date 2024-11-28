@@ -26,6 +26,7 @@
 		592D7C682CA94A4600D07C4E /* CreateGoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592D7C672CA94A4500D07C4E /* CreateGoalView.swift */; };
 		592D7C6A2CA9702800D07C4E /* SecureTextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592D7C692CA9702800D07C4E /* SecureTextFieldWithLabel.swift */; };
 		592D7C6C2CA973AA00D07C4E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 592D7C6B2CA973AA00D07C4E /* GoogleService-Info.plist */; };
+		59383E4B2CF0AC8900243C0B /* AddContribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59383E4A2CF0AC8900243C0B /* AddContribution.swift */; };
 		59397FFC2CE34A130076CCE5 /* GoalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59397FFB2CE34A130076CCE5 /* GoalManager.swift */; };
 		59397FFE2CE34F550076CCE5 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59397FFD2CE34F550076CCE5 /* Goal.swift */; };
 		593980002CE4943A0076CCE5 /* GoalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59397FFF2CE494310076CCE5 /* GoalViewModel.swift */; };
@@ -40,6 +41,7 @@
 		59A565A72CEA1615008E2A98 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A565A62CEA1615008E2A98 /* CircularProgressView.swift */; };
 		59B3D1272CEF793E00E2A4B7 /* UpdateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B3D1262CEF793800E2A4B7 /* UpdateResponse.swift */; };
 		59B3D1292CEF7BB100E2A4B7 /* UpdateGoalBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B3D1282CEF7BA300E2A4B7 /* UpdateGoalBody.swift */; };
+		59B3D12B2CEFC66200E2A4B7 /* GoalsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B3D12A2CEFC65100E2A4B7 /* GoalsResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +66,7 @@
 		592D7C672CA94A4500D07C4E /* CreateGoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGoalView.swift; sourceTree = "<group>"; };
 		592D7C692CA9702800D07C4E /* SecureTextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureTextFieldWithLabel.swift; sourceTree = "<group>"; };
 		592D7C6B2CA973AA00D07C4E /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		59383E4A2CF0AC8900243C0B /* AddContribution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContribution.swift; sourceTree = "<group>"; };
 		59397FFB2CE34A130076CCE5 /* GoalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalManager.swift; sourceTree = "<group>"; };
 		59397FFD2CE34F550076CCE5 /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		59397FFF2CE494310076CCE5 /* GoalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewModel.swift; sourceTree = "<group>"; };
@@ -77,6 +80,7 @@
 		59A565A62CEA1615008E2A98 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		59B3D1262CEF793800E2A4B7 /* UpdateResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateResponse.swift; sourceTree = "<group>"; };
 		59B3D1282CEF7BA300E2A4B7 /* UpdateGoalBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGoalBody.swift; sourceTree = "<group>"; };
+		59B3D12A2CEFC65100E2A4B7 /* GoalsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +171,7 @@
 		592467572C91CD58000DC49F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				59B3D12A2CEFC65100E2A4B7 /* GoalsResponse.swift */,
 				59B3D1282CEF7BA300E2A4B7 /* UpdateGoalBody.swift */,
 				59B3D1262CEF793800E2A4B7 /* UpdateResponse.swift */,
 				598189572CEC77EF00CB79A2 /* DeleteResponse.swift */,
@@ -175,6 +180,7 @@
 				592467582C91CD68000DC49F /* Onboarding.swift */,
 				59397FFD2CE34F550076CCE5 /* Goal.swift */,
 				59635DDA2CE67F4C00E7A552 /* CreateGoal.swift */,
+				59383E4A2CF0AC8900243C0B /* AddContribution.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -311,6 +317,7 @@
 				596683C32C96189800096C6C /* HomeView.swift in Sources */,
 				59B3D1272CEF793E00E2A4B7 /* UpdateResponse.swift in Sources */,
 				598189582CEC77F600CB79A2 /* DeleteResponse.swift in Sources */,
+				59383E4B2CF0AC8900243C0B /* AddContribution.swift in Sources */,
 				5924675C2C91CDD9000DC49F /* OnboardingViewModel.swift in Sources */,
 				592467532C917F24000DC49F /* OnboardingView.swift in Sources */,
 				5921B97A2C92FA6500C7CF4D /* TextFieldWithLabel.swift in Sources */,
@@ -331,6 +338,7 @@
 				592467422C917719000DC49F /* TrezoApp.swift in Sources */,
 				591329C92C9B1D0200C38232 /* ProfileView.swift in Sources */,
 				59397FFC2CE34A130076CCE5 /* GoalManager.swift in Sources */,
+				59B3D12B2CEFC66200E2A4B7 /* GoalsResponse.swift in Sources */,
 				59A565A52CEA10B4008E2A98 /* GoalView.swift in Sources */,
 				5924675E2C9208B1000DC49F /* WelcomeView.swift in Sources */,
 			);

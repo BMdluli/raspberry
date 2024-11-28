@@ -30,9 +30,7 @@ struct HomeView: View {
                 
                 // Main content
                 VStack {
-                    
-                    
-                    
+
                     if viewModel.goals.isEmpty {
                         Spacer()
                         EmptyView(showModal: $showModal)
@@ -131,7 +129,12 @@ struct EmptyView: View {
 struct GoalCardView: View {
     var goal: Goal
     
+    
     var body: some View {
+        let total = goal.goalAmountContributed.count > 0 ? goal.goalAmountContributed.reduce(0) { $0 + $1.amount } : 0
+        
+        let percentage = total > 0 ? total / goal.goalAmount : 0
+        
         HStack(spacing: 20) {
             
             ZStack {
@@ -150,14 +153,14 @@ struct GoalCardView: View {
                     Text(String(format: "R%.1f", goal.goalAmount))
                 }
                 
-                ProgressView(value: (goal.goalAmountContributed / goal.goalAmount))
+                ProgressView(value: percentage)
                     .tint(Color(goal.goalColour))
                 
                 HStack {
-                    Text(String(format: "R%.1f", goal.goalAmountContributed))
+                    Text(String(format: "R%.1f", total))
                         .font(.system(size: 14, weight: .light))
                     Spacer()
-                    Text(String(format: "R%.1f", (goal.goalAmount - goal.goalAmountContributed)))
+                    Text(String(format: "R%.1f", total))
                         .font(.system(size: 14, weight: .light))
                 }
             }

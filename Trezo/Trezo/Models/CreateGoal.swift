@@ -12,7 +12,7 @@ struct CreateGoal: Codable {
     let coverImage: String
     let goalName: String
     let goalAmount: Double
-    let goalAmountContributed: Double
+    let goalAmountContributed: [Contribution]
     let goalCurrency: String
     let goalDeadline: Double?
     let goalNote: String?

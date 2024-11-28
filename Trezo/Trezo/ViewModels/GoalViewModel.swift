@@ -13,6 +13,7 @@ class GoalViewModel: ObservableObject {
     @Published var goal: Goal = Goal()
     @Published var isLoading: Bool = false
     @Published var isUpdated: Bool = false
+    @Published var isDeleted: Bool = false
     
     
     
@@ -64,15 +65,12 @@ class GoalViewModel: ObservableObject {
                 // Ensure UI updates happen on the main thread
                 DispatchQueue.main.async {
                     self.goal = response
-//                    print("Goals updated:", self.goals)
-//                    print(response)
                 }
             }
             
             DispatchQueue.main.async {
                 self.isLoading = false
             }
-//            
         }
     }
     
@@ -133,7 +131,31 @@ class GoalViewModel: ObservableObject {
             }
             
             if let error = error {
-                print("Error creating goal: \(error)")
+                print("Error deleting goal: \(error)")
+                return
+            }
+            
+                
+            if let _ = response {
+                DispatchQueue.main.async {
+                    self.isDeleted = true
+                }
+            }
+        }
+    }
+    
+    func addContribuution(id: String, contribution: AddContribution) {
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        GoalManager.shared.addContribution(id: id, contribution: contribution) { [weak self] response, error in
+            guard let self = self else {
+                return
+            }
+            
+            if let error = error {
+                print("Error creating contribution: \(error)")
                 return
             }
             
@@ -143,6 +165,10 @@ class GoalViewModel: ObservableObject {
                     self.isUpdated = true
                 }
             }
+        }
+        
+        DispatchQueue.main.async {
+            self.isLoading = true
         }
     }
 

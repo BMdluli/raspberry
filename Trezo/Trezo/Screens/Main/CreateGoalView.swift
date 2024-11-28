@@ -158,7 +158,7 @@ struct CreateGoalView: View {
                 
                 Button {
                     if let amountDbl = Double(amount) {
-                        viewModel.createNewGoal(goal: CreateGoal(coverImage: "😄", goalName: goalName, goalAmount: amountDbl, goalAmountContributed: 0, goalCurrency: selectedCurrency.rawValue, goalDeadline: date.timeIntervalSince1970 * 1000, goalNote: note, goalColour: "BrandGreen", userId: userID!))
+                        viewModel.createNewGoal(goal: CreateGoal(coverImage: "😄", goalName: goalName, goalAmount: amountDbl, goalAmountContributed: [], goalCurrency: selectedCurrency.rawValue, goalDeadline: date.timeIntervalSince1970 * 1000, goalNote: note, goalColour: "BrandGreen", userId: userID!))
                     }
                     
 

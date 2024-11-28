@@ -10,6 +10,10 @@ import SwiftUI
 struct TabBar: View {
     @StateObject var authViewModel = AuthViewModel()
     
+    init() {
+        UITabBarAppearance().backgroundColor = .systemBackground
+    }
+    
     var body: some View {
         NavigationStack {
             TabView {
@@ -24,6 +28,7 @@ struct TabBar: View {
                     }
             }
             .navigationBarBackButtonHidden(true)
+            .background(.brandGreen)
         }
     }
     
