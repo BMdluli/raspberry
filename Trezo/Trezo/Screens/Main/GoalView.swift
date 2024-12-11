@@ -18,6 +18,7 @@ struct GoalView: View {
     @State private var showingEditSheet = false
     
     @State private var isShowingSavingsSheet = false
+    @State private var isShowingWithdrawSheet = false
     
     
     @State private var note: String = ""
@@ -124,7 +125,7 @@ struct GoalView: View {
                 VStack {
                     HStack(spacing: 20) {
                         Button {
-                            
+                            isShowingWithdrawSheet = true
                         } label: {
                             Text("Withdraw")
                                 .frame(maxWidth: .infinity)
@@ -168,6 +169,7 @@ struct GoalView: View {
             print("onChange triggered: isUpdated <><> changed from \(oldValue) to \(newValue)")
             if newValue {
                 isShowingSavingsSheet = false
+                isShowingWithdrawSheet = false
                 
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         viewModel.isUpdated = false
@@ -195,7 +197,7 @@ struct GoalView: View {
                         showingArchiveSheet = true
                     }) {
                         Label("Archive", systemImage: "square.and.arrow.down.on.square")
-                    }
+                    } 
                     
                     Button(action: {
                         showingDeleteSheet = true
@@ -228,7 +230,7 @@ struct GoalView: View {
             })
         }
         .sheet(isPresented: $isShowingSavingsSheet) {
-            ModalWithDescription(title: "Add Savings", actionButtonText: "Add", id: id, height: 605, contribution: AddContribution(note: note, date: date.timeIntervalSince1970 * 1000, amount: Double(amount) ?? 0.0), showingSheet: $isShowingSavingsSheet, viewModel: viewModel , middleSection: {
+            ModalWithDescription(title: "Add Savings", actionButtonText: "Add", id: id, height: 605, contribution: AddContribution(note: note, date: date.timeIntervalSince1970 * 1000 ,amount: Double(amount) ?? 0.0), showingSheet: $isShowingSavingsSheet, viewModel: viewModel , middleSection: {
                     
                     TextFieldWithLabel(text: $amount, title: "Goal Amount", placeholder: "10.000")
                         .keyboardType(.numberPad)
@@ -241,13 +243,27 @@ struct GoalView: View {
                     TextFieldWithLabel(text: $note, title: "Note Optional", placeholder: "Add your note.")
                 })
         }
+        .sheet(isPresented: $isShowingWithdrawSheet) {
+            ModalWithDescription(title: "Withdraw", actionButtonText: "Withdraw", id: id, height: 605, contribution: AddContribution(note: note, date: date.timeIntervalSince1970 * 1000, amount: Double(amount) ?? 0.0), showingSheet: $isShowingWithdrawSheet, viewModel: viewModel , middleSection: {
+                    
+                    TextFieldWithLabel(text: $amount, title: "Amount", placeholder: "10.000")
+                        .keyboardType(.numberPad)
+                    
+                    
+                    DatePicker("Date",
+                               selection: $date, displayedComponents: .date)
+                    .frame(height: 56)
+                    
+                    TextFieldWithLabel(text: $note, title: "Note Optional", placeholder: "Add your note.")
+                })
+        }
 
     }
 }
 
 #Preview {
     NavigationStack {
-        GoalView(id: "67483955f95f4e8f650ba21f")
+        GoalView(id: "674b5a068113da120421e990")
     }
 }
 
@@ -332,7 +348,11 @@ struct ModalWithDescription<Content: View>: View {
 
                 Button {
                     if contribution != nil {
-                        viewModel.addContribuution(id: id, contribution: contribution!)
+                        if actionButtonText == "Add" {
+                            viewModel.addContribuution(id: id, contribution: contribution!)
+                        } else {
+                            viewModel.withdrawContribuution(id: id, contribution: contribution!)
+                        }
                     } else {
                         viewModel.deleteGoal(id: id)
                     }

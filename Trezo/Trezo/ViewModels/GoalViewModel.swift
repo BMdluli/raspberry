@@ -170,6 +170,35 @@ class GoalViewModel: ObservableObject {
             self.isLoading = true
         }
     }
+    
+    
+    func withdrawContribuution(id: String, contribution: AddContribution) {
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        GoalManager.shared.withdrawContribution(id: id, contribution: contribution) { [weak self] response, error in
+            guard let self = self else {
+                return
+            }
+            
+            if let error = error {
+                print("Error creating contribution: \(error)")
+                return
+            }
+            
+                
+            if let _ = response {
+                DispatchQueue.main.async {
+                    self.isUpdated = true
+                }
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+    }
 
 }
 

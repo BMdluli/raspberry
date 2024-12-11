@@ -282,7 +282,6 @@ class GoalManager {
             }
             
             guard let response = response as? HTTPURLResponse, response.statusCode == 201 else {
-                print(response)
                 completed(nil, .unableToComplete)
                 return
             }
@@ -293,6 +292,48 @@ class GoalManager {
             }
             
             completed("Contribution added", nil)
+            
+        }.resume()
+        
+    }
+    
+    func withdrawContribution(id: String, contribution: AddContribution, completed: @escaping (String?, ErrorMessage?) -> Void) {
+        let addContributionUrl = urlString + "/\(id)/" + "contributions/withdraw"
+        
+        guard let url = URL(string: addContributionUrl) else{
+            completed(nil, .invalidData)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        guard let httpBody = try? JSONEncoder().encode(contribution) else {
+            print("Failed to encode data")
+            completed(nil, .invalidData)
+            return
+        }
+        request.httpBody = httpBody
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error making request:", error)
+                completed(nil, .invalidData)
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 201 else {
+                completed(nil, .unableToComplete)
+                return
+            }
+            
+            guard let _ = data else {
+                completed(nil, .invalidData)
+                return
+            }
+            
+            completed("Contribution withdrawn", nil)
             
         }.resume()
         
