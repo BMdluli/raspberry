@@ -6,7 +6,7 @@ require("dotenv").config({ path: "../.env" });
 const MONGODB_URI = process.env.DB_CONNECTION;
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect("mongodb://localhost:27017/trezo")
   .then(() => {
     console.log("Connected to MongoDB");
     return Goal.deleteMany({}); // Clear existing data in the goals collection

@@ -128,6 +128,20 @@ exports.AddContribution = async (req, res) => {
       });
     }
 
+    const contributions = goal.goalAmountContributed.reduce(
+      (sum, item) => sum + item.amount,
+      0
+    );
+
+    console.log(goal.goal);
+
+    if (contributions + amount > goal.goalAmount) {
+      return res.status(400).send({
+        status: "fail",
+        message: "Your contribution cannot exceed your goal amount",
+      });
+    }
+
     // Add the new contribution to the goal
     const newContribution = { amount, date, note };
     goal.goalAmountContributed.push(newContribution);
@@ -163,8 +177,6 @@ exports.WithdrawContribution = async (req, res) => {
       });
     }
 
-    amount = -amount;
-
     // Find the goal by ID
     const goal = await Goal.findById(id);
     if (!goal) {
@@ -173,6 +185,22 @@ exports.WithdrawContribution = async (req, res) => {
         message: "Goal not found.",
       });
     }
+
+    const contributions = goal.goalAmountContributed.reduce(
+      (sum, item) => sum + item.amount,
+      0
+    );
+
+    console.log(contributions - amount);
+
+    if (contributions - amount < 0) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Amount should not exceed total contributions",
+      });
+    }
+
+    amount = -amount;
 
     // Add the new contribution to the goal
     const newContribution = { amount, date, note };
