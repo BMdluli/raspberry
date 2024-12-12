@@ -171,6 +171,10 @@ struct GoalView: View {
                 isShowingSavingsSheet = false
                 isShowingWithdrawSheet = false
                 
+                amount = ""
+                note = ""
+                date = Date.now
+                
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         viewModel.isUpdated = false
                         viewModel.fetchGoal(id: id)
@@ -178,7 +182,7 @@ struct GoalView: View {
 
             }
         }
-        .onChange(of: shouldRefetch) { newValue in
+        .onChange(of: shouldRefetch) { _, newValue in
             if newValue {
                 viewModel.fetchGoal(id: id)
                 shouldRefetch = false // Reset the flag after fetching

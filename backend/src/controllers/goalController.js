@@ -4,8 +4,6 @@ exports.GetGoals = async (req, res) => {
   try {
     const goals = await Goal.find();
 
-    console.log(goals);
-
     res.status(200).json({
       status: "success",
       results: goals.length,
@@ -26,8 +24,6 @@ exports.GetGoal = async (req, res) => {
       status: "success",
       data: goal,
     });
-
-    console.log(id);
   } catch (error) {
     console.log(error);
   }
@@ -43,8 +39,6 @@ exports.CreateGoal = async (req, res) => {
         newGoal,
       },
     });
-
-    // console.log(req.body.goalDeadline + 556959600 * 1000);
   } catch (err) {
     console.log(err);
   }
@@ -133,8 +127,6 @@ exports.AddContribution = async (req, res) => {
       0
     );
 
-    console.log(goal.goal);
-
     if (contributions + amount > goal.goalAmount) {
       return res.status(400).send({
         status: "fail",
@@ -190,8 +182,6 @@ exports.WithdrawContribution = async (req, res) => {
       (sum, item) => sum + item.amount,
       0
     );
-
-    console.log(contributions - amount);
 
     if (contributions - amount < 0) {
       return res.status(400).json({

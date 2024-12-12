@@ -55,6 +55,8 @@ struct CreateGoalView: View {
         "PrimaryOrange"
     ]
     
+    @State private var selectedColor: String = "BrandRed"
+    
     var body: some View {
         VStack(spacing: 20) {
             HStack {
@@ -142,7 +144,7 @@ struct CreateGoalView: View {
                     HStack(alignment: .center, spacing: 16) { // You can adjust `spacing` as needed
                         ForEach(goalColors, id: \.self) { goalColor in
                             Button {
-                                print(goalColor)
+                                selectedColor = goalColor
                             } label: {
                                 Circle()
                                     .fill(Color(goalColor))
@@ -170,7 +172,7 @@ struct CreateGoalView: View {
                 
                 Button {
                     if let amountDbl = Double(amount) {
-                        viewModel.createNewGoal(goal: CreateGoal(coverImage: selectedEmoji, goalName: goalName, goalAmount: amountDbl, goalAmountContributed: [], goalCurrency: selectedCurrency.rawValue, goalDeadline: date.timeIntervalSince1970 * 1000, goalNote: note, goalColour: "BrandGreen", userId: userID!))
+                        viewModel.createNewGoal(goal: CreateGoal(coverImage: selectedEmoji, goalName: goalName, goalAmount: amountDbl, goalAmountContributed: [], goalCurrency: selectedCurrency.rawValue, goalDeadline: date.timeIntervalSince1970 * 1000, goalNote: note, goalColour: selectedColor, userId: userID!))
                     }
                     
 
