@@ -12,10 +12,12 @@ import FirebaseAuth
 struct ContentView: View {
     @StateObject var authManager = AuthViewModel()
     @AppStorage("isOnboardingComplete") var isOnboardingComplete: Bool = false
+    @AppStorage("selectedTheme") private var selectedTheme: Int = 1
+    @StateObject private var themeManager = ThemeViewModel()
     
-
+    
     var body: some View {
-       
+        
         VStack {
             if authManager.isSignedIn {
                 TabBar()
@@ -26,12 +28,12 @@ struct ContentView: View {
                 OnboardingView()
             }
         }
-            .onAppear {
-                print(authManager.isSignedIn)
-            }
-            
-
-
+        .onAppear {
+            themeManager.applyTheme(selectedTheme)
+        }
+        
+        
+        
     }
     
 }

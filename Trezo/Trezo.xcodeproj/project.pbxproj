@@ -43,6 +43,9 @@
 		59B3D1292CEF7BB100E2A4B7 /* UpdateGoalBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B3D1282CEF7BA300E2A4B7 /* UpdateGoalBody.swift */; };
 		59B3D12B2CEFC66200E2A4B7 /* GoalsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B3D12A2CEFC65100E2A4B7 /* GoalsResponse.swift */; };
 		59BE3B0C2CF85CEF006736AA /* EmojiGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BE3B0B2CF85CEE006736AA /* EmojiGrid.swift */; };
+		59CE0B582D0AC6AF0063D3E8 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CE0B572D0AC6AF0063D3E8 /* Preferences.swift */; };
+		59CE0B5B2D0ACEBF0063D3E8 /* extentions+theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CE0B5A2D0ACEB40063D3E8 /* extentions+theme.swift */; };
+		59CE0B5D2D0AD36C0063D3E8 /* ThemeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CE0B5C2D0AD36C0063D3E8 /* ThemeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +86,9 @@
 		59B3D1282CEF7BA300E2A4B7 /* UpdateGoalBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGoalBody.swift; sourceTree = "<group>"; };
 		59B3D12A2CEFC65100E2A4B7 /* GoalsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsResponse.swift; sourceTree = "<group>"; };
 		59BE3B0B2CF85CEE006736AA /* EmojiGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiGrid.swift; sourceTree = "<group>"; };
+		59CE0B572D0AC6AF0063D3E8 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		59CE0B5A2D0ACEB40063D3E8 /* extentions+theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extentions+theme.swift"; sourceTree = "<group>"; };
+		59CE0B5C2D0AD36C0063D3E8 /* ThemeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +122,7 @@
 		592467402C917719000DC49F /* Trezo */ = {
 			isa = PBXGroup;
 			children = (
+				59CE0B592D0ACEA90063D3E8 /* Extentions */,
 				596683BC2C96162300096C6C /* Managers */,
 				5924675A2C91CDC4000DC49F /* ViewModels */,
 				592467572C91CD58000DC49F /* Models */,
@@ -194,6 +201,7 @@
 				59397FFF2CE494310076CCE5 /* GoalViewModel.swift */,
 				5924675B2C91CDD9000DC49F /* OnboardingViewModel.swift */,
 				596683BF2C9617FC00096C6C /* AuthViewModel.swift */,
+				59CE0B5C2D0AD36C0063D3E8 /* ThemeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -219,9 +227,9 @@
 		596683C12C96188800096C6C /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				59CE0B562D0AC4D30063D3E8 /* Account */,
 				598189562CEB50FB00CB79A2 /* Goal */,
 				596683C22C96189800096C6C /* HomeView.swift */,
-				591329C82C9B1D0200C38232 /* ProfileView.swift */,
 				592D7C672CA94A4500D07C4E /* CreateGoalView.swift */,
 				59A565A42CEA10B4008E2A98 /* GoalView.swift */,
 			);
@@ -234,6 +242,23 @@
 				598189592CEE0B3500CB79A2 /* EditGoalView.swift */,
 			);
 			path = Goal;
+			sourceTree = "<group>";
+		};
+		59CE0B562D0AC4D30063D3E8 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				591329C82C9B1D0200C38232 /* ProfileView.swift */,
+				59CE0B572D0AC6AF0063D3E8 /* Preferences.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		59CE0B592D0ACEA90063D3E8 /* Extentions */ = {
+			isa = PBXGroup;
+			children = (
+				59CE0B5A2D0ACEB40063D3E8 /* extentions+theme.swift */,
+			);
+			path = Extentions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -318,6 +343,7 @@
 				592467552C91CBDC000DC49F /* OnboardingItemView.swift in Sources */,
 				592D7C6A2CA9702800D07C4E /* SecureTextFieldWithLabel.swift in Sources */,
 				59BE3B0C2CF85CEF006736AA /* EmojiGrid.swift in Sources */,
+				59CE0B5D2D0AD36C0063D3E8 /* ThemeViewModel.swift in Sources */,
 				596683C32C96189800096C6C /* HomeView.swift in Sources */,
 				59B3D1272CEF793E00E2A4B7 /* UpdateResponse.swift in Sources */,
 				598189582CEC77F600CB79A2 /* DeleteResponse.swift in Sources */,
@@ -327,6 +353,7 @@
 				5921B97A2C92FA6500C7CF4D /* TextFieldWithLabel.swift in Sources */,
 				5981895A2CEE0B3500CB79A2 /* EditGoalView.swift in Sources */,
 				592467592C91CD68000DC49F /* Onboarding.swift in Sources */,
+				59CE0B5B2D0ACEBF0063D3E8 /* extentions+theme.swift in Sources */,
 				593980002CE4943A0076CCE5 /* GoalViewModel.swift in Sources */,
 				592194CA2CEA2C01003CC5C0 /* GoalResponse.swift in Sources */,
 				59A565A72CEA1615008E2A98 /* CircularProgressView.swift in Sources */,
@@ -342,6 +369,7 @@
 				592467422C917719000DC49F /* TrezoApp.swift in Sources */,
 				591329C92C9B1D0200C38232 /* ProfileView.swift in Sources */,
 				59397FFC2CE34A130076CCE5 /* GoalManager.swift in Sources */,
+				59CE0B582D0AC6AF0063D3E8 /* Preferences.swift in Sources */,
 				59B3D12B2CEFC66200E2A4B7 /* GoalsResponse.swift in Sources */,
 				59A565A52CEA10B4008E2A98 /* GoalView.swift in Sources */,
 				5924675E2C9208B1000DC49F /* WelcomeView.swift in Sources */,

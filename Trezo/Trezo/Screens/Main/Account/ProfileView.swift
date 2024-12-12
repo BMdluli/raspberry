@@ -17,11 +17,14 @@ struct ProfileView: View {
                     .font(.system(size: 20, weight: .bold))
                     .padding(.bottom)
                 
-                Image("1F440")
                 
                 List {
                     
-                    
+                    NavigationLink {
+                        Preferences()
+                    } label: {
+                        Label("Preferences", systemImage: "gearshape")
+                    }
                     
                     
                     Button {
