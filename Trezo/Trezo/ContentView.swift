@@ -6,17 +6,33 @@
 //
 
 import SwiftUI
+import FirebaseAuth
+
 
 struct ContentView: View {
+    @StateObject var authManager = AuthViewModel()
     @AppStorage("isOnboardingComplete") var isOnboardingComplete: Bool = false
-
+    @AppStorage("selectedTheme") private var selectedTheme: Int = 1
+    @StateObject private var themeManager = ThemeViewModel()
+    
+    
     var body: some View {
-        if isOnboardingComplete {
-            WelcomeView()
-        } else {
-            OnboardingView()
+        
+        VStack {
+            if authManager.isSignedIn {
+                HomeView()
+            }
+            else if isOnboardingComplete {
+                WelcomeView()
+            } else {
+                OnboardingView()
+            }
+        }
+        .onAppear {
+            themeManager.applyTheme(selectedTheme)
         }
     }
+    
 }
 
 #Preview {

@@ -1,21 +1,25 @@
 require("dotenv").config();
 const express = require("express");
-const cookieParser = require("cookie-parser");
-const router = require("./routes");
+const goalRouter = require("./routes/goalRoutes");
+const mongoose = require("mongoose");
 
 const app = express();
 const PORT = process.env.PORT | 3000;
 
 // MIDDLEWARE
 app.use(express.json());
-app.use(cookieParser());
+
+let DB_CONNECTION = process.env.DB_CONNECTION;
+
+if (process.env.NODE_ENV === "production")
+  DB_CONNECTION = process.env.DB_CONNECTION_PROD;
+
+mongoose.connect(process.env.DB_CONNECTION).then(() => {
+  console.log("Database connected successfully");
+});
 
 // ROUTES
-app.use(router);
-
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+app.use("/api/v1/goals", goalRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
