@@ -199,6 +199,7 @@ struct CreateGoalView: View {
             EmojiGrid(showModal: $showEmojiModal, selectedEmoji: $selectedEmoji)
         }
         .padding()
+        .ignoresSafeArea(.keyboard)
 
 
     }

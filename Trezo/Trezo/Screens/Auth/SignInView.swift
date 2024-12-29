@@ -14,7 +14,7 @@ struct SignInView: View {
     var body: some View {
         ZStack {
             if authViewModel.isSignedIn { // Use isSignedIn instead of isLoading for screen switching
-                TabBar()// Show ProfileView or TabBar on successful sign-in
+                HomeView()// Show ProfileView or TabBar on successful sign-in
             } else {
                 NavigationStack {
                     ScrollView {

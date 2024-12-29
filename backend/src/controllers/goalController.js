@@ -2,7 +2,7 @@ const Goal = require("../models/goal");
 
 exports.GetGoals = async (req, res) => {
   try {
-    const goals = await Goal.find();
+    const goals = await Goal.find({ userId: req.headers.authorisation });
 
     res.status(200).json({
       status: "success",

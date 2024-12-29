@@ -20,7 +20,7 @@ struct ContentView: View {
         
         VStack {
             if authManager.isSignedIn {
-                TabBar()
+                HomeView()
             }
             else if isOnboardingComplete {
                 WelcomeView()
@@ -31,9 +31,6 @@ struct ContentView: View {
         .onAppear {
             themeManager.applyTheme(selectedTheme)
         }
-        
-        
-        
     }
     
 }

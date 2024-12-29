@@ -61,9 +61,7 @@ struct EditGoalView: View {
         
         VStack {
             if viewModel.isLoading {
-                ProgressView("Loading...") // Show loading indicator
-                    .progressViewStyle(CircularProgressViewStyle())
-                    .padding()
+                LoadingView()
             } else {
                 
                 

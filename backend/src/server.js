@@ -9,6 +9,11 @@ const PORT = process.env.PORT | 3000;
 // MIDDLEWARE
 app.use(express.json());
 
+let DB_CONNECTION = process.env.DB_CONNECTION;
+
+if (process.env.NODE_ENV === "production")
+  DB_CONNECTION = process.env.DB_CONNECTION_PROD;
+
 mongoose.connect(process.env.DB_CONNECTION).then(() => {
   console.log("Database connected successfully");
 });

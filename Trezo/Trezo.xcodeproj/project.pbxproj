@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		591329C72C9B1C9200C38232 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591329C62C9B1C9200C38232 /* TabBar.swift */; };
 		591329C92C9B1D0200C38232 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591329C82C9B1D0200C38232 /* ProfileView.swift */; };
 		591329CB2C9B264E00C38232 /* FirebaseAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591329CA2C9B264E00C38232 /* FirebaseAuthManager.swift */; };
+		5920D8E62D1B1CFB009840BC /* ServerErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5920D8E52D1B1CFB009840BC /* ServerErrorResponse.swift */; };
+		5920D8E92D1B2274009840BC /* AlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5920D8E82D1B2272009840BC /* AlertItem.swift */; };
 		592194CA2CEA2C01003CC5C0 /* GoalResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592194C92CEA2BFA003CC5C0 /* GoalResponse.swift */; };
 		5921B97A2C92FA6500C7CF4D /* TextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5921B9792C92FA6500C7CF4D /* TextFieldWithLabel.swift */; };
 		592467422C917719000DC49F /* TrezoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467412C917719000DC49F /* TrezoApp.swift */; };
@@ -23,6 +24,8 @@
 		5924675E2C9208B1000DC49F /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5924675D2C9208B1000DC49F /* WelcomeView.swift */; };
 		592467612C921260000DC49F /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467602C921260000DC49F /* SignUpView.swift */; };
 		592467632C92126F000DC49F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467622C92126F000DC49F /* SignInView.swift */; };
+		5925A3862D1C761F0020806C /* ContributionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5925A3852D1C761F0020806C /* ContributionCardView.swift */; };
+		5925A3882D1C76520020806C /* ModalWithDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5925A3872D1C76520020806C /* ModalWithDescription.swift */; };
 		592D7C682CA94A4600D07C4E /* CreateGoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592D7C672CA94A4500D07C4E /* CreateGoalView.swift */; };
 		592D7C6A2CA9702800D07C4E /* SecureTextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592D7C692CA9702800D07C4E /* SecureTextFieldWithLabel.swift */; };
 		592D7C6C2CA973AA00D07C4E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 592D7C6B2CA973AA00D07C4E /* GoogleService-Info.plist */; };
@@ -46,12 +49,14 @@
 		59CE0B582D0AC6AF0063D3E8 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CE0B572D0AC6AF0063D3E8 /* Preferences.swift */; };
 		59CE0B5B2D0ACEBF0063D3E8 /* extentions+theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CE0B5A2D0ACEB40063D3E8 /* extentions+theme.swift */; };
 		59CE0B5D2D0AD36C0063D3E8 /* ThemeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CE0B5C2D0AD36C0063D3E8 /* ThemeViewModel.swift */; };
+		59CE0B5F2D0AE53D0063D3E8 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CE0B5E2D0AE53D0063D3E8 /* LoadingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		591329C62C9B1C9200C38232 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		591329C82C9B1D0200C38232 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		591329CA2C9B264E00C38232 /* FirebaseAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthManager.swift; sourceTree = "<group>"; };
+		5920D8E52D1B1CFB009840BC /* ServerErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerErrorResponse.swift; sourceTree = "<group>"; };
+		5920D8E82D1B2272009840BC /* AlertItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertItem.swift; sourceTree = "<group>"; };
 		592194C92CEA2BFA003CC5C0 /* GoalResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalResponse.swift; sourceTree = "<group>"; };
 		5921B9792C92FA6500C7CF4D /* TextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithLabel.swift; sourceTree = "<group>"; };
 		5924673E2C917719000DC49F /* Trezo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trezo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,6 +72,8 @@
 		5924675D2C9208B1000DC49F /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		592467602C921260000DC49F /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		592467622C92126F000DC49F /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		5925A3852D1C761F0020806C /* ContributionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionCardView.swift; sourceTree = "<group>"; };
+		5925A3872D1C76520020806C /* ModalWithDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalWithDescription.swift; sourceTree = "<group>"; };
 		592D7C672CA94A4500D07C4E /* CreateGoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGoalView.swift; sourceTree = "<group>"; };
 		592D7C692CA9702800D07C4E /* SecureTextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureTextFieldWithLabel.swift; sourceTree = "<group>"; };
 		592D7C6B2CA973AA00D07C4E /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -89,6 +96,7 @@
 		59CE0B572D0AC6AF0063D3E8 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		59CE0B5A2D0ACEB40063D3E8 /* extentions+theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extentions+theme.swift"; sourceTree = "<group>"; };
 		59CE0B5C2D0AD36C0063D3E8 /* ThemeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeViewModel.swift; sourceTree = "<group>"; };
+		59CE0B5E2D0AE53D0063D3E8 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +111,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5920D8E72D1B225C009840BC /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				5920D8E82D1B2272009840BC /* AlertItem.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		592467352C917719000DC49F = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +138,7 @@
 		592467402C917719000DC49F /* Trezo */ = {
 			isa = PBXGroup;
 			children = (
+				5920D8E72D1B225C009840BC /* Utils */,
 				59CE0B592D0ACEA90063D3E8 /* Extentions */,
 				596683BC2C96162300096C6C /* Managers */,
 				5924675A2C91CDC4000DC49F /* ViewModels */,
@@ -152,7 +169,6 @@
 				596683C12C96188800096C6C /* Main */,
 				5924675F2C92124C000DC49F /* Auth */,
 				592467512C917D64000DC49F /* Onboarding */,
-				591329C62C9B1C9200C38232 /* TabBar.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -174,6 +190,7 @@
 				592D7C692CA9702800D07C4E /* SecureTextFieldWithLabel.swift */,
 				59A565A62CEA1615008E2A98 /* CircularProgressView.swift */,
 				59BE3B0B2CF85CEE006736AA /* EmojiGrid.swift */,
+				59CE0B5E2D0AE53D0063D3E8 /* LoadingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -191,6 +208,7 @@
 				59397FFD2CE34F550076CCE5 /* Goal.swift */,
 				59635DDA2CE67F4C00E7A552 /* CreateGoal.swift */,
 				59383E4A2CF0AC8900243C0B /* AddContribution.swift */,
+				5920D8E52D1B1CFB009840BC /* ServerErrorResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -240,6 +258,8 @@
 			isa = PBXGroup;
 			children = (
 				598189592CEE0B3500CB79A2 /* EditGoalView.swift */,
+				5925A3852D1C761F0020806C /* ContributionCardView.swift */,
+				5925A3872D1C76520020806C /* ModalWithDescription.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -355,14 +375,15 @@
 				592467592C91CD68000DC49F /* Onboarding.swift in Sources */,
 				59CE0B5B2D0ACEBF0063D3E8 /* extentions+theme.swift in Sources */,
 				593980002CE4943A0076CCE5 /* GoalViewModel.swift in Sources */,
+				59CE0B5F2D0AE53D0063D3E8 /* LoadingView.swift in Sources */,
 				592194CA2CEA2C01003CC5C0 /* GoalResponse.swift in Sources */,
 				59A565A72CEA1615008E2A98 /* CircularProgressView.swift in Sources */,
 				592467612C921260000DC49F /* SignUpView.swift in Sources */,
 				59A565A32CE9DFB9008E2A98 /* CreatedGoal.swift in Sources */,
 				596683C02C9617FC00096C6C /* AuthViewModel.swift in Sources */,
 				591329CB2C9B264E00C38232 /* FirebaseAuthManager.swift in Sources */,
-				591329C72C9B1C9200C38232 /* TabBar.swift in Sources */,
 				592467442C917719000DC49F /* ContentView.swift in Sources */,
+				5920D8E92D1B2274009840BC /* AlertItem.swift in Sources */,
 				59635DDB2CE67F4C00E7A552 /* CreateGoal.swift in Sources */,
 				59397FFE2CE34F550076CCE5 /* Goal.swift in Sources */,
 				59B3D1292CEF7BB100E2A4B7 /* UpdateGoalBody.swift in Sources */,
@@ -370,8 +391,11 @@
 				591329C92C9B1D0200C38232 /* ProfileView.swift in Sources */,
 				59397FFC2CE34A130076CCE5 /* GoalManager.swift in Sources */,
 				59CE0B582D0AC6AF0063D3E8 /* Preferences.swift in Sources */,
+				5925A3882D1C76520020806C /* ModalWithDescription.swift in Sources */,
 				59B3D12B2CEFC66200E2A4B7 /* GoalsResponse.swift in Sources */,
 				59A565A52CEA10B4008E2A98 /* GoalView.swift in Sources */,
+				5920D8E62D1B1CFB009840BC /* ServerErrorResponse.swift in Sources */,
+				5925A3862D1C761F0020806C /* ContributionCardView.swift in Sources */,
 				5924675E2C9208B1000DC49F /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

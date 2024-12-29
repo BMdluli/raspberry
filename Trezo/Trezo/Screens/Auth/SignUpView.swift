@@ -15,7 +15,7 @@ struct SignUpView: View {
         NavigationStack {
             ZStack {
                 if authViewModel.isSignedIn {
-                    TabBar() // Show TabBar on successful sign-in
+                    HomeView() // Show TabBar on successful sign-in
                 } else {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 25) {

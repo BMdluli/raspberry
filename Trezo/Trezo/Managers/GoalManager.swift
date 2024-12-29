@@ -6,14 +6,15 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 
-enum ErrorMessage: String {
-    case invalidUsername = "This username created an invalid request. Please try again."
-    case unableToComplete = "unable to complete your request. Please check your internet connection"
-    case invalidResponse = "Invalid response from the server. Please try again"
-    case invalidData = "The data recieved from the server was invalid. Please try again."
-}
+//enum Errors: Error {
+//    case invalidUsername = "This username created an invalid request. Please try again."
+//    case unableToComplete = "unable to complete your request. Please check your internet connection"
+//    case invalidResponse = "Invalid response from the server. Please try again"
+//    case invalidData = "The data recieved from the server was invalid. Please try again."
+//}
 
 
 class GoalManager {
@@ -30,7 +31,12 @@ class GoalManager {
             return
         }
         
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "GET"
+        request.setValue(Auth.auth().currentUser?.uid, forHTTPHeaderField: "Authorisation")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
             // Handle error first
             if let _ = error {
                 completed(nil, .invalidData)
@@ -255,11 +261,11 @@ class GoalManager {
         
     }
     
-    func addContribution(id: String, contribution: AddContribution, completed: @escaping (String?, ErrorMessage?) -> Void) {
+    func addContribution(id: String, contribution: AddContribution, completed: @escaping (Result<String, ErrorMessage>) -> Void) {
         let addContributionUrl = urlString + "/\(id)/" + "contributions"
         
-        guard let url = URL(string: addContributionUrl) else{
-            completed(nil, .invalidData)
+        guard let url = URL(string: addContributionUrl) else {
+            completed(.failure(.invalidData))
             return
         }
         
@@ -269,7 +275,7 @@ class GoalManager {
         
         guard let httpBody = try? JSONEncoder().encode(contribution) else {
             print("Failed to encode data")
-            completed(nil, .invalidData)
+            completed(.failure(.invalidData))
             return
         }
         request.httpBody = httpBody
@@ -277,31 +283,36 @@ class GoalManager {
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error making request:", error)
-                completed(nil, .invalidData)
+                completed(.failure(.invalidData))
                 return
             }
             
-            guard let response = response as? HTTPURLResponse, response.statusCode == 201 else {
-                completed(nil, .unableToComplete)
+            guard let response = response as? HTTPURLResponse else {
+                completed(.failure(.unableToComplete))
                 return
             }
             
-            guard let _ = data else {
-                completed(nil, .invalidData)
-                return
+            if response.statusCode == 201 {
+                completed(.success("Contribution added"))
+            } else if let data = data {
+                do {
+                    // Parse the server's error response
+                    if let errorResponse = try? JSONDecoder().decode(ServerErrorResponse.self, from: data) {
+                        completed(.failure(.custom(errorResponse.message)))
+                    } else {
+                        completed(.failure(.invalidData))
+                    }
+                }
+            } else {
+                completed(.failure(.unableToComplete))
             }
-            
-            completed("Contribution added", nil)
-            
         }.resume()
-        
     }
-    
-    func withdrawContribution(id: String, contribution: AddContribution, completed: @escaping (String?, ErrorMessage?) -> Void) {
+    func withdrawContribution(id: String, contribution: AddContribution, completed: @escaping (Result<String, ErrorMessage>) -> Void) {
         let addContributionUrl = urlString + "/\(id)/" + "contributions/withdraw"
         
-        guard let url = URL(string: addContributionUrl) else{
-            completed(nil, .invalidData)
+        guard let url = URL(string: addContributionUrl) else {
+            completed(.failure(.invalidData))
             return
         }
         
@@ -311,7 +322,7 @@ class GoalManager {
         
         guard let httpBody = try? JSONEncoder().encode(contribution) else {
             print("Failed to encode data")
-            completed(nil, .invalidData)
+            completed(.failure(.invalidData))
             return
         }
         request.httpBody = httpBody
@@ -319,24 +330,28 @@ class GoalManager {
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error making request:", error)
-                completed(nil, .invalidData)
+                completed(.failure(.invalidData))
                 return
             }
             
-            guard let response = response as? HTTPURLResponse, response.statusCode == 201 else {
-                completed(nil, .unableToComplete)
+            guard let response = response as? HTTPURLResponse else {
+                completed(.failure(.unableToComplete))
                 return
             }
             
-            guard let _ = data else {
-                completed(nil, .invalidData)
-                return
+            if response.statusCode == 201 {
+                completed(.success("Contribution withdrawn"))
+            } else if let data = data {
+                // Attempt to parse the server's error response
+                if let errorResponse = try? JSONDecoder().decode(ServerErrorResponse.self, from: data) {
+                    completed(.failure(.custom(errorResponse.message)))
+                } else {
+                    completed(.failure(.invalidData))
+                }
+            } else {
+                completed(.failure(.unableToComplete))
             }
-            
-            completed("Contribution withdrawn", nil)
-            
         }.resume()
-        
     }
-    
+
 }

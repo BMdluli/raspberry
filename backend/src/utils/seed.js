@@ -1,12 +1,15 @@
 const mongoose = require("mongoose");
 const Goal = require("../models/goal");
 const goalSeeds = require("../seed/GoalSeed");
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config({ path: "../.../.env" });
 
-const MONGODB_URI = process.env.DB_CONNECTION;
+let DB_CONNECTION = process.env.DB_CONNECTION;
+
+if (process.env.NODE_ENV === "production") console.log(DB_CONNECTION);
+DB_CONNECTION = process.env.DB_CONNECTION_PROD;
 
 mongoose
-  .connect("mongodb://localhost:27017/trezo")
+  .connect(DB_CONNECTION)
   .then(() => {
     console.log("Connected to MongoDB");
     return Goal.deleteMany({}); // Clear existing data in the goals collection
