@@ -30,15 +30,17 @@ struct GoalView: View {
     var body: some View {
         let total = viewModel.goal.goalAmountContributed.count > 0 ? viewModel.goal.goalAmountContributed.reduce(0) { $0 + $1.amount } : 0
         let percentage =  total > 0 ? total / viewModel.goal.goalAmount : 0
-        let formatted = viewModel.goal.goalDeadline!.formatted(.dateTime.day().month().year())
+        let formatted = viewModel.goal.goalDeadline.formatted(.dateTime.day().month().year())
+        
+//        let total = 5000
+//        let percentage = 0.2
+//        let formatted = Date()
         
         
         NavigationStack {
             
             VStack {
-                if viewModel.isLoading {
-                    LoadingView()
-                } else {
+
                     VStack(spacing: 20) {
                         Picker("Select", selection: $selectedView) {
                             Text("Goal").tag(0)
@@ -51,16 +53,12 @@ struct GoalView: View {
                         ScrollView {
                             if selectedView == 1
                             {
-                                VStack {
+                                LazyVStack {
                                     if viewModel.goal.goalAmountContributed.count > 0 {
-                                        ForEach(viewModel.goal.goalAmountContributed, id: \.note){ contribution in
+                                        ForEach(viewModel.goal.goalAmountContributed, id: \.self){ contribution in
                                             ContributionCardView(date: contribution.date, note: contribution.note, amount: contribution.amount)
                                         }
-                                        
-                                    } else {
-                                        Text("Empty")
                                     }
-                                    
                                 }
                             }
                             else {
@@ -159,6 +157,7 @@ struct GoalView: View {
             .onAppear() {
                 viewModel.fetchGoal(id: id)
             }
+        
             .onChange(of: viewModel.isDeleted) { oldValue, newValue in
                 print("onChange triggered: isDeleted changed from \(oldValue) to \(newValue)")
                 if newValue {
@@ -171,6 +170,7 @@ struct GoalView: View {
                     
                 }
             }
+        
             .onChange(of: viewModel.isUpdated) { oldValue, newValue in
                 print("onChange triggered: isUpdated <><> changed from \(oldValue) to \(newValue)")
                 if newValue {
@@ -188,6 +188,7 @@ struct GoalView: View {
                     
                 }
             }
+        
             .onChange(of: shouldRefetch) { _, newValue in
                 if newValue {
                     viewModel.fetchGoal(id: id)
@@ -221,8 +222,9 @@ struct GoalView: View {
                 }
             }
             .fullScreenCover(isPresented: $showingEditSheet) {
-                EditGoalView(id: id, shouldRefetch: $shouldRefetch, showModal: $showingEditSheet)
+                EditGoalView(id: id, shouldRefetch: $shouldRefetch, viewModel: viewModel, showModal: $showingEditSheet)
             }
+        
             .sheet(isPresented:$showingDeleteSheet) {
                 ModalWithDescription(title: "Delete", actionButtonText: "Yes, Delete", id: id, height: 350, showingSheet: $showingDeleteSheet, viewModel: viewModel, middleSection: {
                     Text("Sure you want to delete this goal?")
@@ -233,14 +235,16 @@ struct GoalView: View {
                         .foregroundStyle(.gray)
                 })
             }
+        
             .sheet(isPresented: $showingArchiveSheet){
                 ModalWithDescription(title: "Archive", actionButtonText: "Yes, Archive", id: id, height: 290, showingSheet: $showingArchiveSheet, viewModel: viewModel, middleSection: {
                     Text("Sure you want to archive this goal?")
                         .font(.system(size: 22, weight: .bold))
                 })
             }
+        
             .sheet(isPresented: $isShowingSavingsSheet) {
-                ModalWithDescription(title: "Add Savings", actionButtonText: "Add", id: id, height: 605, contribution: AddContribution(note: note, date: date.timeIntervalSince1970 * 1000 ,amount: Double(amount) ?? 0.0), showingSheet: $isShowingSavingsSheet, viewModel: viewModel , middleSection: {
+                ModalWithDescription(title: "Add Savings", actionButtonText: "Add", id: id, height: 605, contribution: GoalContribution(amount: Double(amount) ?? 0, date: date, note: note), showingSheet: $isShowingSavingsSheet, viewModel: viewModel , middleSection: {
                     
                     TextFieldWithLabel(text: $amount, title: "Goal Amount", placeholder: "10.000")
                         .keyboardType(.numberPad)
@@ -254,8 +258,11 @@ struct GoalView: View {
                 })
                 
             }
+        
             .sheet(isPresented: $isShowingWithdrawSheet) {
-                ModalWithDescription(title: "Withdraw", actionButtonText: "Withdraw", id: id, height: 605, contribution: AddContribution(note: note, date: date.timeIntervalSince1970 * 1000, amount: Double(amount) ?? 0.0), showingSheet: $isShowingWithdrawSheet, viewModel: viewModel , middleSection: {
+                let convertedDouble = Double(amount) ?? 0
+                
+                ModalWithDescription(title: "Withdraw", actionButtonText: "Withdraw", id: id, height: 605, contribution: GoalContribution(amount: -convertedDouble, date: date, note: note), showingSheet: $isShowingWithdrawSheet, viewModel: viewModel , middleSection: {
                     
                     TextFieldWithLabel(text: $amount, title: "Amount", placeholder: "10.000")
                         .keyboardType(.numberPad)
@@ -269,11 +276,20 @@ struct GoalView: View {
                 })
 
             }
+         
+        
+        if viewModel.isLoading {
+            Color.black.opacity(0.5)
+                .edgesIgnoringSafeArea(.all)
+            
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                .scaleEffect(1.5) // Adjust size of the spinner
+        }
 
 
             
         }
-    }
 }
 
 #Preview {

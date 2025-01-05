@@ -20,94 +20,99 @@ struct HomeView: View {
     
     var body: some View {
         
-        
-        NavigationStack {
-            VStack {
+        // Once loading is complete, either show goals or an empty view
+        if viewModel.isLoading {
+            LoadingView()
+        } else {
+            NavigationStack {
                 
-                
-                ZStack {
-                    
-                    // Main content
-                    VStack {
+                VStack {
+                    ZStack {
                         
-                        if viewModel.goals.isEmpty {
-                            Spacer()
-                            EmptyView(showModal: $showModal)
-                            Spacer()
-                        } else {
-                            ScrollView {
-                                VStack(spacing: 20) {
-                                    ForEach(viewModel.goals, id: \._id) { goal in
-                                        NavigationLink {
-                                            GoalView(id: goal._id)
-                                        } label: {
-                                            // TODO: Prevent forefround colour from changing
-                                            GoalCardView(goal: goal)
-                                                .foregroundStyle(.black)
+                        // Main content
+                        VStack {
+                            if viewModel.goals.isEmpty {
+                                Spacer()
+                                EmptyView(showModal: $showModal)
+                                Spacer()
+                            } else {
+                                ScrollView {
+                                    VStack(spacing: 20) {
+                                        ForEach(viewModel.goals, id: \.id) { goal in
+                                            NavigationLink {
+                                                GoalView(id: goal.id ?? "")
+                                            } label: {
+                                                GoalCardView(goal: goal)
+                                                    .foregroundStyle(.black)
+                                            }
                                         }
                                     }
                                 }
+                                .refreshable {
+                                    viewModel.fetchGoals()
+                                }
                             }
                         }
-                    }
-                    .padding(.top, 16)
-                    .background(.treBackground)
-                    
-                    // Floating Action Button
-                    VStack {
-                        Spacer()
-                        HStack {
+                        .padding(.top, 16)
+                        .background(.treBackground)
+                        
+                        // Floating Action Button
+                        VStack {
                             Spacer()
-                            Button {
-                                showModal = true
-                            } label: {
-                                Image(systemName: "plus")
-                                    .foregroundStyle(.white)
-                                    .frame(width: 56, height: 56)
-                                    .background(.primaryPurple)
-                                    .clipShape(Circle())
-                                    .shadow(radius: 5)
+                            HStack {
+                                Spacer()
+                                Button {
+                                    showModal = true
+                                } label: {
+                                    Image(systemName: "plus")
+                                        .foregroundStyle(.white)
+                                        .frame(width: 56, height: 56)
+                                        .background(.primaryPurple)
+                                        .clipShape(Circle())
+                                        .shadow(radius: 5)
+                                }
+                                .padding(.trailing, 16)
+                                .padding(.bottom, 16)
                             }
-                            .padding(.trailing, 16)
-                            .padding(.bottom, 16)
+                        }
+                    }
+                    
+                    .padding(.horizontal)
+                    .background(.treBackground)
+                    .fullScreenCover(isPresented: $showModal) {
+                        CreateGoalView(showModal: $showModal)
+                    }
+                }
+
+                .navigationTitle("Trezo")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Menu {
+                            Button(action: {
+                                showingSettingsModal = true
+                            }) {
+                                Label("Settings", systemImage: "gearshape")
+                            }
+                        } label: {
+                            Image(systemName: "switch.2")
+                                .foregroundStyle(.treAlertnateBackground)
                         }
                     }
                 }
-                
-                .padding(.horizontal)
-                .background(.treBackground)
-                .fullScreenCover(isPresented: $showModal) {
-                    CreateGoalView(showModal: $showModal)
+                .sheet(isPresented: $showingSettingsModal) {
+                    ProfileView(showModal: $showingSettingsModal)
                 }
-                .onAppear() {
+            }
+            .onAppear() {
+                // Only call fetchGoals if the goals array is empty to avoid unnecessary calls
+                if viewModel.goals.isEmpty {
                     viewModel.fetchGoals()
                 }
-            }
-            .navigationTitle("Trezo")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Menu {
-                        Button(action: {
-                            showingSettingsModal = true
-                        }) {
-                            Label("Settings", systemImage: "gearshape")
-                        }
-                        
-                        
-                    } label: {
-                        Image(systemName: "switch.2")
-                            .foregroundStyle(.treAlertnateBackground)
-                    }
-                }
-            }
-            .sheet(isPresented: $showingSettingsModal) {
-                ProfileView(showModal: $showingSettingsModal)
             }
         }
     }
 }
-
 
 #Preview {
     NavigationStack {
@@ -144,7 +149,7 @@ struct EmptyView: View {
 }
 
 struct GoalCardView: View {
-    var goal: Goal
+    var goal: FirebaseGoal
     
     
     var body: some View {
@@ -181,7 +186,7 @@ struct GoalCardView: View {
                         .font(.system(size: 14, weight: .light))
                         .foregroundStyle(.text)
                     Spacer()
-                    Text(String(format: "R%.1f", total))
+                    Text(String(format: "R%.1f", goal.goalAmount - total))
                         .font(.system(size: 14, weight: .light))
                         .foregroundStyle(.text)
                 }

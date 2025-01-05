@@ -15,9 +15,8 @@ struct EditGoalView: View {
     
     @Binding var shouldRefetch: Bool
     
-    @StateObject private var viewModel = GoalViewModel()
-    
-    var swiftTV = 556959600;
+//    @StateObject private var viewModel = GoalViewModel()
+    @ObservedObject var viewModel: GoalViewModel
     
     @Binding var showModal: Bool
     
@@ -60,23 +59,14 @@ struct EditGoalView: View {
     var body: some View {
         
         VStack {
-            if viewModel.isLoading {
-                LoadingView()
-            } else {
-                
-                
                 VStack(spacing: 20) {
-                    
-                    if viewModel.isLoading {
-                        ProgressView()
-                    }
                     
                     HStack {
                         Button {
                             showModal = false
                         } label: {
                             Image(systemName: "xmark")
-                                .foregroundStyle(.black)
+                                .foregroundStyle(.treAlertnateBackground)
                         }
                         
                         Spacer()
@@ -178,8 +168,7 @@ struct EditGoalView: View {
                         
                         Button {
                             if let amountDbl = Double(amount) {
-                                //                                viewModel.createNewGoal(goal: CreateGoal(coverImage: "😄", goalName: goalName, goalAmount: amountDbl, goalAmountContributed: 0, goalCurrency: selectedCurrency.rawValue, goalDeadline: , goalNote: note, goalColour: "BrandGreen", userId: userID!))
-                                viewModel.updateGoal(id: id, updateGoal: UpdateGoalBody(coverImage: selectedEmoji, goalName: goalName, goalAmount: amountDbl, goalCurrency: selectedCurrency.rawValue, goalDeadline: date.timeIntervalSince1970 * 1000, goalColour: "BrandRed", goalNote: note))
+                                viewModel.updateGoal(id: id, updateGoal: UpdateGoalBody(coverImage: selectedEmoji, goalName: goalName, goalAmount: amountDbl, goalCurrency: selectedCurrency.rawValue, goalDeadline: date, goalColour: "BrandRed", goalNote: note))
                             }
                             
                             
@@ -198,22 +187,20 @@ struct EditGoalView: View {
                 .onChange(of: viewModel.isUpdated) { oldValue, newValue in
                     print("onChange triggered: isUpdated changed from \(oldValue) to \(newValue)")
                     if newValue {
-                        showModal = false
+                        
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            showModal = false
                             viewModel.isUpdated = false
                             shouldRefetch = true
                         }
                     }
                 }
-                .onAppear() {
-                    viewModel.fetchGoal(id: id)
-                }
                 .onReceive(viewModel.$goal) { goal in
                     goalName = goal.goalName
                     amount = String(goal.goalAmount)
-                    date = goal.goalDeadline ?? Date.now
-                    note = goal.goalNote ?? ""
+                    date = goal.goalDeadline
+                    note = goal.goalNote
                     selectedEmoji = goal.coverImage
                 }
                 .sheet(isPresented: $showEmojiModal) {
@@ -221,23 +208,22 @@ struct EditGoalView: View {
                 }
                 .padding()
             }
-        }
     }
 }
 
-#Preview {
-    // Helper to see the fullscreen modal in Preview
-    ContentPreviewWrapperr()
-}
-
-
-private struct ContentPreviewWrapperr: View {
-    @State private var showModal = true // Set to true for preview
-    
-    var body: some View {
-        ContentView()
-            .fullScreenCover(isPresented: $showModal) {
-                EditGoalView(id: "6739aad1fd11df244f4f1bd8", shouldRefetch: $showModal, showModal: $showModal)
-            }
-    }
-}
+//#Preview {
+//    // Helper to see the fullscreen modal in Preview
+//    ContentPreviewWrapperr()
+//}
+//
+//
+//private struct ContentPreviewWrapperr: View {
+//    @State private var showModal = true // Set to true for preview
+//    
+//    var body: some View {
+//        ContentView()
+//            .fullScreenCover(isPresented: $showModal) {
+//                EditGoalView(id: "6739aad1fd11df244f4f1bd8", shouldRefetch: $showModal, viewModel: <#GoalViewModel#>, showModal: $showModal)
+//            }
+//    }
+//}

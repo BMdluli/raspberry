@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseFirestore
 
 
 //enum Errors: Error {
@@ -22,336 +23,144 @@ class GoalManager {
     static let shared = GoalManager()
     let baseUrl = ""
     private init() {}
-    private let urlString = "http://localhost:3000/api/v1/goals"
+    private let urlString = "https://trezo.onrender.com/api/v1/goals"
     
-    func getGoals(completed: @escaping ([Goal]?, ErrorMessage?) -> Void) {
+    func fetchGoals(completion: @escaping ([FirebaseGoal]?, Error?) -> Void) {
+        // Reference to Firestore
+        let db = Firestore.firestore()
         
-        guard let url = URL(string: urlString) else {
-            completed(nil, .invalidData)
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = "GET"
-        request.setValue(Auth.auth().currentUser?.uid, forHTTPHeaderField: "Authorisation")
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            // Handle error first
-            if let _ = error {
-                completed(nil, .invalidData)
-                return
-            }
-            
-            // Check response status code
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(nil, .unableToComplete)
-                return
-            }
-            
-            // Check that data exists
-            guard let data = data else {
-                completed(nil, .invalidData)
-                return
-            }
-            
-            // Decode JSON data
-            do {
-                let decoder = JSONDecoder()
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-                dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // Ensure it interprets the 'Z' as UTC
-                decoder.dateDecodingStrategy = .formatted(dateFormatter)
-                
-                let goalsResponse = try decoder.decode(GoalsResponse.self, from: data)
-                //                print(goalsResponse.data.goals)
-                completed(goalsResponse.data.goals, nil)
-            } catch {
-                print("Decoding error: \(error)")
-            }
-        }
-        
-        task.resume()
-    }
-    
-    func getGoal(id: String, completed: @escaping (Goal?, ErrorMessage?) -> Void) {
-        
-        let goalUrl = urlString + "/\(id)"
-        
-        guard let url = URL(string: goalUrl) else {
-            completed(nil, .invalidData)
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            // Handle error first
+        // Access the "goals" collection
+        db.collection("goals").getDocuments { (snapshot, error) in
             if let error = error {
-                completed(nil, .invalidData)
+                // Handle error
+                completion(nil, error)
                 return
             }
             
-            // Check response status code
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(nil, .unableToComplete)
+            guard let documents = snapshot?.documents else {
+                completion(nil, nil) // No documents found
                 return
             }
             
-            // Check that data exists
-            guard let data = data else {
-                completed(nil, .invalidData)
-                return
-            }
-            
-            // Decode JSON data
-            do {
-                let decoder = JSONDecoder()
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-                dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // Ensure it interprets the 'Z' as UTC
-                decoder.dateDecodingStrategy = .formatted(dateFormatter)
-                
-                let goal = try decoder.decode(GoalResponse.self, from: data)
-                //                print(goalsResponse.data.goals)
-                completed(goal.data, nil)
-                print("GETTING ONE GOAL", goal)
-            } catch {
-                print("Decoding error: \(error)")
-            }
-        }
-        
-        task.resume()
-    }
-    
-    func createGoal(newGoal: CreateGoal ,completed: @escaping (String?, ErrorMessage?) -> Void) {
-        guard let url = URL(string: urlString) else {
-            completed(nil, .invalidData)
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        
-        guard let httpBody = try? JSONEncoder().encode(newGoal) else {
-            print("Failed to encode data")
-            completed(nil, .invalidData)
-            return
-        }
-        request.httpBody = httpBody
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error making request:", error)
-                completed(nil, .invalidData)
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(nil, .unableToComplete)
-                return
-            }
-            
-            guard let data = data else {
-                completed(nil, .invalidData)
-                return
-            }
-            
-            completed("Goal Created Successfully", nil)
-            
-        }.resume()
-        
-        
-    }
-    
-    
-    func UpdateGoal(id: String ,updatedGoal: UpdateGoalBody ,completed: @escaping (Goal?, ErrorMessage?) -> Void) {
-        let updateUrl = urlString + "/\(id)"
-        
-        guard let url = URL(string: updateUrl) else {
-            completed(nil, .invalidData)
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "PATCH"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        
-        guard let httpBody = try? JSONEncoder().encode(updatedGoal) else {
-            print("Failed to encode data")
-            completed(nil, .invalidData)
-            return
-        }
-        request.httpBody = httpBody
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error making request:", error)
-                completed(nil, .invalidData)
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(nil, .unableToComplete)
-                return
-            }
-            
-            guard let data = data else {
-                completed(nil, .invalidData)
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-                dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // Ensure it interprets the 'Z' as UTC
-                decoder.dateDecodingStrategy = .formatted(dateFormatter)
-                
-                let goalResponse = try decoder.decode(UpdateResponse.self, from: data)
-                completed(goalResponse.data.updatedGoal, nil)
-            } catch {
-                print("Decoding error: \(error)")
-            }
-            
-        }.resume()
-        
-        
-    }
-    
-    
-    
-    
-    func deleteGoal(id: String, completed: @escaping (String?, ErrorMessage?) -> Void) {
-        let deleteUrl = urlString + "/\(id)"
-        
-        guard let url = URL(string: deleteUrl) else {
-            completed(nil, .invalidData)
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "DELETE"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error making request:", error)
-                completed(nil, .invalidData)
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 204 else {
-                completed(nil, .unableToComplete)
-                return
-            }
-            
-            guard let _ = data else {
-                completed(nil, .invalidData)
-                return
-            }
-            
-            completed("Deleted", nil)
-            
-        }.resume()
-        
-        
-    }
-    
-    func addContribution(id: String, contribution: AddContribution, completed: @escaping (Result<String, ErrorMessage>) -> Void) {
-        let addContributionUrl = urlString + "/\(id)/" + "contributions"
-        
-        guard let url = URL(string: addContributionUrl) else {
-            completed(.failure(.invalidData))
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        guard let httpBody = try? JSONEncoder().encode(contribution) else {
-            print("Failed to encode data")
-            completed(.failure(.invalidData))
-            return
-        }
-        request.httpBody = httpBody
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error making request:", error)
-                completed(.failure(.invalidData))
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse else {
-                completed(.failure(.unableToComplete))
-                return
-            }
-            
-            if response.statusCode == 201 {
-                completed(.success("Contribution added"))
-            } else if let data = data {
+            // Map the documents to your Goal model
+            let goals = documents.compactMap { doc -> FirebaseGoal? in
                 do {
-                    // Parse the server's error response
-                    if let errorResponse = try? JSONDecoder().decode(ServerErrorResponse.self, from: data) {
-                        completed(.failure(.custom(errorResponse.message)))
-                    } else {
-                        completed(.failure(.invalidData))
-                    }
+                    // Try decoding each document into the Goal model
+                    return try doc.data(as: FirebaseGoal.self)
+                } catch {
+                    print("Error decoding document: \(error)")
+                    return nil
                 }
-            } else {
-                completed(.failure(.unableToComplete))
             }
-        }.resume()
+            
+            // Pass the array of goals to the completion handler
+            completion(goals, nil)
+        }
     }
-    func withdrawContribution(id: String, contribution: AddContribution, completed: @escaping (Result<String, ErrorMessage>) -> Void) {
-        let addContributionUrl = urlString + "/\(id)/" + "contributions/withdraw"
+    
+    func fetchGoal(by id: String, completion: @escaping (FirebaseGoal?, Error?) -> Void) {
+        // Reference to Firestore
+        let db = Firestore.firestore()
         
-        guard let url = URL(string: addContributionUrl) else {
-            completed(.failure(.invalidData))
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        guard let httpBody = try? JSONEncoder().encode(contribution) else {
-            print("Failed to encode data")
-            completed(.failure(.invalidData))
-            return
-        }
-        request.httpBody = httpBody
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        // Access the specific document in the "goals" collection
+        db.collection("goals").document(id).getDocument { (document, error) in
             if let error = error {
-                print("Error making request:", error)
-                completed(.failure(.invalidData))
+                // Handle any errors
+                completion(nil, error)
                 return
             }
             
-            guard let response = response as? HTTPURLResponse else {
-                completed(.failure(.unableToComplete))
+            guard let document = document, document.exists else {
+                // Document not found
+                completion(nil, nil)
                 return
             }
             
-            if response.statusCode == 201 {
-                completed(.success("Contribution withdrawn"))
-            } else if let data = data {
-                // Attempt to parse the server's error response
-                if let errorResponse = try? JSONDecoder().decode(ServerErrorResponse.self, from: data) {
-                    completed(.failure(.custom(errorResponse.message)))
-                } else {
-                    completed(.failure(.invalidData))
-                }
-            } else {
-                completed(.failure(.unableToComplete))
+            do {
+                // Decode the document into the Goal model
+                let goal = try document.data(as: FirebaseGoal.self)
+                completion(goal, nil)
+            } catch {
+                // Handle decoding errors
+                completion(nil, error)
             }
-        }.resume()
+        }
     }
+    
+    func createGoal(goal: FirebaseGoal, completion: @escaping (Error?) -> Void) {
+        // Reference to Firestore
+        let db = Firestore.firestore()
+        
+        do {
+            // Add the goal to the "goals" collection
+            try db.collection("goals").addDocument(from: goal) { error in
+                if let error = error {
+                    // Handle any errors during the write
+                    completion(error)
+                } else {
+                    // Success
+                    completion(nil)
+                }
+            }
+        } catch {
+            // Handle encoding errors
+            completion(error)
+        }
+    }
+    
+    
+    func updateGoal(documentId: String, goalBody: UpdateGoalBody, completion: @escaping (Result<Void, Error>) -> Void) {
+        let db = Firestore.firestore()
+        let docRef = db.collection("goals").document(documentId)
+        
+        // Convert the model to a Firestore-compatible dictionary
+        let updatedData = goalBody.toDictionary()
+        
+        // Update the document
+        docRef.updateData(updatedData) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
+    
+    
+    
+    func deleteGoal(by id: String, completion: @escaping (Error?) -> Void) {
+        // Reference to Firestore
+        let db = Firestore.firestore()
+        
+        // Access the specific document in the "goals" collection
+        db.collection("goals").document(id).delete { error in
+            if let error = error {
+                // Handle any errors during deletion
+                completion(error)
+            } else {
+                // Successfully deleted the document
+                completion(nil)
+            }
+        }
+    }
+    
+    
+    func addGoalContribution(id: String, contribution: GoalContribution, completion: @escaping (Result<Void, Error>) -> Void) {
+        let db = Firestore.firestore()
+        let goalRef = db.collection("goals").document(id)
+        
+        // Add the contribution to the contributions array
+        goalRef.updateData([
+            "goalAmountContributed": FieldValue.arrayUnion([contribution.toDictionary()])
+        ]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
 
 }

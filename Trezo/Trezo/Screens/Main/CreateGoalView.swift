@@ -64,7 +64,7 @@ struct CreateGoalView: View {
                     showModal = false
                 } label: {
                     Image(systemName: "xmark")
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.treAlertnateBackground)
                 }
                 
                 Spacer()
@@ -85,15 +85,15 @@ struct CreateGoalView: View {
                         
                         
                         if selectedEmoji.isEmpty {
-                            Image("Plus")
+                            Image(systemName: "plus")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(.treAlertnateBackground)
                         } else {
                             Text(selectedEmoji)
                                 .font(.system(size: 50))
                                 .frame(width: 80, height: 80)
                         }
-                        
-                        
-                        
                     }
                     
                     Text("Add Cover")
@@ -172,10 +172,10 @@ struct CreateGoalView: View {
                 
                 Button {
                     if let amountDbl = Double(amount) {
-                        viewModel.createNewGoal(goal: CreateGoal(coverImage: selectedEmoji, goalName: goalName, goalAmount: amountDbl, goalAmountContributed: [], goalCurrency: selectedCurrency.rawValue, goalDeadline: date.timeIntervalSince1970 * 1000, goalNote: note, goalColour: selectedColor, userId: userID!))
+                        viewModel.createNewGoal(goal: FirebaseGoal(coverImage: selectedEmoji, goalAmount: amountDbl, goalAmountContributed: [GoalAmountContributed()], goalColour: selectedColor, goalCurrency: selectedCurrency.rawValue, goalDeadline: date, goalName: goalName, goalNote: note, userId: userID!))
                     }
                     
-
+                    
                 } label: {
                     Text("Save")
                         .frame(maxWidth: .infinity)
@@ -200,8 +200,8 @@ struct CreateGoalView: View {
         }
         .padding()
         .ignoresSafeArea(.keyboard)
-
-
+        
+        
     }
 }
 

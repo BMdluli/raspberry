@@ -13,7 +13,7 @@ struct ModalWithDescription<Content: View>: View {
     let actionButtonText: String
     let id: String
     let height: CGFloat
-    let contribution: AddContribution?
+    let contribution: GoalContribution?
     @Binding var showingSheet: Bool
     @ObservedObject var viewModel: GoalViewModel
     @ViewBuilder var middleSection: Content
@@ -24,7 +24,7 @@ struct ModalWithDescription<Content: View>: View {
         actionButtonText: String,
         id: String,
         height: CGFloat,
-        contribution: AddContribution? = nil,
+        contribution: GoalContribution? = nil,
         showingSheet: Binding<Bool>,
         viewModel: GoalViewModel,
         @ViewBuilder middleSection: @escaping () -> Content

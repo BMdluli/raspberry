@@ -6,137 +6,84 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 class GoalViewModel: ObservableObject {
     
-    @Published var goals: [Goal] = []
-    @Published var goal: Goal = Goal()
+    @Published var goals: [FirebaseGoal] = []
+    @Published var goal: FirebaseGoal = FirebaseGoal()
     @Published var isLoading: Bool = false
     @Published var isUpdated: Bool = false
     @Published var isDeleted: Bool = false
     @Published var alertItem: AlertItem? // For handling alerts
     
-    
+    private var db = Firestore.firestore()
     
     func fetchGoals() {
-        DispatchQueue.main.async {
-            self.isLoading = true
-        }
-        GoalManager.shared.getGoals { [weak self] response, error in
-            guard let self = self else { return }
-            
+        GoalManager.shared.fetchGoals { goals, error in
             if let error = error {
                 print("Error fetching goals: \(error)")
-                return
+            } else if let goals = goals {
+                self.goals = goals
+            } else {
+                print("No goals found.")
             }
-            
-            // Successfully received response
-            if let response = response {
-                // Ensure UI updates happen on the main thread
-                DispatchQueue.main.async {
-                    self.goals = response
-                    //                    print("Goals updated:", self.goals)
-                }
-            }
-            
-            DispatchQueue.main.async {
-                self.isLoading = false
-            }
-            
-            
         }
         
     }
+    
     
     func fetchGoal(id: String) {
-        DispatchQueue.main.async {
-            self.isLoading = true
+        print("id \(id)")
+        self.isLoading = true
+        
+        
+        GoalManager.shared.fetchGoal(by: id) { goal, error in
+            if let error = error {
+                print("Error fetching goal: \(error)")
+            } else if let goal = goal {
+                self.goal = goal
+            } else {
+                print("Goal not found.")
+            }
         }
         
-        GoalManager.shared.getGoal(id: id) { [weak self] response, error in
-            guard let self = self else { return }
-            
-            if let error = error {
-                print("Error fetching goals: \(error)")
-                return
-            }
-            
-            // Successfully received response
-            if let response = response {
-                // Ensure UI updates happen on the main thread
-                DispatchQueue.main.async {
-                    self.goal = response
-                }
-            }
-            
-            DispatchQueue.main.async {
-                self.isLoading = false
-            }
-        }
+        self.isLoading = false
     }
     
     
-    func createNewGoal(goal: CreateGoal) {
+    func createNewGoal(goal: FirebaseGoal) {
         
-        if let validationError = goal.validate() {
-            print("Validation Error: \(validationError)")
-            return
-        }
-        
-        GoalManager.shared.createGoal(newGoal: goal) { [weak self] response, error in
-            guard let self = self else {
-                return
-            }
-            
+        GoalManager.shared.createGoal(goal: goal) { error in
             if let error = error {
                 print("Error creating goal: \(error)")
-                return
-            }
-            
-            
-            if let _ = response {
-                DispatchQueue.main.async {
-                    self.isUpdated = true
-                    print("Goal created successfully. isCreated set to \(self.isUpdated)")
-                }
+            } else {
+                print("Goal successfully created!")
+                self.isUpdated = true
             }
         }
+        
     }
     
     func updateGoal(id: String, updateGoal: UpdateGoalBody) {
         
-        GoalManager.shared.UpdateGoal(id: id, updatedGoal: updateGoal) { [weak self] response, error in
-            guard let self = self else {
-                return
-            }
-            
-            if let error = error {
-                print("Error creating goal: \(error)")
-                return
-            }
-            
-            
-            if let _ = response {
-                DispatchQueue.main.async {
-                    self.isUpdated = true
-                }
+        GoalManager.shared.updateGoal(documentId: id, goalBody: updateGoal) { result in
+            switch result {
+            case .success:
+                print("Goal updated successfully!")
+                self.isUpdated = true
+            case .failure(let error):
+                print("Error updating goal: \(error.localizedDescription)")
             }
         }
     }
     
     func deleteGoal(id: String) {
-        GoalManager.shared.deleteGoal(id: id) { [weak self] response, error in
-            guard let self = self else {
-                return
-            }
-            
+        GoalManager.shared.deleteGoal(by: id) { error in
             if let error = error {
                 print("Error deleting goal: \(error)")
-                return
-            }
-            
-            
-            if let _ = response {
+            } else {
+                print("Goal successfully deleted!")
                 DispatchQueue.main.async {
                     self.isDeleted = true
                 }
@@ -144,52 +91,34 @@ class GoalViewModel: ObservableObject {
         }
     }
     
-    func addContribuution(id: String, contribution: AddContribution) {
+    func addContribuution(id: String, contribution: GoalContribution) {
         
-        GoalManager.shared.addContribution(id: id, contribution: contribution) { [weak self] result in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                
-                self.isLoading = true
-                
-                switch result {
-                case .success(_):
-                    self.isUpdated = true
-                    self.isUpdated = true
-                    
-                case .failure(let error):
-                    
-                    self.alertItem = AlertContext.exceededContribution
-                    print(error)
-                    
-                }
-                
-                self.isLoading = false
+        GoalManager.shared.addGoalContribution(id: id, contribution: contribution) { result in
+            switch result {
+            case .success:
+                print("Contribution appended successfully!")
+                self.isUpdated = true
+            case .failure(let error):
+                print("Error appending contribution: \(error.localizedDescription)")
             }
         }
     }
     
-    func withdrawContribuution(id: String, contribution: AddContribution) {
+    
+    
+    
+    func withdrawContribuution(id: String, contribution: GoalContribution) {
         
-        GoalManager.shared.withdrawContribution(id: id, contribution: contribution) { [weak self] result in
-            
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                
-                self.isLoading = true
-                
-                switch result {
-                case .success(_):
-                    print("success")
-                    self.isUpdated = true
-                case .failure(_):
-                    self.alertItem = AlertContext.exceededWithdrawContribution
-                }
-                
-                self.isLoading = false
+        GoalManager.shared.addGoalContribution(id: id, contribution: contribution) { result in
+            switch result {
+            case .success:
+                print("Contribution appended successfully!")
+                self.isUpdated = true
+            case .failure(let error):
+                print("Error appending contribution: \(error.localizedDescription)")
             }
-            
         }
+        
         
     }
 }
