@@ -28,19 +28,28 @@ struct GoalView: View {
     @State private var shouldRefetch = false
     
     var body: some View {
-        let total = viewModel.goal.goalAmountContributed.count > 0 ? viewModel.goal.goalAmountContributed.reduce(0) { $0 + $1.amount } : 0
+        let total = viewModel.goal.goalAmountContributed.count > 0 ? viewModel.goal.goalAmountContributed.reduce(
+            0
+        ) {
+            $0 + $1.amount
+        } : 0
         let percentage =  total > 0 ? total / viewModel.goal.goalAmount : 0
-        let formatted = viewModel.goal.goalDeadline.formatted(.dateTime.day().month().year())
-        
-//        let total = 5000
-//        let percentage = 0.2
-//        let formatted = Date()
-        
+        let formatted = viewModel.goal.goalDeadline.formatted(
+            .dateTime.day().month().year()
+        )
         
         NavigationStack {
-            
-            VStack {
-
+            //            if viewModel.isLoading {
+            //                LoadingOverlay()
+            //            } else {
+                
+                
+            if viewModel.isLoading {
+                LoadingOverlay()
+            } else {
+                VStack {
+                    
+                    
                     VStack(spacing: 20) {
                         Picker("Select", selection: $selectedView) {
                             Text("Goal").tag(0)
@@ -55,8 +64,15 @@ struct GoalView: View {
                             {
                                 LazyVStack {
                                     if viewModel.goal.goalAmountContributed.count > 0 {
-                                        ForEach(viewModel.goal.goalAmountContributed, id: \.self){ contribution in
-                                            ContributionCardView(date: contribution.date, note: contribution.note, amount: contribution.amount)
+                                        ForEach(
+                                            viewModel.goal.goalAmountContributed,
+                                            id: \.self
+                                        ){ contribution in
+                                            ContributionCardView(
+                                                date: contribution.date,
+                                                note: contribution.note,
+                                                amount: contribution.amount
+                                            )
                                         }
                                     }
                                 }
@@ -67,11 +83,17 @@ struct GoalView: View {
                                     VStack(spacing: 30) {
                                         
                                         ZStack {
-                                            CircularProgressView(progress: percentage, colour: viewModel.goal.goalColour)
-                                                .frame(width: 230, height: 230)
+                                            CircularProgressView(
+                                                progress: percentage,
+                                                colour: viewModel.goal.goalColour
+                                            )
+                                            .frame(width: 230, height: 230)
                                             
                                             Circle()
-                                                .stroke(.treLightGray, lineWidth: 2)
+                                                .stroke(
+                                                    .treLightGray,
+                                                    lineWidth: 2
+                                                )
                                             
                                                 .frame(width: 130, height: 130)
                                             
@@ -82,19 +104,36 @@ struct GoalView: View {
                                         }
                                         .padding(.top, 30)
                                         
-                                        Text("\(String(format: "%.f", percentage * 100))%")
-                                            .font(.system(size: 26, weight: .bold))
+                                        Text(
+                                            "\(String(format: "%.f", percentage * 100))%"
+                                        )
+                                        .font(.system(size: 26, weight: .bold))
                                         
                                         
                                         VStack {
                                             GoalDetailTitle(text: "Savings")
                                             
                                             HStack(spacing: 20) {
-                                                DetailView(amount: viewModel.goal.goalAmountContributed.reduce(0) { $0 + $1.amount }, subTitle: "Saved")
+                                                DetailView(
+                                                    amount: viewModel.goal.goalAmountContributed
+                                                        .reduce(
+                                                            0
+                                                        ) { $0 + $1.amount
+                                                        },
+                                                    subTitle: "Saved")
                                                 Divider()
-                                                DetailView(amount: viewModel.goal.goalAmount - viewModel.goal.goalAmountContributed.reduce(0) { $0 + $1.amount }, subTitle: "Remaining")
+                                                DetailView(
+                                                    amount: viewModel.goal.goalAmount - viewModel.goal.goalAmountContributed
+                                                        .reduce(
+                                                            0
+                                                        ) { $0 + $1.amount
+                                                        },
+                                                    subTitle: "Remaining")
                                                 Divider()
-                                                DetailView(amount: viewModel.goal.goalAmount, subTitle: "Goal")
+                                                DetailView(
+                                                    amount: viewModel.goal.goalAmount,
+                                                    subTitle: "Goal"
+                                                )
                                             }
                                             .frame(height: 60)
                                         }
@@ -102,7 +141,7 @@ struct GoalView: View {
                                         VStack(alignment: .leading) {
                                             GoalDetailTitle(text: "Note")
                                             
-                                            Text(viewModel.goal.goalNote ?? "No Not yet")
+                                            Text(viewModel.goal.goalNote)
                                         }
                                         
                                         VStack(alignment: .leading) {
@@ -133,7 +172,12 @@ struct GoalView: View {
                                 Text("Withdraw")
                                     .frame(maxWidth: .infinity)
                             }
-                            .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
+                            .buttonStyle(
+                                TreButtonStyle(
+                                    backgroundColor: .treLightGray,
+                                    textColor: .primaryPurple
+                                )
+                            )
                             
                             
                             Button {
@@ -142,159 +186,230 @@ struct GoalView: View {
                                 Text("Add Savings")
                                     .frame(maxWidth: .infinity)
                             }
-                            .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
+                            .buttonStyle(
+                                TreButtonStyle(
+                                    backgroundColor: .primaryPurple,
+                                    textColor: .white
+                                )
+                            )
                         }
                     }
                     .padding()
                 }
-                    
+            }
                 
                 
-            }
-            .ignoresSafeArea(.keyboard)
-            .navigationTitle(viewModel.goal.goalName)
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear() {
-                viewModel.fetchGoal(id: id)
-            }
-        
-            .onChange(of: viewModel.isDeleted) { oldValue, newValue in
-                print("onChange triggered: isDeleted changed from \(oldValue) to \(newValue)")
-                if newValue {
-                    showingDeleteSheet = false
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        viewModel.isDeleted = false
-                        dismiss()
-                    }
-                    
+                
+        }
+        .ignoresSafeArea(.keyboard)
+        .navigationTitle(viewModel.goal.goalName)
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear() {
+            viewModel.fetchGoal(id: id)
+        }
+            
+        .onChange(of: viewModel.isDeleted) {
+ oldValue,
+            newValue in
+            print(
+                "onChange triggered: isDeleted changed from \(oldValue) to \(newValue)"
+            )
+            if newValue {
+                showingDeleteSheet = false
+                        
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    viewModel.isDeleted = false
+                    dismiss()
                 }
+                        
             }
-        
-            .onChange(of: viewModel.isUpdated) { oldValue, newValue in
-                print("onChange triggered: isUpdated <><> changed from \(oldValue) to \(newValue)")
-                if newValue {
-                    isShowingSavingsSheet = false
-                    isShowingWithdrawSheet = false
-                    
-                    amount = ""
-                    note = ""
-                    date = Date.now
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        viewModel.isUpdated = false
-                        viewModel.fetchGoal(id: id)
-                    }
-                    
-                }
-            }
-        
-            .onChange(of: shouldRefetch) { _, newValue in
-                if newValue {
+        }
+            
+        .onChange(of: viewModel.isUpdated) {
+ oldValue,
+            newValue in
+            print(
+                "onChange triggered: isUpdated <><> changed from \(oldValue) to \(newValue)"
+            )
+            if newValue {
+                isShowingSavingsSheet = false
+                isShowingWithdrawSheet = false
+                        
+                amount = ""
+                note = ""
+                date = Date.now
+                        
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    viewModel.isUpdated = false
                     viewModel.fetchGoal(id: id)
-                    shouldRefetch = false // Reset the flag after fetching
                 }
+                        
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Menu {
-                        Button(action: {
-                            showingEditSheet = true
-                        }) {
-                            Label("Edit", systemImage: "pencil.line")
-                        }
-                        
-                        Button(action: {
-                            showingArchiveSheet = true
-                        }) {
-                            Label("Archive", systemImage: "square.and.arrow.down.on.square")
-                        }
-                        
-                        Button(action: {
-                            showingDeleteSheet = true
-                        }) {
-                            Label("Delete", systemImage: "trash")
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis.circle")
-                            .imageScale(.large)
+        }
+            
+        .onChange(of: shouldRefetch) { _, newValue in
+            if newValue {
+                viewModel.fetchGoal(id: id)
+                shouldRefetch = false // Reset the flag after fetching
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button(action: {
+                        showingEditSheet = true
+                    }) {
+                        Label("Edit", systemImage: "pencil.line")
                     }
+                            
+                    Button(action: {
+                        showingArchiveSheet = true
+                    }) {
+                        Label(
+                            "Archive",
+                            systemImage: "square.and.arrow.down.on.square"
+                        )
+                    }
+                            
+                    Button(action: {
+                        showingDeleteSheet = true
+                    }) {
+                        Label("Delete", systemImage: "trash")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                        .imageScale(.large)
                 }
             }
-            .fullScreenCover(isPresented: $showingEditSheet) {
-                EditGoalView(id: id, shouldRefetch: $shouldRefetch, viewModel: viewModel, showModal: $showingEditSheet)
-            }
-        
-            .sheet(isPresented:$showingDeleteSheet) {
-                ModalWithDescription(title: "Delete", actionButtonText: "Yes, Delete", id: id, height: 350, showingSheet: $showingDeleteSheet, viewModel: viewModel, middleSection: {
-                    Text("Sure you want to delete this goal?")
-                        .font(.system(size: 22, weight: .bold))
-                    
-                    Text("You will lose all  savings progress. \n This action can not be undone.")
-                        .fontWeight(.light)
-                        .foregroundStyle(.gray)
-                })
-            }
-        
-            .sheet(isPresented: $showingArchiveSheet){
-                ModalWithDescription(title: "Archive", actionButtonText: "Yes, Archive", id: id, height: 290, showingSheet: $showingArchiveSheet, viewModel: viewModel, middleSection: {
-                    Text("Sure you want to archive this goal?")
-                        .font(.system(size: 22, weight: .bold))
-                })
-            }
-        
-            .sheet(isPresented: $isShowingSavingsSheet) {
-                ModalWithDescription(title: "Add Savings", actionButtonText: "Add", id: id, height: 605, contribution: GoalContribution(amount: Double(amount) ?? 0, date: date, note: note), showingSheet: $isShowingSavingsSheet, viewModel: viewModel , middleSection: {
-                    
-                    TextFieldWithLabel(text: $amount, title: "Goal Amount", placeholder: "10.000")
-                        .keyboardType(.numberPad)
-                    
-                    
-                    DatePicker("Deadline (Optional)",
-                               selection: $date, displayedComponents: .date)
-                    .frame(height: 56)
-                    
-                    TextFieldWithLabel(text: $note, title: "Note Optional", placeholder: "Add your note.")
-                })
-                
-            }
-        
-            .sheet(isPresented: $isShowingWithdrawSheet) {
-                let convertedDouble = Double(amount) ?? 0
-                
-                ModalWithDescription(title: "Withdraw", actionButtonText: "Withdraw", id: id, height: 605, contribution: GoalContribution(amount: -convertedDouble, date: date, note: note), showingSheet: $isShowingWithdrawSheet, viewModel: viewModel , middleSection: {
-                    
-                    TextFieldWithLabel(text: $amount, title: "Amount", placeholder: "10.000")
-                        .keyboardType(.numberPad)
-                    
-                    
-                    DatePicker("Date",
-                               selection: $date, displayedComponents: .date)
-                    .frame(height: 56)
-                    
-                    TextFieldWithLabel(text: $note, title: "Note Optional", placeholder: "Add your note.")
-                })
-
-            }
-         
-        
-        if viewModel.isLoading {
-            Color.black.opacity(0.5)
-                .edgesIgnoringSafeArea(.all)
-            
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                .scaleEffect(1.5) // Adjust size of the spinner
         }
-
-
-            
+        .fullScreenCover(isPresented: $showingEditSheet) {
+            EditGoalView(
+                id: id,
+                shouldRefetch: $shouldRefetch,
+                viewModel: viewModel,
+                showModal: $showingEditSheet
+            )
         }
+            
+        .sheet(isPresented:$showingDeleteSheet) {
+            ModalWithDescription(
+title: "Delete",
+ actionButtonText: "Yes, Delete",
+ id: id,
+ height: 350,
+showingSheet: $showingDeleteSheet,
+viewModel: viewModel,
+middleSection: {
+    Text("Sure you want to delete this goal?")
+        .font(.system(size: 22, weight: .bold))
+                        
+    Text(
+        "You will lose all  savings progress. \n This action can not be undone."
+    )
+    .fontWeight(.light)
+    .foregroundStyle(.gray)
+})
+        }
+            
+        .sheet(isPresented: $showingArchiveSheet){
+            ModalWithDescription(title: "Archive", actionButtonText: "Yes, Archive", id: id, height: 290, showingSheet: $showingArchiveSheet, viewModel: viewModel, middleSection: {
+                Text("Sure you want to archive this goal?")
+                    .font(.system(size: 22, weight: .bold))
+            })
+        }
+            
+        .sheet(isPresented: $isShowingSavingsSheet) {
+            ModalWithDescription(
+title: "Add Savings",
+ actionButtonText: "Add",
+id: id,
+height: 605,
+contribution: GoalContribution(
+    amount: Double(amount) ?? 0,
+    date: date,
+    note: note
+),
+showingSheet: $isShowingSavingsSheet,
+viewModel: viewModel ,
+middleSection: {
+                        
+    TextFieldWithLabel(
+        text: $amount,
+        title: "Goal Amount",
+        placeholder: "10.000"
+    )
+    .keyboardType(.numberPad)
+                        
+                        
+    DatePicker("Deadline (Optional)",
+               selection: $date, displayedComponents: .date)
+    .frame(height: 56)
+                        
+    TextFieldWithLabel(
+        text: $note,
+        title: "Note Optional",
+        placeholder: "Add your note."
+    )
+})
+                    
+        }
+            
+        .sheet(isPresented: $isShowingWithdrawSheet) {
+            let convertedDouble = Double(amount) ?? 0
+                    
+            ModalWithDescription(
+title: "Withdraw",
+ actionButtonText: "Withdraw",
+id: id,
+height: 605,
+contribution: GoalContribution(
+    amount: -convertedDouble,
+    date: date,
+    note: note
+),
+showingSheet: $isShowingWithdrawSheet,
+viewModel: viewModel ,
+middleSection: {
+                        
+    TextFieldWithLabel(
+        text: $amount,
+        title: "Amount",
+        placeholder: "10.000"
+    )
+    .keyboardType(.numberPad)
+                        
+                        
+    DatePicker("Date",
+               selection: $date, displayedComponents: .date)
+    .frame(height: 56)
+                        
+    TextFieldWithLabel(
+        text: $note,
+        title: "Note Optional",
+        placeholder: "Add your note."
+    )
+})
+                    
+        }
+            
+            
+        //        if viewModel.isLoading {
+        //            Color.black.opacity(0.5)
+        //                .edgesIgnoringSafeArea(.all)
+        //
+        //            ProgressView()
+        //                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+        //                .scaleEffect(1.5) // Adjust size of the spinner
+        //        }
+            
+    }
+        
+    
 }
 
 #Preview {
     NavigationStack {
-        GoalView(id: "675a83ddc8ea611f68ddeeac")
+        GoalView(id: "4v6crbEehgoA9jARop3v")
     }
 }
 
@@ -308,7 +423,7 @@ struct DetailView: View {
                 .font(.system(size: 20, weight: .medium))
                 .minimumScaleFactor(0.6)
             Text(subTitle)
-                .foregroundStyle(.gray)
+                .foregroundStyle(.gray) 
         }
         
     }
@@ -326,3 +441,16 @@ struct GoalDetailTitle: View {
     }
 }
 
+
+struct LoadingOverlay: View {
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.5)
+                .edgesIgnoringSafeArea(.all)
+            
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                .scaleEffect(1.5)
+        }
+    }
+}

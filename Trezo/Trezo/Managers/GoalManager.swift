@@ -28,9 +28,11 @@ class GoalManager {
     func fetchGoals(completion: @escaping ([FirebaseGoal]?, Error?) -> Void) {
         // Reference to Firestore
         let db = Firestore.firestore()
+        let userID = Auth.auth().currentUser?.uid ?? ""
         
-        // Access the "goals" collection
-        db.collection("goals").getDocuments { (snapshot, error) in
+        print("Current user \(userID)")
+        
+        db.collection("goals").whereField("userId", isEqualTo: userID).getDocuments { (snapshot, error) in
             if let error = error {
                 // Handle error
                 completion(nil, error)

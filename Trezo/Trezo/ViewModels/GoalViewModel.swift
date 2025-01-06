@@ -41,14 +41,17 @@ class GoalViewModel: ObservableObject {
         GoalManager.shared.fetchGoal(by: id) { goal, error in
             if let error = error {
                 print("Error fetching goal: \(error)")
+                self.isLoading = false
             } else if let goal = goal {
                 self.goal = goal
+                self.isLoading = false
             } else {
                 print("Goal not found.")
+                self.isLoading = false
             }
         }
         
-        self.isLoading = false
+        
     }
     
     
