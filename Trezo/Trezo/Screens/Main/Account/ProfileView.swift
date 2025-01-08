@@ -47,6 +47,11 @@ struct ProfileView: View {
                         } label: {
                             Label("Preferences", systemImage: "gearshape")
                         }
+                        NavigationLink {
+                            ArchiveView()
+                        } label: {
+                            Label("Archieve", systemImage: "archivebox")
+                        }
                         
                         Section {
                             Link(destination: URL(string: "https://apple.com")!) {
@@ -91,7 +96,7 @@ struct ProfileView: View {
 
 
 #Preview {
-    @State var value: Bool = true
+    @Previewable @State var value: Bool = true
     ProfileView(showModal: $value)
 }
 

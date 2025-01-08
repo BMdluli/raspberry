@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GoalView: View {
+struct ArchiveGoalView: View {
     @Environment(\.dismiss) var dismiss
     
     var id: String
@@ -234,6 +234,8 @@ struct GoalView: View {
             if newValue {
                 isShowingSavingsSheet = false
                 isShowingWithdrawSheet = false
+                showingArchiveSheet = false
+                
                 
                 amount = ""
                 note = ""
@@ -266,7 +268,7 @@ struct GoalView: View {
                         showingArchiveSheet = true
                     }) {
                         Label(
-                            "Archive",
+                            "Unarchive",
                             systemImage: "square.and.arrow.down.on.square"
                         )
                     }
@@ -312,8 +314,8 @@ struct GoalView: View {
         }
         
         .sheet(isPresented: $showingArchiveSheet){
-            ModalWithDescription(title: "Archive", actionButtonText: "Yes, Archive", id: id, height: 290, showingSheet: $showingArchiveSheet, viewModel: viewModel, archive: true, middleSection: {
-                Text("Sure you want to archive this goal?")
+            ModalWithDescription(title: "Unarchive", actionButtonText: "Yes, Unarchive", id: id, height: 290, showingSheet: $showingArchiveSheet, viewModel: viewModel, archive: false, middleSection: {
+                Text("Sure you want to unarchive this goal?")
                     .font(.system(size: 22, weight: .bold))
             })
         }
@@ -410,47 +412,5 @@ struct GoalView: View {
 #Preview {
     NavigationStack {
         GoalView(id: "4v6crbEehgoA9jARop3v")
-    }
-}
-
-struct DetailView: View {
-    let amount: Double
-    let subTitle: String
-    
-    var body: some View {
-        VStack {
-            Text(String(format: "R%.f", amount))
-                .font(.system(size: 20, weight: .medium))
-                .minimumScaleFactor(0.6)
-            Text(subTitle)
-                .foregroundStyle(.gray)
-        }
-        
-    }
-}
-
-struct GoalDetailTitle: View {
-    let text: String
-    var body: some View {
-        HStack {
-            Text(text)
-            VStack {
-                Divider()
-            }
-        }
-    }
-}
-
-
-struct LoadingOverlay: View {
-    var body: some View {
-        ZStack {
-            Color.black.opacity(0.5)
-                .edgesIgnoringSafeArea(.all)
-            
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                .scaleEffect(1.5)
-        }
     }
 }

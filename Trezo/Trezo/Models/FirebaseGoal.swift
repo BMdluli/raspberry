@@ -20,6 +20,7 @@ struct FirebaseGoal: Codable {
     var goalDeadline: Date = Date() // Default to current date
     var goalName: String = ""
     var goalNote: String = ""
+    var isArchived: Bool = false
     var userId: String = ""
 }
 

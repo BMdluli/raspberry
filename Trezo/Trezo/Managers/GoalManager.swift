@@ -25,14 +25,14 @@ class GoalManager {
     private init() {}
     private let urlString = "https://trezo.onrender.com/api/v1/goals"
     
-    func fetchGoals(completion: @escaping ([FirebaseGoal]?, Error?) -> Void) {
+    func fetchGoals(archived: Bool, completion: @escaping ([FirebaseGoal]?, Error?) -> Void) {
         // Reference to Firestore
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser?.uid ?? ""
         
         print("Current user \(userID)")
         
-        db.collection("goals").whereField("userId", isEqualTo: userID).getDocuments { (snapshot, error) in
+        db.collection("goals").whereField("userId", isEqualTo: userID).whereField("isArchived", isEqualTo: archived).getDocuments { (snapshot, error) in
             if let error = error {
                 // Handle error
                 completion(nil, error)
@@ -156,6 +156,19 @@ class GoalManager {
         goalRef.updateData([
             "goalAmountContributed": FieldValue.arrayUnion([contribution.toDictionary()])
         ]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
+    func archieveGoal(id: String, isArchieved: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
+        let db = Firestore.firestore()
+        let goalRef = db.collection("goals").document(id)
+        
+        goalRef.updateData(["isArchived": isArchieved]) { error in
             if let error = error {
                 completion(.failure(error))
             } else {

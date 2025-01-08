@@ -49,7 +49,7 @@ struct HomeView: View {
                                     }
                                 }
                                 .refreshable {
-                                    viewModel.fetchGoals()
+                                    viewModel.fetchGoals(archived: false)
                                 }
                             }
                         }
@@ -100,13 +100,13 @@ struct HomeView: View {
                         }
                     }
                 }
-                .sheet(isPresented: $showingSettingsModal) {
+                .fullScreenCover(isPresented: $showingSettingsModal) {
                     ProfileView(showModal: $showingSettingsModal)
                 }
             }
             .onAppear() {
                 if viewModel.goals.isEmpty {
-                    viewModel.fetchGoals()
+                    viewModel.fetchGoals(archived: false)
                 }
             }
             .navigationBarBackButtonHidden(true)

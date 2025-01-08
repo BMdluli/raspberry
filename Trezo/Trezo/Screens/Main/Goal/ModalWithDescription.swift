@@ -14,6 +14,7 @@ struct ModalWithDescription<Content: View>: View {
     let id: String
     let height: CGFloat
     let contribution: GoalContribution?
+    let archive: Bool?
     @Binding var showingSheet: Bool
     @ObservedObject var viewModel: GoalViewModel
     @ViewBuilder var middleSection: Content
@@ -27,6 +28,7 @@ struct ModalWithDescription<Content: View>: View {
         contribution: GoalContribution? = nil,
         showingSheet: Binding<Bool>,
         viewModel: GoalViewModel,
+        archive: Bool? = false,
         @ViewBuilder middleSection: @escaping () -> Content
     ) {
         self.title = title
@@ -36,6 +38,7 @@ struct ModalWithDescription<Content: View>: View {
         self.contribution = contribution
         self._showingSheet = showingSheet
         self.viewModel = viewModel
+        self.archive = archive
         self.middleSection = middleSection()
     }
     
@@ -67,7 +70,9 @@ struct ModalWithDescription<Content: View>: View {
                         } else {
                             viewModel.withdrawContribuution(id: id, contribution: contribution!)
                         }
-                    } else {
+                    } else if actionButtonText == "Yes, Archive" ||  actionButtonText == "Yes, Unarchive"{
+                        viewModel.archieveGoal(id: id, isArchieved: archive ?? false)
+                    } else if actionButtonText == "Yes, Delete" {
                         viewModel.deleteGoal(id: id)
                     }
                 } label: {

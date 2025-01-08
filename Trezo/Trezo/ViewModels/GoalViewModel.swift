@@ -19,10 +19,10 @@ class GoalViewModel: ObservableObject {
     
     private var db = Firestore.firestore()
     
-    func fetchGoals() {
-        self.isLoading = true
+    func fetchGoals(archived: Bool) {
+//        self.isLoading = true
         
-        GoalManager.shared.fetchGoals { goals, error in
+        GoalManager.shared.fetchGoals(archived: archived) { goals, error in
             if let error = error {
                 print("Error fetching goals: \(error)")
                 self.isLoading = false
@@ -126,9 +126,24 @@ class GoalViewModel: ObservableObject {
                 print("Error appending contribution: \(error.localizedDescription)")
             }
         }
-        
-        
     }
+    
+    func archieveGoal(id: String, isArchieved: Bool) {
+        self.isLoading = true
+        
+        
+        GoalManager.shared.archieveGoal(id: id, isArchieved: isArchieved) { result in
+            
+            switch result {
+            case.success:
+                self.isUpdated = true
+                
+            case .failure(let error):
+                print("Error archieving: \(error.localizedDescription)")
+            }
+        }
+    }
+    
 }
 
 extension CreateGoal {
