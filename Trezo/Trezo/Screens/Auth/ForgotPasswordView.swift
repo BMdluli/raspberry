@@ -1,50 +1,31 @@
 //
-//  SignInView.swift
+//  ForgotPasswordView.swift
 //  Trezo
 //
-//  Created by Bekithemba Mdluli on 2024/09/11.
+//  Created by Bekithemba Mdluli on 2025/01/08.
 //
+
 import SwiftUI
 
-struct SignInView: View {
+struct ForgotPasswordView: View {
     @State var email: String = ""
-    @State var password: String = ""
     @StateObject var authViewModel = AuthViewModel()
     
     var body: some View {
         ZStack {
-            if authViewModel.isSignedIn { // Use isSignedIn instead of isLoading for screen switching
-                HomeView()// Show ProfileView or TabBar on successful sign-in
+            if authViewModel.resetSuccess { // Use isSignedIn instead of isLoading for screen switching
+                ConfirmationScreen()// Show ProfileView or TabBar on successful sign-in
             } else {
                 NavigationStack {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 25) {
-                            Text("Sign in to continue saving.")
+                            Text("Enter your registered email address, and we'll send you a code to reset your password.")
                                 .foregroundStyle(.gray)
                                 .font(.system(size: 16))
                             
-                            TextFieldWithLabel(text: $email, title: "Email", placeholder: "Email")
-                            SecureTextFieldWithLabel(text: $password, title: "Password", placeholder: "Password")
+                            TextFieldWithLabel(text: $email, title: "Registered email address", placeholder: "Email")
                             
-                            HStack {
-                                NavigationLink {
-                                    ForgotPasswordView()
-                                } label: {
-                                    Spacer()
-                                    Text("Forgot Password?")
-                                }
-                            }
                             
-                            HStack {
-                                Text("Don't have an account?")
-                                NavigationLink {
-                                    SignUpView() // Navigate to sign-up view
-                                } label: {
-                                    Text("Sign up")
-                                        .foregroundStyle(.primaryPurple)
-                                }
-                            }
-                            .frame(maxWidth: .infinity)
                             
                             Spacer()
                             
@@ -53,17 +34,17 @@ struct SignInView: View {
                             
                             Button {
                                 Task {
-                                    await authViewModel.signIn(with: email, password: password)
+                                    await authViewModel.resetPassword(with: email)
                                 }
                             } label: {
-                                Text("Sign in")
+                                Text("Send reset link")
                                     .frame(maxWidth: .infinity)
                             }
                             .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
                             .padding()
                             
                         }
-                        .navigationTitle("Welcome back! 👋")
+                        .navigationTitle("Forgot Password? 🔑")
                         .navigationBarTitleDisplayMode(.large)
                         .padding(.horizontal)
                     }
@@ -79,9 +60,10 @@ struct SignInView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
 #Preview {
-    SignInView()
+    ForgotPasswordView()
 }

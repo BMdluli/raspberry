@@ -12,6 +12,7 @@ class AuthViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
     @Published var isSignedIn = false
+    @Published var resetSuccess = false
     
     private let auth = Auth.auth()
     
@@ -63,6 +64,31 @@ class AuthViewModel: ObservableObject {
                 self.errorMessage = error.localizedDescription
             }
         }
+        DispatchQueue.main.async {
+            self.isLoading = false
+        }
+    }
+    
+    
+    func resetPassword(with email: String) async {
+        DispatchQueue.main.async {
+            self.isLoading = true
+            self.errorMessage = nil
+        }
+        
+        
+        do {
+            try await auth.sendPasswordReset(withEmail: email)
+            DispatchQueue.main.async {
+                self.resetSuccess = true
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = error.localizedDescription
+            }
+        }
+        
+        
         DispatchQueue.main.async {
             self.isLoading = false
         }

@@ -105,11 +105,11 @@ struct HomeView: View {
                 }
             }
             .onAppear() {
-                // Only call fetchGoals if the goals array is empty to avoid unnecessary calls
                 if viewModel.goals.isEmpty {
                     viewModel.fetchGoals()
                 }
             }
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
@@ -173,6 +173,8 @@ struct GoalCardView: View {
                 HStack {
                     Text(goal.goalName)
                         .foregroundStyle(.text)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
                     Spacer()
                     Text(String(format: "R%.1f", goal.goalAmount))
                         .foregroundStyle(.text)

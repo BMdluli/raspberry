@@ -54,6 +54,7 @@ struct EditGoalView: View {
     
     @State private var selectedEmoji = ""
     @State private var showEmojiModal = false
+    @State private var selectedColor: String = "BrandRed"
     
     
     var body: some View {
@@ -140,7 +141,7 @@ struct EditGoalView: View {
                             HStack(alignment: .center, spacing: 16) { // You can adjust `spacing` as needed
                                 ForEach(goalColors, id: \.self) { goalColor in
                                     Button {
-                                        print(goalColor)
+                                        selectedColor = goalColor
                                     } label: {
                                         Circle()
                                             .fill(Color(goalColor))
@@ -148,7 +149,7 @@ struct EditGoalView: View {
                                     }
                                 }
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading) // Expands HStack and aligns contents to the left
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             
                         }
                     }
@@ -168,7 +169,7 @@ struct EditGoalView: View {
                         
                         Button {
                             if let amountDbl = Double(amount) {
-                                viewModel.updateGoal(id: id, updateGoal: UpdateGoalBody(coverImage: selectedEmoji, goalName: goalName, goalAmount: amountDbl, goalCurrency: selectedCurrency.rawValue, goalDeadline: date, goalColour: "BrandRed", goalNote: note))
+                                viewModel.updateGoal(id: id, updateGoal: UpdateGoalBody(coverImage: selectedEmoji, goalName: goalName, goalAmount: amountDbl, goalCurrency: selectedCurrency.rawValue, goalDeadline: date, goalColour: selectedColor, goalNote: note))
                             }
                             
                             

@@ -20,13 +20,18 @@ class GoalViewModel: ObservableObject {
     private var db = Firestore.firestore()
     
     func fetchGoals() {
+        self.isLoading = true
+        
         GoalManager.shared.fetchGoals { goals, error in
             if let error = error {
                 print("Error fetching goals: \(error)")
+                self.isLoading = false
             } else if let goals = goals {
                 self.goals = goals
+                self.isLoading = false
             } else {
                 print("No goals found.")
+                self.isLoading = false
             }
         }
         

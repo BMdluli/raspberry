@@ -29,6 +29,14 @@ class FirebaseAuthManager: ObservableObject {
         }
     }
     
+    func sendResetLink(with email: String) async {
+        do {
+            try await firebaseAuth.sendPasswordReset(withEmail: email)
+        } catch {
+            print("Error sending reset link", error.localizedDescription)
+        }
+    }
+    
     
     func signOut() async {
         do {
