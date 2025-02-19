@@ -47,6 +47,11 @@ struct ForgotPasswordView: View {
                         .navigationTitle("Forgot Password? 🔑")
                         .navigationBarTitleDisplayMode(.large)
                         .padding(.horizontal)
+                        .alert("Error", isPresented: $authViewModel.showAlert) {
+                            Button("OK", role: .cancel) { }
+                        } message: {
+                            Text(authViewModel.errorMessage ?? "Unknown error")
+                        }
                     }
                 }
                 // Show loading screen as an overlay if isLoading is true

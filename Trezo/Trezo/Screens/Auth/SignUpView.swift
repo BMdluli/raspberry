@@ -55,6 +55,11 @@ struct SignUpView: View {
                         .navigationTitle("Join Trezo Today 🚀")
                         .navigationBarTitleDisplayMode(.large)
                         .padding(.horizontal)
+                        .alert("Error", isPresented: $authViewModel.showAlert) {
+                            Button("OK", role: .cancel) { } 
+                        } message: {
+                            Text(authViewModel.errorMessage ?? "Unknown error")
+                        }
                     }
                 }
 

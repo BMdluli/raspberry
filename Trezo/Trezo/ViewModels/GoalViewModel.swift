@@ -15,27 +15,34 @@ class GoalViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isUpdated: Bool = false
     @Published var isDeleted: Bool = false
+    @Published var isCreated: Bool = false
+    @Published var allDataFetched: Bool = false
     @Published var alertItem: AlertItem? // For handling alerts
     
     private var db = Firestore.firestore()
     
-    func fetchGoals(archived: Bool) {
-//        self.isLoading = true
-        
-        GoalManager.shared.fetchGoals(archived: archived) { goals, error in
-            if let error = error {
-                print("Error fetching goals: \(error)")
-                self.isLoading = false
-            } else if let goals = goals {
+    func fetchGoals(archived: Bool) async {
+        DispatchQueue.main.async {
+            self.isLoading = true
+            self.allDataFetched = false
+        }
+        do {
+            
+            let goals = try await GoalManager.shared.fetchGoals(archived: archived)
+            DispatchQueue.main.async {
                 self.goals = goals
-                self.isLoading = false
-            } else {
-                print("No goals found.")
-                self.isLoading = false
+            }
+        } catch {
+            DispatchQueue.main.async {
+                print("Error fetching goals: \(error)")
             }
         }
-        
+        DispatchQueue.main.async {
+            self.isLoading = false
+            self.allDataFetched = true
+        }
     }
+
     
     
     func fetchGoal(id: String) {
@@ -63,12 +70,18 @@ class GoalViewModel: ObservableObject {
     func createNewGoal(goal: FirebaseGoal) {
         
         GoalManager.shared.createGoal(goal: goal) { error in
-            if let error = error {
-                print("Error creating goal: \(error)")
-            } else {
-                print("Goal successfully created!")
-                self.isUpdated = true
+            DispatchQueue.main.async {
+                self.isLoading = true
+                if let error = error {
+                    print("Error creating goal: \(error)")
+                    self.isLoading = true
+                } else {
+                    print("Goal successfully created!")
+                    self.isCreated = true
+                    self.isLoading = false
+                }
             }
+
         }
         
     }

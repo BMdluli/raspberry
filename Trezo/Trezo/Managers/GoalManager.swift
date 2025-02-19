@@ -25,40 +25,47 @@ class GoalManager {
     private init() {}
     private let urlString = "https://trezo.onrender.com/api/v1/goals"
     
-    func fetchGoals(archived: Bool, completion: @escaping ([FirebaseGoal]?, Error?) -> Void) {
+    func fetchGoals(archived: Bool) async throws -> [FirebaseGoal] {
         // Reference to Firestore
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser?.uid ?? ""
         
         print("Current user \(userID)")
         
-        db.collection("goals").whereField("userId", isEqualTo: userID).whereField("isArchived", isEqualTo: archived).getDocuments { (snapshot, error) in
-            if let error = error {
-                // Handle error
-                completion(nil, error)
-                return
-            }
-            
-            guard let documents = snapshot?.documents else {
-                completion(nil, nil) // No documents found
-                return
-            }
-            
-            // Map the documents to your Goal model
-            let goals = documents.compactMap { doc -> FirebaseGoal? in
-                do {
-                    // Try decoding each document into the Goal model
-                    return try doc.data(as: FirebaseGoal.self)
-                } catch {
-                    print("Error decoding document: \(error)")
-                    return nil
+        return try await withCheckedThrowingContinuation { continuation in
+            db.collection("goals")
+                .whereField("userId", isEqualTo: userID)
+                .whereField("isArchived", isEqualTo: archived)
+                .getDocuments { (snapshot, error) in
+                    if let error = error {
+                        // Pass the error to the continuation
+                        continuation.resume(throwing: error)
+                        return
+                    }
+                    
+                    guard let documents = snapshot?.documents else {
+                        // No documents found; return an empty array
+                        continuation.resume(returning: [])
+                        return
+                    }
+                    
+                    // Map the documents to your Goal model
+                    let goals = documents.compactMap { doc -> FirebaseGoal? in
+                        do {
+                            // Try decoding each document into the Goal model
+                            return try doc.data(as: FirebaseGoal.self)
+                        } catch {
+                            print("Error decoding document: \(error)")
+                            return nil
+                        }
+                    }
+                    
+                    // Pass the array of goals to the continuation
+                    continuation.resume(returning: goals)
                 }
-            }
-            
-            // Pass the array of goals to the completion handler
-            completion(goals, nil)
         }
     }
+
     
     func fetchGoal(by id: String, completion: @escaping (FirebaseGoal?, Error?) -> Void) {
         // Reference to Firestore

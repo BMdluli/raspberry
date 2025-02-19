@@ -12,6 +12,7 @@ struct ArchiveView: View {
     @State private var showingSettingsModal = false
     
     @StateObject private var viewModel = GoalViewModel()
+    @State private var shouldRefresh: Bool = false
     
     var tempGoals: [Goal] = []
     
@@ -31,9 +32,7 @@ struct ArchiveView: View {
                         // Main content
                         VStack {
                             if viewModel.goals.isEmpty {
-                                Spacer()
-                                Text("No Archived Goals")
-                                Spacer()
+                                    Text("No Archived Goals")
                             } else {
                                 ScrollView {
                                     VStack(spacing: 20) {
@@ -48,7 +47,9 @@ struct ArchiveView: View {
                                     }
                                 }
                                 .refreshable {
-                                    viewModel.fetchGoals(archived: true)
+                                    Task {
+                                        await viewModel.fetchGoals(archived: true)
+                                    }
                                 }
                             }
                         }
@@ -59,7 +60,7 @@ struct ArchiveView: View {
                     .padding(.horizontal)
                     .background(.treBackground)
                     .fullScreenCover(isPresented: $showModal) {
-                        CreateGoalView(showModal: $showModal)
+                        CreateGoalView(showModal: $showModal, shouldRefresh: $shouldRefresh)
                     }
                 }
 
@@ -69,8 +70,13 @@ struct ArchiveView: View {
                     ProfileView(showModal: $showingSettingsModal)
                 }
                 .onAppear() {
-                    if viewModel.goals.isEmpty {
-                        viewModel.fetchGoals(archived: true)
+//                    if viewModel.goals.isEmpty {
+//                        viewModel.fetchGoals(archived: true)
+//                    }
+                    Task {
+                        if !viewModel.allDataFetched {
+                            await viewModel.fetchGoals(archived: true)
+                        }
                     }
                 }
             }

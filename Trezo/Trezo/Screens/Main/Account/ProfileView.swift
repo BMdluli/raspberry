@@ -5,6 +5,8 @@
 //  Created by Bekithemba Mdluli on 2024/09/18.
 //
 import SwiftUI
+import RevenueCat
+import RevenueCatUI
 
 struct ProfileView: View {
     @StateObject var authViewModel = AuthViewModel()
@@ -20,6 +22,7 @@ struct ProfileView: View {
                         Section {
                             Button {
                                 print("Clicked")
+//                                showPaywall = true
                             } label: {
                                 HStack(spacing: 20) {
                                     AnimatedSparklesView()
@@ -89,6 +92,7 @@ struct ProfileView: View {
                 .fullScreenCover(isPresented: $isLoggedOut) {
                     ContentView() // Replace this with the appropriate view for logged-out users
                 }
+                .presentPaywallIfNeeded(requiredEntitlementIdentifier: "Pro")
             }
     }
 }

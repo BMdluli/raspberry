@@ -13,13 +13,14 @@ class AuthViewModel: ObservableObject {
     @Published var errorMessage: String? = nil
     @Published var isSignedIn = false
     @Published var resetSuccess = false
+    @Published var showAlert = false
     
     private let auth = Auth.auth()
     
-//    var isSignedIn: Bool {
-//        return user != nil
-//    }
-//    
+    //    var isSignedIn: Bool {
+    //        return user != nil
+    //    }
+    //
     
     
     init() {
@@ -28,6 +29,13 @@ class AuthViewModel: ObservableObject {
     }
     
     func signIn(with email: String, password: String) async {
+        if email.isEmpty || password.isEmpty {
+            showAlert = true
+            errorMessage = "Email and password fields cannot be empty."
+            return
+        }
+        
+        
         DispatchQueue.main.async {
             self.isLoading = true
             self.errorMessage = nil
@@ -40,7 +48,8 @@ class AuthViewModel: ObservableObject {
             }
         } catch {
             DispatchQueue.main.async {
-                self.errorMessage = error.localizedDescription
+                self.showAlert = true
+                self.errorMessage = "Invalid email or password. Please try again."
             }
         }
         DispatchQueue.main.async {
@@ -49,6 +58,13 @@ class AuthViewModel: ObservableObject {
     }
     
     func signUp(with email: String, password: String) async {
+        if email.isEmpty || password.isEmpty {
+            showAlert = true
+            errorMessage = "Email and password fields cannot be empty."
+            return
+        }
+        
+        
         DispatchQueue.main.async {
             self.isLoading = true
             self.errorMessage = nil
@@ -61,6 +77,7 @@ class AuthViewModel: ObservableObject {
             }
         } catch {
             DispatchQueue.main.async {
+                self.showAlert = true
                 self.errorMessage = error.localizedDescription
             }
         }
@@ -71,6 +88,13 @@ class AuthViewModel: ObservableObject {
     
     
     func resetPassword(with email: String) async {
+        
+        if email.isEmpty {
+            showAlert = true
+            errorMessage = "Email field cannot be empty."
+            return
+        }
+        
         DispatchQueue.main.async {
             self.isLoading = true
             self.errorMessage = nil
@@ -84,6 +108,7 @@ class AuthViewModel: ObservableObject {
             }
         } catch {
             DispatchQueue.main.async {
+                self.showAlert = true
                 self.errorMessage = error.localizedDescription
             }
         }

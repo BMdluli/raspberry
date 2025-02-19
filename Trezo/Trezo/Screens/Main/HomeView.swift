@@ -12,6 +12,7 @@ struct HomeView: View {
     @State private var showingSettingsModal = false
     
     @StateObject private var viewModel = GoalViewModel()
+    @State private var shouldRefresh: Bool = false
     
     var tempGoals: [Goal] = []
     
@@ -20,7 +21,6 @@ struct HomeView: View {
     
     var body: some View {
         
-        // Once loading is complete, either show goals or an empty view
         if viewModel.isLoading {
             LoadingView()
         } else {
@@ -49,7 +49,9 @@ struct HomeView: View {
                                     }
                                 }
                                 .refreshable {
-                                    viewModel.fetchGoals(archived: false)
+                                    Task {
+                                        await viewModel.fetchGoals(archived: false)
+                                    }
                                 }
                             }
                         }
@@ -80,10 +82,18 @@ struct HomeView: View {
                     .padding(.horizontal)
                     .background(.treBackground)
                     .fullScreenCover(isPresented: $showModal) {
-                        CreateGoalView(showModal: $showModal)
+                        CreateGoalView(showModal: $showModal, shouldRefresh: $shouldRefresh)
                     }
                 }
-
+                .onAppear() {
+                    Task {
+                        if !viewModel.allDataFetched {
+                            await viewModel.fetchGoals(archived: false)
+                        }
+                    }
+                    print("Home View On Appear called")
+                }
+                
                 .navigationTitle("Trezo")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
@@ -104,11 +114,17 @@ struct HomeView: View {
                     ProfileView(showModal: $showingSettingsModal)
                 }
             }
-            .onAppear() {
-                if viewModel.goals.isEmpty {
-                    viewModel.fetchGoals(archived: false)
+
+            .onChange(of: shouldRefresh, { _, newValue in
+                print("Should refresh called")
+                if newValue {
+                    Task {
+                        await viewModel.fetchGoals(archived: false)
+                    }
+                    viewModel.isCreated = false
+                    shouldRefresh = false
                 }
-            }
+            })
             .navigationBarBackButtonHidden(true)
         }
     }

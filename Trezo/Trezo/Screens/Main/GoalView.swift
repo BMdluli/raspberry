@@ -39,11 +39,7 @@ struct GoalView: View {
         )
         
         NavigationStack {
-            //            if viewModel.isLoading {
-            //                LoadingOverlay()
-            //            } else {
-            
-            
+
             if viewModel.isLoading {
                 LoadingOverlay()
             } else {
@@ -391,16 +387,6 @@ struct GoalView: View {
                 })
             
         }
-        
-        
-        //        if viewModel.isLoading {
-        //            Color.black.opacity(0.5)
-        //                .edgesIgnoringSafeArea(.all)
-        //
-        //            ProgressView()
-        //                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-        //                .scaleEffect(1.5) // Adjust size of the spinner
-        //        }
         
     }
     
