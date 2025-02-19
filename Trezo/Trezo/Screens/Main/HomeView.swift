@@ -125,6 +125,11 @@ struct HomeView: View {
                     shouldRefresh = false
                 }
             })
+            .alert("Error", isPresented: $viewModel.showAlert) {
+                Button("OK", role: .cancel) { } // Correct, single button
+            } message: {
+                Text(viewModel.errorMessage ?? "Unknown error") // Prevents force unwrap
+            }
             .navigationBarBackButtonHidden(true)
         }
     }

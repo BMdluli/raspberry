@@ -69,10 +69,12 @@ struct ArchiveView: View {
                 .sheet(isPresented: $showingSettingsModal) {
                     ProfileView(showModal: $showingSettingsModal)
                 }
+                .alert("Error", isPresented: $viewModel.showAlert) {
+                    Button("OK", role: .cancel) { } // Correct, single button
+                } message: {
+                    Text(viewModel.errorMessage ?? "Unknown error") // Prevents force unwrap
+                }
                 .onAppear() {
-//                    if viewModel.goals.isEmpty {
-//                        viewModel.fetchGoals(archived: true)
-//                    }
                     Task {
                         if !viewModel.allDataFetched {
                             await viewModel.fetchGoals(archived: true)

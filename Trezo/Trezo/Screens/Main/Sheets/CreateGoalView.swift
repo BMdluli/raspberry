@@ -58,159 +58,180 @@ struct CreateGoalView: View {
     
     var body: some View {
         ZStack {
-            VStack(spacing: 20) {
-                HStack {
-                    Button {
-                        showModal = false
-                    } label: {
-                        Image(systemName: "xmark")
-                            .foregroundStyle(.treAlertnateBackground)
-                    }
-                    
-                    Spacer()
-                    Text("Create New Goal")
-                        .font(.system(size: 20, weight: .semibold))
-                    Spacer()
-                }
+            if viewModel.isLoading {
+                Color.black.opacity(0.5)
+                    .edgesIgnoringSafeArea(.all)
                 
-                Button {
-                    showEmojiModal = true
-                } label: {
-                    VStack(spacing: 10) {
-                        ZStack {
-                            Circle()
-                                .strokeBorder(.gray, lineWidth: 1)
-                                .frame(width: 100, height: 100)
-                                .background(Color(.systemBackground))
-                            
-                            
-                            if selectedEmoji.isEmpty {
-                                Image(systemName: "plus")
-                                    .resizable()
-                                    .frame(width: 30, height: 30)
-                                    .foregroundColor(.treAlertnateBackground)
-                            } else {
-                                Text(selectedEmoji)
-                                    .font(.system(size: 50))
-                                    .frame(width: 80, height: 80)
-                            }
-                        }
-                        
-                        Text("Add Cover")
-                            .foregroundStyle(.gray)
-                    }
-                }
-                
-                Divider()
-                
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
-                        TextFieldWithLabel(text: $goalName, title: "Goal Name", placeholder: "e.g. Vacation, New car, etc.")
-                        
-                        TextFieldWithLabel(text: $amount, title: "Goal Amount", placeholder: "10.000")
-                            .keyboardType(.numberPad)
-                        
-                        
-                        VStack(alignment: .leading) {
-                            Text("Currency")
-                            HStack {
-                                Text("Select Currency")
-                                Spacer() // Pushes the currency picker to the right
-                                Picker(selection: $selectedCurrency, label: Text(selectedCurrency.rawValue)
-                                    .foregroundColor(.blue)
-                                    .underline()
-                                ) {
-                                    ForEach(Currency.allCases) { currency in
-                                        Text(currency.rawValue).tag(currency)
-                                    }
-                                }
-                                
-                                .pickerStyle(MenuPickerStyle()) // Dropdown style
-                            }
-                            .padding()
-                            .frame(height: 65)
-                            .background(.textField)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                        }
-                        
-                        DatePicker("Deadline (Optional)",
-                                   selection: $date, displayedComponents: .date)
-                        .frame(height: 56)
-                        
-                        
-                        
-                        TextFieldWithLabel(text: $note, title: "Note Optional", placeholder: "Add your note.")
-                        Text("Colour")
-                        HStack(alignment: .center, spacing: 16) { // You can adjust `spacing` as needed
-                            ForEach(goalColors, id: \.self) { goalColor in
-                                Button {
-                                    selectedColor = goalColor
-                                } label: {
-                                    Circle()
-                                        .stroke(selectedColor == goalColor ? .gray : .white, lineWidth: 8)
-                                        .fill(Color(goalColor))
-                                        .frame(width: 50, height: 50)
-                                }
-                            }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 5)
-                        
-                    }
-                    
-                    Spacer()
-                    
-                    Divider()
-                    
-                    HStack(spacing: 30) {
-                        Button {
-                            showModal = false
-                        } label: {
-                            Text("Cancel")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
-                        
-                        Button {
-                            if let amountDbl = Double(amount) {
-                                viewModel.createNewGoal(goal: FirebaseGoal(coverImage: selectedEmoji, goalAmount: amountDbl, goalAmountContributed: [GoalAmountContributed()], goalColour: selectedColor, goalCurrency: selectedCurrency.rawValue, goalDeadline: date, goalName: goalName, goalNote: note, userId: userID!))
-                            }
-                            
-                            
-                        } label: {
-                            Text("Save")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
-                    }
-                }
-                
-                
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .scaleEffect(1.5) // Adjust size of the spinner
+            }
+            VStack {
                 
 
                 
-                
-            }
-            .padding(.horizontal)
-            .onChange(of: viewModel.isCreated) { oldValue, newValue in
-                if newValue {
-                    showModal = false
-                    shouldRefresh = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        viewModel.isUpdated = false
+                VStack(spacing: 20) {
+                    HStack {
+                        Button {
+                            showModal = false
+                        } label: {
+                            Image(systemName: "xmark")
+                                .foregroundStyle(.treAlertnateBackground)
+                        }
+                        
+                        Spacer()
+                        Text("Create New Goal")
+                            .font(.system(size: 20, weight: .semibold))
+                        Spacer()
+                    }
+                    
+                    Button {
+                        showEmojiModal = true
+                    } label: {
+                        VStack(spacing: 10) {
+                            ZStack {
+                                Circle()
+                                    .strokeBorder(.gray, lineWidth: 1)
+                                    .frame(width: 100, height: 100)
+                                    .background(Color(.systemBackground))
+                                
+                                
+                                if selectedEmoji.isEmpty {
+                                    Image(systemName: "plus")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                        .foregroundColor(.treAlertnateBackground)
+                                } else {
+                                    Text(selectedEmoji)
+                                        .font(.system(size: 50))
+                                        .frame(width: 80, height: 80)
+                                }
+                            }
+                            
+                            Text("Add Cover")
+                                .foregroundStyle(.gray)
+                        }
+                    }
+                    
+                    Divider()
+                    
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 20) {
+                            TextFieldWithLabel(text: $goalName, title: "Goal Name", placeholder: "e.g. Vacation, New car, etc.")
+                            
+                            TextFieldWithLabel(text: $amount, title: "Goal Amount", placeholder: "10.000")
+                                .keyboardType(.numberPad)
+                            
+                            
+                            VStack(alignment: .leading) {
+                                Text("Currency")
+                                HStack {
+                                    Text("Select Currency")
+                                    Spacer() // Pushes the currency picker to the right
+                                    Picker(selection: $selectedCurrency, label: Text(selectedCurrency.rawValue)
+                                        .foregroundColor(.blue)
+                                        .underline()
+                                    ) {
+                                        ForEach(Currency.allCases) { currency in
+                                            Text(currency.rawValue).tag(currency)
+                                        }
+                                    }
+                                    
+                                    .pickerStyle(MenuPickerStyle()) // Dropdown style
+                                }
+                                .padding()
+                                .frame(height: 65)
+                                .background(.textField)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            
+                            DatePicker("Deadline (Optional)",
+                                       selection: $date, displayedComponents: .date)
+                            .frame(height: 56)
+                            
+                            
+                            
+                            TextFieldWithLabel(text: $note, title: "Note Optional", placeholder: "Add your note.")
+                            Text("Colour")
+                            HStack(alignment: .center, spacing: 16) { // You can adjust `spacing` as needed
+                                ForEach(goalColors, id: \.self) { goalColor in
+                                    Button {
+                                        selectedColor = goalColor
+                                    } label: {
+                                        Circle()
+                                            .stroke(selectedColor == goalColor ? .gray : .radioButtonBackground, lineWidth: 8)
+                                            .fill(Color(goalColor))
+                                            .frame(width: 50, height: 50)
+                                    }
+                                }
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 5)
+                            
+                        }
+                        
+                        Spacer()
+                        
+                        Divider()
+                        
+                        HStack(spacing: 30) {
+                            Button {
+                                showModal = false
+                            } label: {
+                                Text("Cancel")
+                                    .frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
+                            
+                            Button {
+                                if let amountDbl = Double(amount) {
+                                    viewModel.createNewGoal(goal: FirebaseGoal(coverImage: selectedEmoji, goalAmount: amountDbl, goalAmountContributed: [GoalAmountContributed()], goalColour: selectedColor, goalCurrency: selectedCurrency.rawValue, goalDeadline: date, goalName: goalName, goalNote: note, userId: userID!))
+                                }
+                                
+                                
+                            } label: {
+                                Text("Save")
+                                    .frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
+                        }
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                }
+                .padding(.horizontal)
+                .onChange(of: viewModel.isCreated) { oldValue, newValue in
+                    if newValue {
+                        showModal = false
+                        shouldRefresh = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            viewModel.isUpdated = false
+                        }
                     }
                 }
+                .alert("Error", isPresented: $viewModel.showAlert) {
+                    Button("OK", role: .cancel) { } // Correct, single button
+                } message: {
+                    Text(viewModel.errorMessage ?? "Unknown error") // Prevents force unwrap
+                }
+                .sheet(isPresented: $showEmojiModal) {
+                    EmojiGrid(showModal: $showEmojiModal, selectedEmoji: $selectedEmoji)
+                }
+                .padding()
+                .ignoresSafeArea(.keyboard)
+                
+                
             }
-            .sheet(isPresented: $showEmojiModal) {
-                EmojiGrid(showModal: $showEmojiModal, selectedEmoji: $selectedEmoji)
-            }
-            .padding()
-            .ignoresSafeArea(.keyboard)
+//            .alert(item: $selectedShow) { show in
+//                Alert(title: Text(show.name), message: Text("Great choice!"), dismissButton: .cancel())
+//            }
         }
         
-        if viewModel.isLoading {
-            LoadingOverlay()
-        }
+
         
         
     }

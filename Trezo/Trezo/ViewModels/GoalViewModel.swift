@@ -18,6 +18,8 @@ class GoalViewModel: ObservableObject {
     @Published var isCreated: Bool = false
     @Published var allDataFetched: Bool = false
     @Published var alertItem: AlertItem? // For handling alerts
+    @Published var errorMessage: String? = nil
+    @Published var showAlert: Bool = false
     
     private var db = Firestore.firestore()
     
@@ -26,6 +28,8 @@ class GoalViewModel: ObservableObject {
             self.isLoading = true
             self.allDataFetched = false
         }
+        
+        
         do {
             
             let goals = try await GoalManager.shared.fetchGoals(archived: archived)
@@ -34,9 +38,12 @@ class GoalViewModel: ObservableObject {
             }
         } catch {
             DispatchQueue.main.async {
-                print("Error fetching goals: \(error)")
+                self.showAlert = true
+                self.errorMessage = error.localizedDescription
             }
         }
+        
+        
         DispatchQueue.main.async {
             self.isLoading = false
             self.allDataFetched = true
@@ -52,13 +59,16 @@ class GoalViewModel: ObservableObject {
         
         GoalManager.shared.fetchGoal(by: id) { goal, error in
             if let error = error {
-                print("Error fetching goal: \(error)")
+                self.showAlert = true
+                self.errorMessage = error.localizedDescription
+                
                 self.isLoading = false
             } else if let goal = goal {
                 self.goal = goal
                 self.isLoading = false
             } else {
-                print("Goal not found.")
+                self.showAlert = true
+                self.errorMessage = "Goal not found"
                 self.isLoading = false
             }
         }
@@ -69,12 +79,15 @@ class GoalViewModel: ObservableObject {
     
     func createNewGoal(goal: FirebaseGoal) {
         
+        
+        
         GoalManager.shared.createGoal(goal: goal) { error in
             DispatchQueue.main.async {
                 self.isLoading = true
                 if let error = error {
-                    print("Error creating goal: \(error)")
-                    self.isLoading = true
+                    self.showAlert = true
+                    self.errorMessage = error.localizedDescription
+                    self.isLoading = false
                 } else {
                     print("Goal successfully created!")
                     self.isCreated = true
@@ -94,7 +107,8 @@ class GoalViewModel: ObservableObject {
                 print("Goal updated successfully!")
                 self.isUpdated = true
             case .failure(let error):
-                print("Error updating goal: \(error.localizedDescription)")
+                self.showAlert = true
+                self.errorMessage = error.localizedDescription
             }
         }
     }
@@ -102,7 +116,10 @@ class GoalViewModel: ObservableObject {
     func deleteGoal(id: String) {
         GoalManager.shared.deleteGoal(by: id) { error in
             if let error = error {
-                print("Error deleting goal: \(error)")
+                DispatchQueue.main.async {
+                    self.showAlert = true
+                    self.errorMessage = error.localizedDescription
+                }
             } else {
                 print("Goal successfully deleted!")
                 DispatchQueue.main.async {
@@ -112,7 +129,16 @@ class GoalViewModel: ObservableObject {
         }
     }
     
-    func addContribuution(id: String, contribution: GoalContribution) {
+    func addContribution(id: String, contribution: GoalContribution, remainingAmount: Double) {
+        
+        if contribution.amount > remainingAmount {
+            DispatchQueue.main.async {
+                self.showAlert = true
+                self.errorMessage = "You can not exceed your contributions"
+            }
+            return
+        }
+        
         
         GoalManager.shared.addGoalContribution(id: id, contribution: contribution) { result in
             switch result {
@@ -120,7 +146,10 @@ class GoalViewModel: ObservableObject {
                 print("Contribution appended successfully!")
                 self.isUpdated = true
             case .failure(let error):
-                print("Error appending contribution: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.showAlert = true
+                    self.errorMessage = error.localizedDescription
+                }
             }
         }
     }
@@ -128,7 +157,18 @@ class GoalViewModel: ObservableObject {
     
     
     
-    func withdrawContribuution(id: String, contribution: GoalContribution) {
+    func withdrawContribution(id: String, contribution: GoalContribution, totalContributions: Double) {
+        
+        print("Contribution Amount \(abs(contribution.amount) ) Total Contribution \(totalContributions)")
+        
+        if totalContributions - abs(contribution.amount) < 0 {
+            
+            DispatchQueue.main.async {
+                self.showAlert = true
+                self.errorMessage = "You can not withdraw more than you've contributed"
+            }
+            return
+        }
         
         GoalManager.shared.addGoalContribution(id: id, contribution: contribution) { result in
             switch result {
@@ -136,7 +176,10 @@ class GoalViewModel: ObservableObject {
                 print("Contribution appended successfully!")
                 self.isUpdated = true
             case .failure(let error):
-                print("Error appending contribution: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.showAlert = true
+                    self.errorMessage = error.localizedDescription
+                }
             }
         }
     }
@@ -152,7 +195,10 @@ class GoalViewModel: ObservableObject {
                 self.isUpdated = true
                 
             case .failure(let error):
-                print("Error archieving: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.showAlert = true
+                    self.errorMessage = error.localizedDescription
+                }
             }
         }
     }
@@ -179,6 +225,7 @@ extension CreateGoal {
         if userId.isEmpty {
             return "User ID is required."
         }
+
         return nil // Validation passed
     }
 }

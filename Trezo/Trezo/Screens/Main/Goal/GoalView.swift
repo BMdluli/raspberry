@@ -37,6 +37,14 @@ struct GoalView: View {
         let formatted = viewModel.goal.goalDeadline.formatted(
             .dateTime.day().month().year()
         )
+        let remainingAmount = viewModel.goal.goalAmount - viewModel.goal.goalAmountContributed
+            .reduce(
+                0
+            ) { $0 + $1.amount
+            }
+        
+        let amountContributed = viewModel.goal.goalAmountContributed.reduce(0) { $0 + $1.amount
+        }
         
         NavigationStack {
 
@@ -111,19 +119,11 @@ struct GoalView: View {
                                             
                                             HStack(spacing: 20) {
                                                 DetailView(
-                                                    amount: viewModel.goal.goalAmountContributed
-                                                        .reduce(
-                                                            0
-                                                        ) { $0 + $1.amount
-                                                        },
+                                                    amount: remainingAmount,
                                                     subTitle: "Saved")
                                                 Divider()
                                                 DetailView(
-                                                    amount: viewModel.goal.goalAmount - viewModel.goal.goalAmountContributed
-                                                        .reduce(
-                                                            0
-                                                        ) { $0 + $1.amount
-                                                        },
+                                                    amount: viewModel.goal.goalAmount - amountContributed ,
                                                     subTitle: "Remaining")
                                                 Divider()
                                                 DetailView(
@@ -326,7 +326,8 @@ struct GoalView: View {
                     note: note
                 ),
                 showingSheet: $isShowingSavingsSheet,
-                viewModel: viewModel ,
+                viewModel: viewModel, remainingAmount: remainingAmount ,
+
                 middleSection: {
                     
                     TextFieldWithLabel(
@@ -365,6 +366,7 @@ struct GoalView: View {
                 ),
                 showingSheet: $isShowingWithdrawSheet,
                 viewModel: viewModel ,
+                amountContributed: amountContributed,
                 middleSection: {
                     
                     TextFieldWithLabel(

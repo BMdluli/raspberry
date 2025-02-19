@@ -355,6 +355,11 @@ struct ArchiveGoalView: View {
                 })
             
         }
+        .alert("Error", isPresented: $viewModel.showAlert) {
+            Button("OK", role: .cancel) { } // Correct, single button
+        } message: {
+            Text(viewModel.errorMessage ?? "Unknown error") // Prevents force unwrap
+        }
         
         .sheet(isPresented: $isShowingWithdrawSheet) {
             let convertedDouble = Double(amount) ?? 0

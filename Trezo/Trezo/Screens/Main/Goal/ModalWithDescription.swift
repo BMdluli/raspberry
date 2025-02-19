@@ -15,6 +15,8 @@ struct ModalWithDescription<Content: View>: View {
     let height: CGFloat
     let contribution: GoalContribution?
     let archive: Bool?
+    let remainingAmount: Double?
+    let amountContributed: Double
     @Binding var showingSheet: Bool
     @ObservedObject var viewModel: GoalViewModel
     @ViewBuilder var middleSection: Content
@@ -29,6 +31,8 @@ struct ModalWithDescription<Content: View>: View {
         showingSheet: Binding<Bool>,
         viewModel: GoalViewModel,
         archive: Bool? = false,
+        remainingAmount: Double = 0,
+        amountContributed: Double = 0,
         @ViewBuilder middleSection: @escaping () -> Content
     ) {
         self.title = title
@@ -39,6 +43,8 @@ struct ModalWithDescription<Content: View>: View {
         self._showingSheet = showingSheet
         self.viewModel = viewModel
         self.archive = archive
+        self.remainingAmount = remainingAmount
+        self.amountContributed = amountContributed
         self.middleSection = middleSection()
     }
     
@@ -66,9 +72,9 @@ struct ModalWithDescription<Content: View>: View {
                 Button {
                     if contribution != nil {
                         if actionButtonText == "Add" {
-                            viewModel.addContribuution(id: id, contribution: contribution!)
+                            viewModel.addContribution(id: id, contribution: contribution!, remainingAmount: remainingAmount!)
                         } else {
-                            viewModel.withdrawContribuution(id: id, contribution: contribution!)
+                            viewModel.withdrawContribution(id: id, contribution: contribution!, totalContributions: amountContributed)
                         }
                     } else if actionButtonText == "Yes, Archive" ||  actionButtonText == "Yes, Unarchive"{
                         viewModel.archieveGoal(id: id, isArchieved: archive ?? false)
@@ -85,10 +91,16 @@ struct ModalWithDescription<Content: View>: View {
         .padding()
         .presentationDetents([.height(height)])
         .presentationDragIndicator(.visible)
+        // LOOK INTO
         .alert(item: $viewModel.alertItem) { alertItem in
             Alert(title: alertItem.title, message: alertItem.message, dismissButton: alertItem.dismissButton)
         }
         
+        .alert("Error", isPresented: $viewModel.showAlert) {
+            Button("OK", role: .cancel) { } // Correct, single button
+        } message: {
+            Text(viewModel.errorMessage ?? "Unknown error") // Prevents force unwrap
+        }
     }
 }
 

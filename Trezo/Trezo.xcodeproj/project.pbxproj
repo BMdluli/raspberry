@@ -269,11 +269,10 @@
 		596683C12C96188800096C6C /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				59D8075A2D65A2DB00251262 /* Sheets */,
 				59CE0B562D0AC4D30063D3E8 /* Account */,
 				598189562CEB50FB00CB79A2 /* Goal */,
 				596683C22C96189800096C6C /* HomeView.swift */,
-				592D7C672CA94A4500D07C4E /* CreateGoalView.swift */,
-				59A565A42CEA10B4008E2A98 /* GoalView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -281,7 +280,7 @@
 		598189562CEB50FB00CB79A2 /* Goal */ = {
 			isa = PBXGroup;
 			children = (
-				598189592CEE0B3500CB79A2 /* EditGoalView.swift */,
+				59A565A42CEA10B4008E2A98 /* GoalView.swift */,
 				5925A3852D1C761F0020806C /* ContributionCardView.swift */,
 				5925A3872D1C76520020806C /* ModalWithDescription.swift */,
 			);
@@ -305,6 +304,15 @@
 				59CE0B5A2D0ACEB40063D3E8 /* extentions+theme.swift */,
 			);
 			path = Extentions;
+			sourceTree = "<group>";
+		};
+		59D8075A2D65A2DB00251262 /* Sheets */ = {
+			isa = PBXGroup;
+			children = (
+				598189592CEE0B3500CB79A2 /* EditGoalView.swift */,
+				592D7C672CA94A4500D07C4E /* CreateGoalView.swift */,
+			);
+			path = Sheets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

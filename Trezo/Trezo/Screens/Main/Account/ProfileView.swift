@@ -53,7 +53,7 @@ struct ProfileView: View {
                         NavigationLink {
                             ArchiveView()
                         } label: {
-                            Label("Archieve", systemImage: "archivebox")
+                            Label("Archive", systemImage: "archivebox")
                         }
                         
                         Section {
