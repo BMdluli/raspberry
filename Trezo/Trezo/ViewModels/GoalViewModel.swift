@@ -159,8 +159,6 @@ class GoalViewModel: ObservableObject {
     
     func withdrawContribution(id: String, contribution: GoalContribution, totalContributions: Double) {
         
-        print("Contribution Amount \(abs(contribution.amount) ) Total Contribution \(totalContributions)")
-        
         if totalContributions - abs(contribution.amount) < 0 {
             
             DispatchQueue.main.async {

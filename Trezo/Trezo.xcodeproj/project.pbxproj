@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -24,7 +24,6 @@
 		592467612C921260000DC49F /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467602C921260000DC49F /* SignUpView.swift */; };
 		592467632C92126F000DC49F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592467622C92126F000DC49F /* SignInView.swift */; };
 		5925A3862D1C761F0020806C /* ContributionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5925A3852D1C761F0020806C /* ContributionCardView.swift */; };
-		5925A3882D1C76520020806C /* ModalWithDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5925A3872D1C76520020806C /* ModalWithDescription.swift */; };
 		592D7C682CA94A4600D07C4E /* CreateGoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592D7C672CA94A4500D07C4E /* CreateGoalView.swift */; };
 		592D7C6A2CA9702800D07C4E /* SecureTextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592D7C692CA9702800D07C4E /* SecureTextFieldWithLabel.swift */; };
 		59383E4B2CF0AC8900243C0B /* AddContribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59383E4A2CF0AC8900243C0B /* AddContribution.swift */; };
@@ -82,7 +81,6 @@
 		592467602C921260000DC49F /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		592467622C92126F000DC49F /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		5925A3852D1C761F0020806C /* ContributionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionCardView.swift; sourceTree = "<group>"; };
-		5925A3872D1C76520020806C /* ModalWithDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalWithDescription.swift; sourceTree = "<group>"; };
 		592D7C672CA94A4500D07C4E /* CreateGoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGoalView.swift; sourceTree = "<group>"; };
 		592D7C692CA9702800D07C4E /* SecureTextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureTextFieldWithLabel.swift; sourceTree = "<group>"; };
 		59383E4A2CF0AC8900243C0B /* AddContribution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContribution.swift; sourceTree = "<group>"; };
@@ -114,6 +112,10 @@
 		59D856B52D241AD300225F9D /* AnimatedSparklesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedSparklesView.swift; sourceTree = "<group>"; };
 		59FFF3FB2D2ACD90001BB0FF /* GoalContribution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalContribution.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		59C4AEC82D672F80005391B8 /* Modals */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Modals; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5924673B2C917719000DC49F /* Frameworks */ = {
@@ -205,6 +207,7 @@
 		592467562C91CBED000DC49F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				59C4AEC82D672F80005391B8 /* Modals */,
 				592467542C91CBDC000DC49F /* OnboardingItemView.swift */,
 				5921B9792C92FA6500C7CF4D /* TextFieldWithLabel.swift */,
 				592D7C692CA9702800D07C4E /* SecureTextFieldWithLabel.swift */,
@@ -282,7 +285,6 @@
 			children = (
 				59A565A42CEA10B4008E2A98 /* GoalView.swift */,
 				5925A3852D1C761F0020806C /* ContributionCardView.swift */,
-				5925A3872D1C76520020806C /* ModalWithDescription.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -329,6 +331,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				59C4AEC82D672F80005391B8 /* Modals */,
 			);
 			name = Trezo;
 			packageProductDependencies = (
@@ -435,7 +440,6 @@
 				59D856B62D241AD300225F9D /* AnimatedSparklesView.swift in Sources */,
 				59397FFC2CE34A130076CCE5 /* GoalManager.swift in Sources */,
 				59CE0B582D0AC6AF0063D3E8 /* Preferences.swift in Sources */,
-				5925A3882D1C76520020806C /* ModalWithDescription.swift in Sources */,
 				59B3D12B2CEFC66200E2A4B7 /* GoalsResponse.swift in Sources */,
 				59A565A52CEA10B4008E2A98 /* GoalView.swift in Sources */,
 				5920D8E62D1B1CFB009840BC /* ServerErrorResponse.swift in Sources */,
@@ -579,7 +583,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Trezo/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Raspberry: Budget Tracker";
+				INFOPLIST_KEY_CFBundleDisplayName = Raspberry;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -615,7 +619,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Trezo/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Raspberry: Budget Tracker";
+				INFOPLIST_KEY_CFBundleDisplayName = Raspberry;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

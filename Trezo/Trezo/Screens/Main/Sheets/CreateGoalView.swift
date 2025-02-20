@@ -16,7 +16,6 @@ struct CreateGoalView: View {
     @StateObject private var viewModel = GoalViewModel()
     
     @State private var showEmojiModal = false
-    
     @State private var selectedEmoji = ""
     
     @Binding var showModal: Bool
@@ -31,7 +30,6 @@ struct CreateGoalView: View {
         case pound = "Pound (£)"
         var id: Self { self }
     }
-    
     
     @State private var selectedCurrency: Currency = .rand
     
@@ -58,18 +56,7 @@ struct CreateGoalView: View {
     
     var body: some View {
         ZStack {
-            if viewModel.isLoading {
-                Color.black.opacity(0.5)
-                    .edgesIgnoringSafeArea(.all)
-                
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                    .scaleEffect(1.5) // Adjust size of the spinner
-            }
             VStack {
-                
-
-                
                 VStack(spacing: 20) {
                     HStack {
                         Button {
@@ -94,7 +81,6 @@ struct CreateGoalView: View {
                                     .strokeBorder(.gray, lineWidth: 1)
                                     .frame(width: 100, height: 100)
                                     .background(Color(.systemBackground))
-                                
                                 
                                 if selectedEmoji.isEmpty {
                                     Image(systemName: "plus")
@@ -122,12 +108,11 @@ struct CreateGoalView: View {
                             TextFieldWithLabel(text: $amount, title: "Goal Amount", placeholder: "10.000")
                                 .keyboardType(.numberPad)
                             
-                            
                             VStack(alignment: .leading) {
                                 Text("Currency")
                                 HStack {
                                     Text("Select Currency")
-                                    Spacer() // Pushes the currency picker to the right
+                                    Spacer()
                                     Picker(selection: $selectedCurrency, label: Text(selectedCurrency.rawValue)
                                         .foregroundColor(.blue)
                                         .underline()
@@ -136,8 +121,7 @@ struct CreateGoalView: View {
                                             Text(currency.rawValue).tag(currency)
                                         }
                                     }
-                                    
-                                    .pickerStyle(MenuPickerStyle()) // Dropdown style
+                                    .pickerStyle(MenuPickerStyle())
                                 }
                                 .padding()
                                 .frame(height: 65)
@@ -145,15 +129,13 @@ struct CreateGoalView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                             }
                             
-                            DatePicker("Deadline (Optional)",
-                                       selection: $date, displayedComponents: .date)
-                            .frame(height: 56)
+                            DatePicker("Deadline (Optional)", selection: $date, displayedComponents: .date)
+                                .frame(height: 56)
                             
+                            TextFieldWithLabel(text: $note, title: "Note (Optional)", placeholder: "Add your note.")
                             
-                            
-                            TextFieldWithLabel(text: $note, title: "Note Optional", placeholder: "Add your note.")
                             Text("Colour")
-                            HStack(alignment: .center, spacing: 16) { // You can adjust `spacing` as needed
+                            HStack(alignment: .center, spacing: 16) {
                                 ForEach(goalColors, id: \.self) { goalColor in
                                     Button {
                                         selectedColor = goalColor
@@ -167,7 +149,6 @@ struct CreateGoalView: View {
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal, 5)
-                            
                         }
                         
                         Spacer()
@@ -185,10 +166,18 @@ struct CreateGoalView: View {
                             
                             Button {
                                 if let amountDbl = Double(amount) {
-                                    viewModel.createNewGoal(goal: FirebaseGoal(coverImage: selectedEmoji, goalAmount: amountDbl, goalAmountContributed: [GoalAmountContributed()], goalColour: selectedColor, goalCurrency: selectedCurrency.rawValue, goalDeadline: date, goalName: goalName, goalNote: note, userId: userID!))
+                                    viewModel.createNewGoal(goal: FirebaseGoal(
+                                        coverImage: selectedEmoji,
+                                        goalAmount: amountDbl,
+                                        goalAmountContributed: [GoalAmountContributed()],
+                                        goalColour: selectedColor,
+                                        goalCurrency: selectedCurrency.rawValue,
+                                        goalDeadline: date,
+                                        goalName: goalName,
+                                        goalNote: note,
+                                        userId: userID!
+                                    ))
                                 }
-                                
-                                
                             } label: {
                                 Text("Save")
                                     .frame(maxWidth: .infinity)
@@ -196,12 +185,6 @@ struct CreateGoalView: View {
                             .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
                         }
                     }
-                    
-                    
-                    
-                    
-                    
-                    
                 }
                 .padding(.horizontal)
                 .onChange(of: viewModel.isCreated) { oldValue, newValue in
@@ -214,26 +197,29 @@ struct CreateGoalView: View {
                     }
                 }
                 .alert("Error", isPresented: $viewModel.showAlert) {
-                    Button("OK", role: .cancel) { } // Correct, single button
+                    Button("OK", role: .cancel) { }
                 } message: {
-                    Text(viewModel.errorMessage ?? "Unknown error") // Prevents force unwrap
+                    Text(viewModel.errorMessage ?? "Unknown error")
                 }
                 .sheet(isPresented: $showEmojiModal) {
                     EmojiGrid(showModal: $showEmojiModal, selectedEmoji: $selectedEmoji)
                 }
                 .padding()
                 .ignoresSafeArea(.keyboard)
-                
-                
             }
-//            .alert(item: $selectedShow) { show in
-//                Alert(title: Text(show.name), message: Text("Great choice!"), dismissButton: .cancel())
-//            }
+            .disabled(viewModel.isLoading) // Disable interactions when loading
+            
+            if viewModel.isLoading {
+                Color.black.opacity(0.5)
+                    .edgesIgnoringSafeArea(.all)
+                    .transition(.opacity) // Smooth fade-in effect
+                
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .scaleEffect(1.5)
+            }
         }
-        
-
-        
-        
+        .animation(.easeInOut, value: viewModel.isLoading) // Animate overlay transition
     }
 }
 

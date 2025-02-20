@@ -288,30 +288,18 @@ struct GoalView: View {
         }
         
         .sheet(isPresented:$showingDeleteSheet) {
-            ModalWithDescription(
+            DeleteModalView(
                 title: "Delete",
                 actionButtonText: "Yes, Delete",
                 id: id,
                 height: 350,
                 showingSheet: $showingDeleteSheet,
-                viewModel: viewModel,
-                middleSection: {
-                    Text("Sure you want to delete this goal?")
-                        .font(.system(size: 22, weight: .bold))
-                    
-                    Text(
-                        "You will lose all  savings progress. \n This action can not be undone."
-                    )
-                    .fontWeight(.light)
-                    .foregroundStyle(.gray)
-                })
+                viewModel: viewModel
+            )
         }
         
         .sheet(isPresented: $showingArchiveSheet){
-            ModalWithDescription(title: "Archive", actionButtonText: "Yes, Archive", id: id, height: 290, showingSheet: $showingArchiveSheet, viewModel: viewModel, archive: true, middleSection: {
-                Text("Sure you want to archive this goal?")
-                    .font(.system(size: 22, weight: .bold))
-            })
+            ArchiveModalView(title: "Archive", actionButtonText: "Yes, Archive", id: id, height: 290, showingSheet: $showingArchiveSheet, viewModel: viewModel, archive: true)
         }
         
         .sheet(isPresented: $isShowingSavingsSheet) {

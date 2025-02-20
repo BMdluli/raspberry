@@ -94,7 +94,7 @@ struct HomeView: View {
                     print("Home View On Appear called")
                 }
                 
-                .navigationTitle("Trezo")
+                .navigationTitle("Raspberry")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
