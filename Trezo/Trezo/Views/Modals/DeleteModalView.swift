@@ -15,22 +15,6 @@ struct DeleteModalView: View {
     @Binding var showingSheet: Bool
     @ObservedObject var viewModel: GoalViewModel
     
-    // Custom initializer
-    init(
-        title: String,
-        actionButtonText: String,
-        id: String,
-        height: CGFloat,
-        showingSheet: Binding<Bool>,
-        viewModel: GoalViewModel
-    ) {
-        self.title = title
-        self.actionButtonText = actionButtonText
-        self.id = id
-        self.height = height
-        self._showingSheet = showingSheet
-        self.viewModel = viewModel
-    }
     
     var body: some View {
         VStack(spacing: 30) {
@@ -67,6 +51,7 @@ struct DeleteModalView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
+                .disabled(viewModel.isLoading)
             }
         }
         .padding()

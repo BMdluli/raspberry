@@ -15,25 +15,7 @@ struct ArchiveModalView: View  {
     let archive: Bool?
     @Binding var showingSheet: Bool
     @ObservedObject var viewModel: GoalViewModel
-    
-    // Custom initializer
-    init(
-        title: String,
-        actionButtonText: String,
-        id: String,
-        height: CGFloat,
-        showingSheet: Binding<Bool>,
-        viewModel: GoalViewModel,
-        archive: Bool? = false
-    ) {
-        self.title = title
-        self.actionButtonText = actionButtonText
-        self.id = id
-        self.height = height
-        self._showingSheet = showingSheet
-        self.viewModel = viewModel
-        self.archive = archive
-    }
+
     
     var body: some View {
         VStack(spacing: 30) {
@@ -57,14 +39,13 @@ struct ArchiveModalView: View  {
                 .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
                 
                 Button {
-                    if actionButtonText == "Yes, Archive" ||  actionButtonText == "Yes, Unarchive"{
                         viewModel.archieveGoal(id: id, isArchieved: archive ?? false)
-                    }
                 } label: {
                     Text(actionButtonText)
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
+                .disabled(viewModel.isLoading)
             }
         }
         .padding()
