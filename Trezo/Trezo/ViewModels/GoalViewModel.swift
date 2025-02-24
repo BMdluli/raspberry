@@ -80,11 +80,13 @@ class GoalViewModel: ObservableObject {
     
     func createNewGoal(goal: FirebaseGoal) {
         
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
         
         
         GoalManager.shared.createGoal(goal: goal) { error in
             DispatchQueue.main.async {
-                self.isLoading = true
                 if let error = error {
                     self.showAlert = true
                     self.errorMessage = error.localizedDescription
@@ -101,17 +103,28 @@ class GoalViewModel: ObservableObject {
     }
     
     func updateGoal(id: String, updateGoal: UpdateGoalBody) {
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
         
         GoalManager.shared.updateGoal(documentId: id, goalBody: updateGoal) { result in
             switch result {
             case .success:
                 print("Goal updated successfully!")
                 self.isUpdated = true
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                }
             case .failure(let error):
                 self.showAlert = true
                 self.errorMessage = error.localizedDescription
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                }
             }
         }
+        
+        
     }
     
     func deleteGoal(id: String) {

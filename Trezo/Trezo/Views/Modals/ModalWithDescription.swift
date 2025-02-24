@@ -47,49 +47,51 @@ struct ModalWithDescription<Content: View>: View {
     }
     
     var body: some View {
-        VStack(spacing: 30) {
-            Text(title)
-                .font(.system(size: 22, weight: .bold))
-                .foregroundStyle(.red)
-            
-            Divider()
-            
-            middleSection
-            
-            Divider()
-            
-            HStack(spacing: 20) {
-                Button {
-                    showingSheet = false
-                } label: {
-                    Text("Cancel")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
-                
-                Button {
+        VStack {
+            ScrollView {
+                VStack(spacing: 30) {
+                    Image("icon-line")
+                        .resizable()
+                        .frame(width: 50, height: 24)
+                    Text(title)
+                        .font(.system(size: 22, weight: .bold))
                     
-                    if actionButtonText == "Add" {
-                        viewModel.addContribution(id: id, contribution: contribution!, remainingAmount: remainingAmount!)
-                    } else {
-                        viewModel.withdrawContribution(id: id, contribution: contribution!, totalContributions: amountContributed)
+                    Divider()
+                    
+                    middleSection
+                    
+                    Spacer()
+                    
+                    Divider()
+                    
+                    HStack(spacing: 20) {
+                        Button {
+                            showingSheet = false
+                        } label: {
+                            Text("Cancel")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
+                        
+                        Button {
+                            
+                            if actionButtonText == "Add" {
+                                viewModel.addContribution(id: id, contribution: contribution!, remainingAmount: remainingAmount!)
+                            } else {
+                                viewModel.withdrawContribution(id: id, contribution: contribution!, totalContributions: amountContributed)
+                            }
+                            
+                        } label: {
+                            Text(actionButtonText)
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
+                        .disabled(viewModel.isLoading)
                     }
-                    
-                } label: {
-                    Text(actionButtonText)
-                        .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
-                .disabled(viewModel.isLoading)
             }
         }
         .padding()
-        .presentationDetents([.height(height)])
-        .presentationDragIndicator(.visible)
-        // LOOK INTO
-        .alert(item: $viewModel.alertItem) { alertItem in
-            Alert(title: alertItem.title, message: alertItem.message, dismissButton: alertItem.dismissButton)
-        }
         
         .alert("Error", isPresented: $viewModel.showAlert) {
             Button("OK", role: .cancel) { } // Correct, single button

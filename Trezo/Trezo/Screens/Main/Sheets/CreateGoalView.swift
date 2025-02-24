@@ -221,7 +221,7 @@ struct CreateGoalView: View {
                     .scaleEffect(1.5)
             }
         }
-        .animation(.easeInOut, value: viewModel.isLoading) // Animate overlay transition
+        .animation(.easeInOut, value: viewModel.isLoading) 
     }
 }
 

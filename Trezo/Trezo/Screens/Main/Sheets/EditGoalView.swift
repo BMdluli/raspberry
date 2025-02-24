@@ -59,136 +59,152 @@ struct EditGoalView: View {
     
     var body: some View {
         ScrollView {
-        VStack {
-            VStack(spacing: 20) {
-                
-                HStack {
-                    Button {
-                        showModal = false
-                    } label: {
-                        Image(systemName: "xmark")
-                            .foregroundStyle(.treAlertnateBackground)
-                    }
-                    
-                    Spacer()
-                    Text("Edit Goal")
-                        .font(.system(size: 20, weight: .semibold))
-                    Spacer()
-                }
-
-                    Button {
-                        showEmojiModal = true
-                    } label: {
-                        VStack(spacing: 10) {
-                            ZStack {
-                                Circle()
-                                    .strokeBorder(.gray, lineWidth: 1)
-                                    .frame(width: 100, height: 100)
-                                    .background(Color(.systemBackground))
-                                
-                                Text(selectedEmoji)
-                                    .font(.system(size: 50))
-                                    .frame(width: 80, height: 80)
-                                
-                                
+            ZStack {
+                VStack {
+                    VStack(spacing: 20) {
+                        
+                        HStack {
+                            Button {
+                                showModal = false
+                            } label: {
+                                Image(systemName: "xmark")
+                                    .foregroundStyle(.treAlertnateBackground)
                             }
                             
-                            Text("Change Cover")
-                                .foregroundStyle(.gray)
+                            Spacer()
+                            Text("Edit Goal")
+                                .font(.system(size: 20, weight: .semibold))
+                            Spacer()
                         }
-                    }
-                    
-                    Divider()
-                    
-                    
-                    VStack(alignment: .leading, spacing: 20) {
-                        TextFieldWithLabel(text: $goalName, title: "Goal Name", placeholder: "e.g. Vacation, New car, etc.")
                         
-                        TextFieldWithLabel(text: $amount, title: "Goal Amount", placeholder: "10.000")
-                            .keyboardType(.numberPad)
+                        Button {
+                            showEmojiModal = true
+                        } label: {
+                            VStack(spacing: 10) {
+                                ZStack {
+                                    Circle()
+                                        .strokeBorder(.gray, lineWidth: 1)
+                                        .frame(width: 100, height: 100)
+                                        .background(Color(.systemBackground))
+                                    
+                                    Text(selectedEmoji)
+                                        .font(.system(size: 50))
+                                        .frame(width: 80, height: 80)
+                                    
+                                    
+                                }
+                                
+                                Text("Change Cover")
+                                    .foregroundStyle(.gray)
+                            }
+                        }
+                        
+                        Divider()
                         
                         
-                        VStack(alignment: .leading) {
-                            Text("Currency")
-                            HStack {
-                                Text("Select Currency")
-                                Spacer() // Pushes the currency picker to the right
-                                Picker(selection: $selectedCurrency, label: Text(selectedCurrency.rawValue)
-                                    .foregroundColor(.blue)
-                                    .underline()
-                                ) {
-                                    ForEach(Currency.allCases) { currency in
-                                        Text(currency.rawValue).tag(currency)
+                        VStack(alignment: .leading, spacing: 20) {
+                            TextFieldWithLabel(text: $goalName, title: "Goal Name", placeholder: "e.g. Vacation, New car, etc.")
+                            
+                            TextFieldWithLabel(text: $amount, title: "Goal Amount", placeholder: "10.000")
+                                .keyboardType(.numberPad)
+                            
+                            
+                            VStack(alignment: .leading) {
+                                Text("Currency")
+                                HStack {
+                                    Text("Select Currency")
+                                    Spacer() // Pushes the currency picker to the right
+                                    Picker(selection: $selectedCurrency, label: Text(selectedCurrency.rawValue)
+                                        .foregroundColor(.blue)
+                                        .underline()
+                                    ) {
+                                        ForEach(Currency.allCases) { currency in
+                                            Text(currency.rawValue).tag(currency)
+                                        }
+                                    }
+                                    
+                                    .pickerStyle(MenuPickerStyle()) // Dropdown style
+                                }
+                                .padding()
+                                .frame(height: 65)
+                                .background(.textField)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            
+                            DatePicker("Deadline (Optional)",
+                                       selection: $date, displayedComponents: .date)
+                            .frame(height: 56)
+                            
+                            
+                            
+                            TextFieldWithLabel(text: $note, title: "Note Optional", placeholder: "Add your note.")
+                            Text("Colour")
+                            HStack(alignment: .center, spacing: 16) { // You can adjust `spacing` as needed
+                                ForEach(goalColors, id: \.self) { goalColor in
+                                    Button {
+                                        selectedColor = goalColor
+                                    } label: {
+                                        Circle()
+                                            .stroke(selectedColor == goalColor ? .gray : .radioButtonBackground, lineWidth: 8)
+                                            .fill(Color(goalColor))
+                                            .frame(width: 50, height: 50)
                                     }
                                 }
-                                
-                                .pickerStyle(MenuPickerStyle()) // Dropdown style
                             }
-                            .padding()
-                            .frame(height: 65)
-                            .background(.textField)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 5)
+                            
                         }
                         
-                        DatePicker("Deadline (Optional)",
-                                   selection: $date, displayedComponents: .date)
-                        .frame(height: 56)
+                        Spacer()
                         
+                        Divider()
                         
-                        
-                        TextFieldWithLabel(text: $note, title: "Note Optional", placeholder: "Add your note.")
-                        Text("Colour")
-                        HStack(alignment: .center, spacing: 16) { // You can adjust `spacing` as needed
-                            ForEach(goalColors, id: \.self) { goalColor in
-                                Button {
-                                    selectedColor = goalColor
-                                } label: {
-                                    Circle()
-                                        .stroke(selectedColor == goalColor ? .gray : .radioButtonBackground, lineWidth: 8)
-                                        .fill(Color(goalColor))
-                                        .frame(width: 50, height: 50)
+                        HStack(spacing: 30) {
+                            Button {
+                                showModal = false
+                            } label: {
+                                Text("Cancel")
+                                    .frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
+                            
+                            Button {
+                                if let amountDbl = Double(amount) {
+                                    viewModel.updateGoal(id: id, updateGoal: UpdateGoalBody(coverImage: selectedEmoji, goalName: goalName, goalAmount: amountDbl, goalCurrency: selectedCurrency.rawValue, goalDeadline: date, goalColour: selectedColor, goalNote: note))
                                 }
+                                
+                                
+                                
+                                
+                            } label: {
+                                Text("Save")
+                                    .frame(maxWidth: .infinity)
                             }
+                            .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
+                            .disabled(viewModel.isLoading)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 5)
+                        
+
+                        
                         
                     }
-                    
-                    Spacer()
-                    
-                    Divider()
-                    
-                    HStack(spacing: 30) {
-                        Button {
-                            showModal = false
-                        } label: {
-                            Text("Cancel")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
-                        
-                        Button {
-                            if let amountDbl = Double(amount) {
-                                viewModel.updateGoal(id: id, updateGoal: UpdateGoalBody(coverImage: selectedEmoji, goalName: goalName, goalAmount: amountDbl, goalCurrency: selectedCurrency.rawValue, goalDeadline: date, goalColour: selectedColor, goalNote: note))
-                            }
-                            
-                            
-                            
-                            
-                        } label: {
-                            Text("Save")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
-                        .disabled(viewModel.isLoading)
-                    }
+
                 }
                 
-                
+                if viewModel.isLoading {
+                    Color.black.opacity(0.5)
+                        .edgesIgnoringSafeArea(.all)
+                        .transition(.opacity) // Smooth fade-in effect
+                    
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(1.5)
+                }
                 
                 
             }
+            .animation(.easeInOut, value: viewModel.isLoading)
             .padding(.horizontal)
             .onChange(of: viewModel.isUpdated) { oldValue, newValue in
                 print("onChange triggered: isUpdated changed from \(oldValue) to \(newValue)")

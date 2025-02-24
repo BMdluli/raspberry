@@ -12,6 +12,7 @@ struct GoalView: View {
     
     //    @Binding var shouldRefreshHome: Bool
     @Binding var shouldRefresh: Bool
+    @State var changeOccured: Bool = false
     var id: String
     @State private var selectedView = 0
     @StateObject private var viewModel = GoalViewModel()
@@ -212,6 +213,7 @@ struct GoalView: View {
                 )
                 if newValue {
                     showingDeleteSheet = false
+                    changeOccured = true
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         viewModel.isDeleted = false
@@ -232,7 +234,7 @@ struct GoalView: View {
                     amount = ""
                     note = ""
                     date = Date.now
-                    
+                    changeOccured = true
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         viewModel.isUpdated = false
@@ -374,14 +376,17 @@ struct GoalView: View {
                             placeholder: "Add your note."
                         )
                     })
+                .ignoresSafeArea(.keyboard)
                 
             }
             .onAppear() {
                 viewModel.fetchGoal(id: id)
             }
             .onDisappear() {
-                print("called")
-                shouldRefresh = true
+                if changeOccured {
+                    shouldRefresh = true
+                }
+                    
             }
             
         }
