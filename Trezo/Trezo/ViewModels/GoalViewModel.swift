@@ -22,6 +22,13 @@ class GoalViewModel: ObservableObject {
     @Published var showAlert: Bool = false
     @Published var refresh: Bool = false
     
+    @Published var total: Double = 0
+    @Published var percentage: Double = 0
+    @Published var formatted: String = ""
+    @Published var remainingAmount: Double = 0
+    @Published var amountContributed: Double = 0
+    
+    
     private var db = Firestore.firestore()
     
     func fetchGoals(archived: Bool) async {
@@ -50,7 +57,7 @@ class GoalViewModel: ObservableObject {
             self.allDataFetched = true
         }
     }
-
+    
     
     
     func fetchGoal(id: String) {
@@ -67,6 +74,7 @@ class GoalViewModel: ObservableObject {
             } else if let goal = goal {
                 self.goal = goal
                 self.isLoading = false
+                self.calculateGoalValues()
             } else {
                 self.showAlert = true
                 self.errorMessage = "Goal not found"
@@ -97,7 +105,7 @@ class GoalViewModel: ObservableObject {
                     self.isLoading = false
                 }
             }
-
+            
         }
         
     }
@@ -217,6 +225,26 @@ class GoalViewModel: ObservableObject {
         }
     }
     
+    private func calculateGoalValues() {
+        total = goal.goalAmountContributed.count > 0 ? goal.goalAmountContributed.reduce(
+            0
+        ) {
+            $0 + $1.amount
+        } : 0
+        percentage =  total > 0 ? total / goal.goalAmount : 0
+        formatted = goal.goalDeadline.formatted(
+            .dateTime.day().month().year()
+        )
+        remainingAmount = goal.goalAmount - goal.goalAmountContributed
+            .reduce(
+                0
+            ) { $0 + $1.amount
+            }
+        
+        amountContributed = goal.goalAmountContributed.reduce(0) { $0 + $1.amount
+        }
+    }
+    
 }
 
 extension CreateGoal {
@@ -239,7 +267,7 @@ extension CreateGoal {
         if userId.isEmpty {
             return "User ID is required."
         }
-
+        
         return nil // Validation passed
     }
 }

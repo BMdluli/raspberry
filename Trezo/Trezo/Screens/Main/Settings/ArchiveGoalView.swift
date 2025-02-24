@@ -30,23 +30,7 @@ struct ArchiveGoalView: View {
     @State private var shouldRefetch = false
     
     var body: some View {
-        let total = viewModel.goal.goalAmountContributed.count > 0 ? viewModel.goal.goalAmountContributed.reduce(
-            0
-        ) {
-            $0 + $1.amount
-        } : 0
-        let percentage =  total > 0 ? total / viewModel.goal.goalAmount : 0
-        let formatted = viewModel.goal.goalDeadline.formatted(
-            .dateTime.day().month().year()
-        )
-        let remainingAmount = viewModel.goal.goalAmount - viewModel.goal.goalAmountContributed
-            .reduce(
-                0
-            ) { $0 + $1.amount
-            }
-        
-        let amountContributed = viewModel.goal.goalAmountContributed.reduce(0) { $0 + $1.amount
-        }
+
         
         NavigationStack {
             
@@ -90,7 +74,7 @@ struct ArchiveGoalView: View {
                                         
                                         ZStack {
                                             CircularProgressView(
-                                                progress: percentage,
+                                                progress: viewModel.percentage,
                                                 colour: viewModel.goal.goalColour
                                             )
                                             .frame(width: 230, height: 230)
@@ -111,7 +95,7 @@ struct ArchiveGoalView: View {
                                         .padding(.top, 30)
                                         
                                         Text(
-                                            "\(String(format: "%.f", percentage * 100))%"
+                                            "\(String(format: "%.f", viewModel.percentage * 100))%"
                                         )
                                         .font(.system(size: 26, weight: .bold))
                                         
@@ -121,11 +105,11 @@ struct ArchiveGoalView: View {
                                             
                                             HStack(spacing: 20) {
                                                 DetailView(
-                                                    amount: remainingAmount,
+                                                    amount: viewModel.goal.goalAmount - viewModel.remainingAmount,
                                                     subTitle: "Saved")
                                                 Divider()
                                                 DetailView(
-                                                    amount: viewModel.goal.goalAmount - amountContributed ,
+                                                    amount: viewModel.goal.goalAmount - viewModel.amountContributed,
                                                     subTitle: "Remaining")
                                                 Divider()
                                                 DetailView(
@@ -145,7 +129,7 @@ struct ArchiveGoalView: View {
                                         VStack(alignment: .leading) {
                                             GoalDetailTitle(text: "Deadline")
                                             
-                                            Text(formatted)
+                                            Text(viewModel.formatted)
                                         }
                                     }
                                     .padding(.all)
@@ -321,7 +305,7 @@ struct ArchiveGoalView: View {
                     note: note
                 ),
                 showingSheet: $isShowingSavingsSheet,
-                viewModel: viewModel, remainingAmount: remainingAmount ,
+                viewModel: viewModel, remainingAmount: viewModel.remainingAmount ,
                 
                 middleSection: {
                     
@@ -361,7 +345,7 @@ struct ArchiveGoalView: View {
                 ),
                 showingSheet: $isShowingWithdrawSheet,
                 viewModel: viewModel ,
-                amountContributed: amountContributed,
+                amountContributed: viewModel.amountContributed,
                 middleSection: {
                     
                     TextFieldWithLabel(
