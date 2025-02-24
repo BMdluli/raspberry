@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ArchiveModalView: View  {
+struct UnarchiveModalView: View  {
     let title: String
     let actionButtonText: String
     let id: String
@@ -24,8 +24,14 @@ struct ArchiveModalView: View  {
             
             Divider()
             
-            Text("Sure you want to archive this goal?")
+            Text("Sure you want to delete this goal?")
                 .font(.system(size: 22, weight: .bold))
+            
+            Text(
+                "You will lose all  savings progress. \n This action can not be undone."
+            )
+            .fontWeight(.light)
+            .foregroundStyle(.gray)
             
             Divider()
             
@@ -39,14 +45,13 @@ struct ArchiveModalView: View  {
                 .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
                 
                 Button {
-                    if actionButtonText == "Yes, Archive" ||  actionButtonText == "Yes, Unarchive"{
                         viewModel.archieveGoal(id: id, isArchieved: archive ?? false)
-                    }
                 } label: {
                     Text(actionButtonText)
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
+                .disabled(viewModel.isLoading)
             }
         }
         .padding()

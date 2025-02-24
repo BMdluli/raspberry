@@ -14,7 +14,6 @@ struct ModalWithDescription<Content: View>: View {
     let id: String
     let height: CGFloat
     let contribution: GoalContribution?
-    let archive: Bool?
     let remainingAmount: Double?
     let amountContributed: Double
     @Binding var showingSheet: Bool
@@ -42,7 +41,6 @@ struct ModalWithDescription<Content: View>: View {
         self.contribution = contribution
         self._showingSheet = showingSheet
         self.viewModel = viewModel
-        self.archive = archive
         self.remainingAmount = remainingAmount
         self.amountContributed = amountContributed
         self.middleSection = middleSection()
@@ -70,22 +68,19 @@ struct ModalWithDescription<Content: View>: View {
                 .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
                 
                 Button {
-                    if contribution != nil {
-                        if actionButtonText == "Add" {
-                            viewModel.addContribution(id: id, contribution: contribution!, remainingAmount: remainingAmount!)
-                        } else {
-                            viewModel.withdrawContribution(id: id, contribution: contribution!, totalContributions: amountContributed)
-                        }
-                    } else if actionButtonText == "Yes, Archive" ||  actionButtonText == "Yes, Unarchive"{
-                        viewModel.archieveGoal(id: id, isArchieved: archive ?? false)
-                    } else if actionButtonText == "Yes, Delete" {
-                        viewModel.deleteGoal(id: id)
+                    
+                    if actionButtonText == "Add" {
+                        viewModel.addContribution(id: id, contribution: contribution!, remainingAmount: remainingAmount!)
+                    } else {
+                        viewModel.withdrawContribution(id: id, contribution: contribution!, totalContributions: amountContributed)
                     }
+                    
                 } label: {
                     Text(actionButtonText)
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
+                .disabled(viewModel.isLoading)
             }
         }
         .padding()
@@ -106,5 +101,5 @@ struct ModalWithDescription<Content: View>: View {
 
 
 #Preview {
-//    ModalWithDescription<<#Content: View#>>()
+    //    ModalWithDescription<<#Content: View#>>()
 }

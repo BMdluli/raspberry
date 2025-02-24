@@ -10,6 +10,8 @@ import SwiftUI
 struct ArchiveGoalView: View {
     @Environment(\.dismiss) var dismiss
     
+    @Binding var shouldRefresh: Bool
+    
     var id: String
     @State private var selectedView = 0
     @StateObject private var viewModel = GoalViewModel()
@@ -37,12 +39,16 @@ struct ArchiveGoalView: View {
         let formatted = viewModel.goal.goalDeadline.formatted(
             .dateTime.day().month().year()
         )
+        let remainingAmount = viewModel.goal.goalAmount - viewModel.goal.goalAmountContributed
+            .reduce(
+                0
+            ) { $0 + $1.amount
+            }
+        
+        let amountContributed = viewModel.goal.goalAmountContributed.reduce(0) { $0 + $1.amount
+        }
         
         NavigationStack {
-            //            if viewModel.isLoading {
-            //                LoadingOverlay()
-            //            } else {
-            
             
             if viewModel.isLoading {
                 LoadingOverlay()
@@ -115,19 +121,11 @@ struct ArchiveGoalView: View {
                                             
                                             HStack(spacing: 20) {
                                                 DetailView(
-                                                    amount: viewModel.goal.goalAmountContributed
-                                                        .reduce(
-                                                            0
-                                                        ) { $0 + $1.amount
-                                                        },
+                                                    amount: remainingAmount,
                                                     subTitle: "Saved")
                                                 Divider()
                                                 DetailView(
-                                                    amount: viewModel.goal.goalAmount - viewModel.goal.goalAmountContributed
-                                                        .reduce(
-                                                            0
-                                                        ) { $0 + $1.amount
-                                                        },
+                                                    amount: viewModel.goal.goalAmount - amountContributed ,
                                                     subTitle: "Remaining")
                                                 Divider()
                                                 DetailView(
@@ -192,6 +190,7 @@ struct ArchiveGoalView: View {
                                     textColor: .white
                                 )
                             )
+                            .disabled(viewModel.isLoading)
                         }
                     }
                     .padding()
@@ -207,7 +206,9 @@ struct ArchiveGoalView: View {
         .onAppear() {
             viewModel.fetchGoal(id: id)
         }
-        
+        .onDisappear() {
+            shouldRefresh = true
+        }
         .onChange(of: viewModel.isDeleted) {
             oldValue,
             newValue in
@@ -294,30 +295,18 @@ struct ArchiveGoalView: View {
         }
         
         .sheet(isPresented:$showingDeleteSheet) {
-            ModalWithDescription(
+            DeleteModalView(
                 title: "Delete",
                 actionButtonText: "Yes, Delete",
                 id: id,
                 height: 350,
                 showingSheet: $showingDeleteSheet,
-                viewModel: viewModel,
-                middleSection: {
-                    Text("Sure you want to delete this goal?")
-                        .font(.system(size: 22, weight: .bold))
-                    
-                    Text(
-                        "You will lose all  savings progress. \n This action can not be undone."
-                    )
-                    .fontWeight(.light)
-                    .foregroundStyle(.gray)
-                })
+                viewModel: viewModel
+            )
         }
         
         .sheet(isPresented: $showingArchiveSheet){
-            ModalWithDescription(title: "Unarchive", actionButtonText: "Yes, Unarchive", id: id, height: 290, showingSheet: $showingArchiveSheet, viewModel: viewModel, archive: false, middleSection: {
-                Text("Sure you want to unarchive this goal?")
-                    .font(.system(size: 22, weight: .bold))
-            })
+            UnarchiveModalView(title: "Archive", actionButtonText: "Yes, Unarchive", id: id, height: 290, archive: false, showingSheet: $showingArchiveSheet, viewModel: viewModel)
         }
         
         .sheet(isPresented: $isShowingSavingsSheet) {
@@ -332,7 +321,8 @@ struct ArchiveGoalView: View {
                     note: note
                 ),
                 showingSheet: $isShowingSavingsSheet,
-                viewModel: viewModel ,
+                viewModel: viewModel, remainingAmount: remainingAmount ,
+                
                 middleSection: {
                     
                     TextFieldWithLabel(
@@ -355,11 +345,6 @@ struct ArchiveGoalView: View {
                 })
             
         }
-        .alert("Error", isPresented: $viewModel.showAlert) {
-            Button("OK", role: .cancel) { } // Correct, single button
-        } message: {
-            Text(viewModel.errorMessage ?? "Unknown error") // Prevents force unwrap
-        }
         
         .sheet(isPresented: $isShowingWithdrawSheet) {
             let convertedDouble = Double(amount) ?? 0
@@ -376,6 +361,7 @@ struct ArchiveGoalView: View {
                 ),
                 showingSheet: $isShowingWithdrawSheet,
                 viewModel: viewModel ,
+                amountContributed: amountContributed,
                 middleSection: {
                     
                     TextFieldWithLabel(
@@ -399,23 +385,14 @@ struct ArchiveGoalView: View {
             
         }
         
-        
-        //        if viewModel.isLoading {
-        //            Color.black.opacity(0.5)
-        //                .edgesIgnoringSafeArea(.all)
-        //
-        //            ProgressView()
-        //                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-        //                .scaleEffect(1.5) // Adjust size of the spinner
-        //        }
-        
     }
     
     
 }
 
 #Preview {
+    @Previewable @State var refresh = false
     NavigationStack {
-        GoalView(id: "4v6crbEehgoA9jARop3v")
+//        GoalView(id: "4v6crbEehgoA9jARop3v")
     }
 }

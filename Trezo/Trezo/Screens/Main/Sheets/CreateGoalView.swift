@@ -56,6 +56,7 @@ struct CreateGoalView: View {
     
     var body: some View {
         ZStack {
+            ScrollView {
             VStack {
                 VStack(spacing: 20) {
                     HStack {
@@ -101,7 +102,7 @@ struct CreateGoalView: View {
                     
                     Divider()
                     
-                    ScrollView {
+                    
                         VStack(alignment: .leading, spacing: 20) {
                             TextFieldWithLabel(text: $goalName, title: "Goal Name", placeholder: "e.g. Vacation, New car, etc.")
                             
@@ -183,6 +184,7 @@ struct CreateGoalView: View {
                                     .frame(maxWidth: .infinity)
                             }
                             .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
+                            .disabled(viewModel.isLoading)
                         }
                     }
                 }

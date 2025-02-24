@@ -58,7 +58,7 @@ struct EditGoalView: View {
     
     
     var body: some View {
-        
+        ScrollView {
         VStack {
             VStack(spacing: 20) {
                 
@@ -75,7 +75,7 @@ struct EditGoalView: View {
                         .font(.system(size: 20, weight: .semibold))
                     Spacer()
                 }
-                ScrollView {
+
                     Button {
                         showEmojiModal = true
                     } label: {
@@ -181,6 +181,7 @@ struct EditGoalView: View {
                                 .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
+                        .disabled(viewModel.isLoading)
                     }
                 }
                 

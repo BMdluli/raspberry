@@ -20,6 +20,7 @@ class GoalViewModel: ObservableObject {
     @Published var alertItem: AlertItem? // For handling alerts
     @Published var errorMessage: String? = nil
     @Published var showAlert: Bool = false
+    @Published var refresh: Bool = false
     
     private var db = Firestore.firestore()
     
@@ -158,8 +159,10 @@ class GoalViewModel: ObservableObject {
     
     
     func withdrawContribution(id: String, contribution: GoalContribution, totalContributions: Double) {
+        print("Withdraw called")
         
         if totalContributions - abs(contribution.amount) < 0 {
+            print("Check called")
             
             DispatchQueue.main.async {
                 self.showAlert = true
