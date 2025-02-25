@@ -86,7 +86,7 @@ class GoalViewModel: ObservableObject {
     }
     
     
-    func createNewGoal(goal: FirebaseGoal) {
+    func createNewGoal(goal: CreateFirebaseGoal) {
         
         DispatchQueue.main.async {
             self.isLoading = true
@@ -226,24 +226,15 @@ class GoalViewModel: ObservableObject {
     }
     
     private func calculateGoalValues() {
-        total = goal.goalAmountContributed.count > 0 ? goal.goalAmountContributed.reduce(
-            0
-        ) {
-            $0 + $1.amount
-        } : 0
-        percentage =  total > 0 ? total / goal.goalAmount : 0
-        formatted = goal.goalDeadline.formatted(
-            .dateTime.day().month().year()
-        )
-        remainingAmount = goal.goalAmount - goal.goalAmountContributed
-            .reduce(
-                0
-            ) { $0 + $1.amount
-            }
+        let contributions = goal.goalAmountContributed ?? [] // Ensure it's not nil
         
-        amountContributed = goal.goalAmountContributed.reduce(0) { $0 + $1.amount
-        }
+        total = contributions.reduce(0) { $0 + $1.amount }
+        percentage = total > 0 ? total / goal.goalAmount : 0
+        formatted = goal.goalDeadline.formatted(.dateTime.day().month().year())
+        remainingAmount = goal.goalAmount - total
+        amountContributed = total
     }
+
     
 }
 

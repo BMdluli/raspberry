@@ -17,12 +17,6 @@ class AuthViewModel: ObservableObject {
     
     private let auth = Auth.auth()
     
-    //    var isSignedIn: Bool {
-    //        return user != nil
-    //    }
-    //
-    
-    
     init() {
         // Check if the user is already signed in when the app loads
         self.isSignedIn = Auth.auth().currentUser != nil

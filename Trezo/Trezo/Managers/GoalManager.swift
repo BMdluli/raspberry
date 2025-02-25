@@ -96,7 +96,7 @@ class GoalManager {
         }
     }
     
-    func createGoal(goal: FirebaseGoal, completion: @escaping (Error?) -> Void) {
+    func createGoal(goal: CreateFirebaseGoal, completion: @escaping (Error?) -> Void) {
         // Reference to Firestore
         let db = Firestore.firestore()
         
