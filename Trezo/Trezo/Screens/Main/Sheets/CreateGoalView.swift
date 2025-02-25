@@ -167,10 +167,9 @@ struct CreateGoalView: View {
                             
                             Button {
                                 if let amountDbl = Double(amount) {
-                                    viewModel.createNewGoal(goal: FirebaseGoal(
+                                    viewModel.createNewGoal(goal: CreateFirebaseGoal(
                                         coverImage: selectedEmoji,
                                         goalAmount: amountDbl,
-                                        goalAmountContributed: [GoalAmountContributed()],
                                         goalColour: selectedColor,
                                         goalCurrency: selectedCurrency.rawValue,
                                         goalDeadline: date,

@@ -13,10 +13,8 @@ struct GoalCardView: View {
     
     
     var body: some View {
-        let total = goal.goalAmountContributed.count > 0 ? goal.goalAmountContributed.reduce(0) { $0 + $1.amount } : 0
-        
+        let total = (goal.goalAmountContributed ?? []).reduce(0) { $0 + $1.amount }
         let percentage = total > 0 ? total / goal.goalAmount : 0
-        
         HStack(spacing: 20) {
             
             ZStack {

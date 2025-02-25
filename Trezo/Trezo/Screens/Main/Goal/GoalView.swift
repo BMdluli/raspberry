@@ -53,19 +53,15 @@ struct GoalView: View {
                                 if selectedView == 1
                                 {
                                     LazyVStack {
-                                        if viewModel.goal.goalAmountContributed.count > 0 {
-                                            ForEach(
-                                                viewModel.goal.goalAmountContributed,
-                                                id: \.self
-                                            ){ contribution in
+                                        if (viewModel.goal.goalAmountContributed ?? []).count > 0 {
+                                            ForEach(viewModel.goal.goalAmountContributed ?? [], id: \.self) { contribution in
                                                 ContributionCardView(
                                                     date: contribution.date,
                                                     note: contribution.note,
                                                     amount: contribution.amount
                                                 )
                                             }
-                                        }
-                                    }
+                                        }                                    }
                                 }
                                 else {
                                     VStack {
@@ -291,7 +287,7 @@ struct GoalView: View {
                     title: "Add Savings",
                     actionButtonText: "Add",
                     id: id,
-                    height: 605,
+                    height: 500,
                     contribution: GoalContribution(
                         amount: Double(amount) ?? 0,
                         date: date,
@@ -308,6 +304,7 @@ struct GoalView: View {
                             placeholder: "10.000"
                         )
                         .keyboardType(.numberPad)
+                        .ignoresSafeArea(.keyboard, edges: .bottom)
                         
                         
                         DatePicker("Deadline (Optional)",
@@ -319,6 +316,7 @@ struct GoalView: View {
                             title: "Note Optional",
                             placeholder: "Add your note."
                         )
+                        .ignoresSafeArea(.keyboard, edges: .bottom)
                     })
                 
             }
@@ -330,7 +328,7 @@ struct GoalView: View {
                     title: "Withdraw",
                     actionButtonText: "Withdraw",
                     id: id,
-                    height: 605,
+                    height: 500,
                     contribution: GoalContribution(
                         amount: -convertedDouble,
                         date: date,

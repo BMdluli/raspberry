@@ -59,9 +59,9 @@ struct DeleteModalView: View {
         .presentationDragIndicator(.visible)
         
         .alert("Error", isPresented: $viewModel.showAlert) {
-            Button("OK", role: .cancel) { } // Correct, single button
+            Button("OK", role: .cancel) { } 
         } message: {
-            Text(viewModel.errorMessage ?? "Unknown error") // Prevents force unwrap
+            Text(viewModel.errorMessage ?? "Unknown error")
         }
     }
 }

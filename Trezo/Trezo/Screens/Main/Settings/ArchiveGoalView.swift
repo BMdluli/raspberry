@@ -53,11 +53,8 @@ struct ArchiveGoalView: View {
                             if selectedView == 1
                             {
                                 LazyVStack {
-                                    if viewModel.goal.goalAmountContributed.count > 0 {
-                                        ForEach(
-                                            viewModel.goal.goalAmountContributed,
-                                            id: \.self
-                                        ){ contribution in
+                                    if (viewModel.goal.goalAmountContributed ?? []).count > 0 {
+                                        ForEach(viewModel.goal.goalAmountContributed ?? [], id: \.self) { contribution in
                                             ContributionCardView(
                                                 date: contribution.date,
                                                 note: contribution.note,

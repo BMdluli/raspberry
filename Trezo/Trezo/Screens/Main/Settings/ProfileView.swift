@@ -12,6 +12,7 @@ struct ProfileView: View {
     @StateObject var authViewModel = AuthViewModel()
     @State private var isLoggedOut = false // State to track logout
     @Binding var showModal: Bool
+    @State private var isPaywallPresented = false
 
     var body: some View {
         NavigationStack {
@@ -22,13 +23,12 @@ struct ProfileView: View {
                         Section {
                             Button {
                                 print("Clicked")
-//                                showPaywall = true
                             } label: {
                                 HStack(spacing: 20) {
                                     AnimatedSparklesView()
                                     
                                     VStack(alignment: .leading) {
-                                        Text("Upgrade Plan Now!")
+                                        Text("COMING SOON")
                                             .foregroundStyle(.white)
                                             .font(.headline)
                                         Text("Enjoy all the benefits")
@@ -88,11 +88,9 @@ struct ProfileView: View {
                         }
                     }
                 }
-                // Show ContentView as fullscreen modal when logged out
                 .fullScreenCover(isPresented: $isLoggedOut) {
-                    ContentView() // Replace this with the appropriate view for logged-out users
+                    ContentView()
                 }
-                .presentPaywallIfNeeded(requiredEntitlementIdentifier: "Pro")
             }
     }
 }

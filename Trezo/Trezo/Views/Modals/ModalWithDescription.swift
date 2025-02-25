@@ -49,10 +49,7 @@ struct ModalWithDescription<Content: View>: View {
     var body: some View {
         VStack {
             ScrollView {
-                VStack(spacing: 30) {
-                    Image("icon-line")
-                        .resizable()
-                        .frame(width: 50, height: 24)
+                VStack(spacing: 10) {
                     Text(title)
                         .font(.system(size: 22, weight: .bold))
                     
@@ -74,13 +71,11 @@ struct ModalWithDescription<Content: View>: View {
                         .buttonStyle(TreButtonStyle(backgroundColor: .treLightGray, textColor: .primaryPurple))
                         
                         Button {
-                            
                             if actionButtonText == "Add" {
                                 viewModel.addContribution(id: id, contribution: contribution!, remainingAmount: remainingAmount!)
                             } else {
                                 viewModel.withdrawContribution(id: id, contribution: contribution!, totalContributions: amountContributed)
                             }
-                            
                         } label: {
                             Text(actionButtonText)
                                 .frame(maxWidth: .infinity)
@@ -90,13 +85,18 @@ struct ModalWithDescription<Content: View>: View {
                     }
                 }
             }
+            .scrollDismissesKeyboard(.interactively) // Allows scrolling to dismiss the keyboard
         }
         .padding()
+        .presentationDetents([.height(height)])
+        .presentationDragIndicator(.visible)
+        .ignoresSafeArea(.keyboard, edges: .bottom) // Prevents keyboard from pushing up
+        .interactiveDismissDisabled() // Prevents sheet from being dismissed unintentionally
         
         .alert("Error", isPresented: $viewModel.showAlert) {
-            Button("OK", role: .cancel) { } // Correct, single button
+            Button("OK", role: .cancel) { }
         } message: {
-            Text(viewModel.errorMessage ?? "Unknown error") // Prevents force unwrap
+            Text(viewModel.errorMessage ?? "Unknown error")
         }
     }
 }

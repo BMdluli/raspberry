@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import RevenueCat
 
 @main
 struct TrezoApp: App {
