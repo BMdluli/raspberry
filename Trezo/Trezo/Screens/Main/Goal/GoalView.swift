@@ -101,16 +101,21 @@ struct GoalView: View {
                                                 
                                                 HStack(spacing: 20) {
                                                     DetailView(
-                                                        amount: viewModel.goal.goalAmount - viewModel.remainingAmount,
-                                                        subTitle: "Saved")
+                                                        amount: viewModel.amountContributed,
+                                                        subTitle: "Saved",
+                                                    goalCurrency: viewModel.goal.goalCurrency
+                                                    )
                                                     Divider()
                                                     DetailView(
-                                                        amount: viewModel.goal.goalAmount - viewModel.amountContributed ,
-                                                        subTitle: "Remaining")
+                                                        amount: viewModel.remainingAmount,
+                                                        subTitle: "Remaining",
+                                                    goalCurrency: viewModel.goal.goalCurrency
+                                                        )
                                                     Divider()
                                                     DetailView(
                                                         amount: viewModel.goal.goalAmount,
-                                                        subTitle: "Goal"
+                                                        subTitle: "Goal",
+                                                        goalCurrency: viewModel.goal.goalCurrency
                                                     )
                                                 }
                                                 .frame(height: 60)
@@ -187,9 +192,6 @@ struct GoalView: View {
             .onChange(of: viewModel.isDeleted) {
                 oldValue,
                 newValue in
-                print(
-                    "onChange triggered: isDeleted changed from \(oldValue) to \(newValue)"
-                )
                 if newValue {
                     showingDeleteSheet = false
                     changeOccured = true
@@ -378,10 +380,11 @@ struct GoalView: View {
 struct DetailView: View {
     let amount: Double
     let subTitle: String
+    let goalCurrency: String
     
     var body: some View {
         VStack {
-            Text(String(format: "R%.f", amount))
+            Text(String(format: "\(goalCurrency)%.f", amount))
                 .font(.system(size: 20, weight: .medium))
                 .minimumScaleFactor(0.6)
             Text(subTitle)

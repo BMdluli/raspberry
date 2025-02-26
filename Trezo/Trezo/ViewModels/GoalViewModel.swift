@@ -61,7 +61,6 @@ class GoalViewModel: ObservableObject {
     
     
     func fetchGoal(id: String) {
-        print("id \(id)")
         self.isLoading = true
         
         
@@ -100,7 +99,6 @@ class GoalViewModel: ObservableObject {
                     self.errorMessage = error.localizedDescription
                     self.isLoading = false
                 } else {
-                    print("Goal successfully created!")
                     self.isCreated = true
                     self.isLoading = false
                 }
@@ -118,7 +116,6 @@ class GoalViewModel: ObservableObject {
         GoalManager.shared.updateGoal(documentId: id, goalBody: updateGoal) { result in
             switch result {
             case .success:
-                print("Goal updated successfully!")
                 self.isUpdated = true
                 DispatchQueue.main.async {
                     self.isLoading = false
@@ -143,7 +140,6 @@ class GoalViewModel: ObservableObject {
                     self.errorMessage = error.localizedDescription
                 }
             } else {
-                print("Goal successfully deleted!")
                 DispatchQueue.main.async {
                     self.isDeleted = true
                 }
@@ -165,7 +161,6 @@ class GoalViewModel: ObservableObject {
         GoalManager.shared.addGoalContribution(id: id, contribution: contribution) { result in
             switch result {
             case .success:
-                print("Contribution appended successfully!")
                 self.isUpdated = true
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -180,10 +175,8 @@ class GoalViewModel: ObservableObject {
     
     
     func withdrawContribution(id: String, contribution: GoalContribution, totalContributions: Double) {
-        print("Withdraw called")
         
         if totalContributions - abs(contribution.amount) < 0 {
-            print("Check called")
             
             DispatchQueue.main.async {
                 self.showAlert = true
@@ -195,7 +188,6 @@ class GoalViewModel: ObservableObject {
         GoalManager.shared.addGoalContribution(id: id, contribution: contribution) { result in
             switch result {
             case .success:
-                print("Contribution appended successfully!")
                 self.isUpdated = true
             case .failure(let error):
                 DispatchQueue.main.async {

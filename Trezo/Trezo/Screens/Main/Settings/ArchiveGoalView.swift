@@ -102,16 +102,21 @@ struct ArchiveGoalView: View {
                                             
                                             HStack(spacing: 20) {
                                                 DetailView(
-                                                    amount: viewModel.goal.goalAmount - viewModel.remainingAmount,
-                                                    subTitle: "Saved")
+                                                    amount: viewModel.amountContributed,
+                                                    subTitle: "Saved",
+                                                goalCurrency: viewModel.goal.goalCurrency
+                                                )
                                                 Divider()
                                                 DetailView(
-                                                    amount: viewModel.goal.goalAmount - viewModel.amountContributed,
-                                                    subTitle: "Remaining")
+                                                    amount: viewModel.remainingAmount,
+                                                    subTitle: "Remaining",
+                                                goalCurrency: viewModel.goal.goalCurrency
+                                                    )
                                                 Divider()
                                                 DetailView(
                                                     amount: viewModel.goal.goalAmount,
-                                                    subTitle: "Goal"
+                                                    subTitle: "Goal",
+                                                    goalCurrency: viewModel.goal.goalCurrency
                                                 )
                                             }
                                             .frame(height: 60)
@@ -193,9 +198,6 @@ struct ArchiveGoalView: View {
         .onChange(of: viewModel.isDeleted) {
             oldValue,
             newValue in
-            print(
-                "onChange triggered: isDeleted changed from \(oldValue) to \(newValue)"
-            )
             if newValue {
                 showingDeleteSheet = false
                 
@@ -210,9 +212,6 @@ struct ArchiveGoalView: View {
         .onChange(of: viewModel.isUpdated) {
             oldValue,
             newValue in
-            print(
-                "onChange triggered: isUpdated <><> changed from \(oldValue) to \(newValue)"
-            )
             if newValue {
                 isShowingSavingsSheet = false
                 isShowingWithdrawSheet = false
