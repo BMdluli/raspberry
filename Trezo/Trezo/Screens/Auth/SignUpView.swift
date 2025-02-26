@@ -38,8 +38,6 @@ struct SignUpView: View {
                             }
                             .frame(maxWidth: .infinity)
                             
-                            Spacer()
-                            
                             Divider()
                             
                             Button {

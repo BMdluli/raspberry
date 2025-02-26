@@ -34,7 +34,7 @@ struct GoalCardView: View {
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
                     Spacer()
-                    Text(String(format: "R%.1f", goal.goalAmount))
+                    Text(String(format: "\(goal.goalCurrency)%.1f", goal.goalAmount))
                         .foregroundStyle(.text)
                 }
                 
@@ -42,11 +42,11 @@ struct GoalCardView: View {
                     .tint(Color(goal.goalColour))
                 
                 HStack {
-                    Text(String(format: "R%.1f", total))
+                    Text(String(format: "\(goal.goalCurrency)%.1f", total))
                         .font(.system(size: 14, weight: .light))
                         .foregroundStyle(.text)
                     Spacer()
-                    Text(String(format: "R%.1f", goal.goalAmount - total))
+                    Text(String(format: "\(goal.goalCurrency)%.1f", goal.goalAmount - total))
                         .font(.system(size: 14, weight: .light))
                         .foregroundStyle(.text)
                 }
