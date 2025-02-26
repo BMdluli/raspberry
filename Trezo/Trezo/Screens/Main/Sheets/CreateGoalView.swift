@@ -24,21 +24,14 @@ struct CreateGoalView: View {
     @State private var date = Date.now
     
     enum Currency: String, CaseIterable, Identifiable {
-        case rand = "Rand (R)"
-        case dollar = "Dollar ($)"
-        case euro = "Euro (€)"
-        case pound = "Pound (£)"
+        case rand = "R"
+        case dollar = "$"
+        case euro = "€"
+        case pound = "£"
         var id: Self { self }
     }
     
     @State private var selectedCurrency: Currency = .rand
-    
-    let currencies: [String] = [
-        "Rand (R)",
-        "Dollar ($)",
-        "Euro (€)",
-        "Pound (£)"
-    ]
     
     @State private var goalName: String = ""
     @State private var note: String = ""
@@ -209,7 +202,9 @@ struct CreateGoalView: View {
                 .ignoresSafeArea(.keyboard)
             }
             .disabled(viewModel.isLoading) // Disable interactions when loading
-            
+            .onTapGesture {
+                UIApplication.shared.endEditing()
+            }
             if viewModel.isLoading {
                 Color.black.opacity(0.5)
                     .edgesIgnoringSafeArea(.all)
