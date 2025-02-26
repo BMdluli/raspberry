@@ -5,13 +5,15 @@
 //  Created by Bekithemba Mdluli on 2024/09/14.
 //
 import SwiftUI
-import FirebaseAuth
+@preconcurrency import FirebaseAuth
 
+@MainActor
 class AuthViewModel: ObservableObject {
     @Published var user: User? = nil
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
     @Published var isSignedIn = false
+    @Published var navigateBackToWelcome = false
     @Published var resetSuccess = false
     @Published var showAlert = false
     
@@ -113,11 +115,41 @@ class AuthViewModel: ObservableObject {
         }
     }
     
+    func deleteUser() async {
+        isLoading = true  // Start loading
+
+        guard let user = Auth.auth().currentUser else {
+            isLoading = false  // Stop loading
+            showAlert = true
+            errorMessage = "Please login and try again."
+            return
+        }
+
+        do {
+            try await user.delete()
+            navigateBackToWelcome = true
+        } catch let error as NSError {
+            if error.code == AuthErrorCode.requiresRecentLogin.rawValue {
+                showAlert = true
+                errorMessage = "Please reauthenticate before deleting your account."
+            } else {
+                showAlert = true
+                errorMessage = error.localizedDescription
+            }
+            
+            // Log error for debugging
+            print("Error deleting user: \(error.localizedDescription) (\(error.code))")
+        }
+
+        isLoading = false  // Stop loading
+    }
+
+    
     func signOut() {
         do {
             try auth.signOut()
             DispatchQueue.main.async {
-                self.isSignedIn = false
+                self.navigateBackToWelcome = true
             }
         } catch let error {
             DispatchQueue.main.async {

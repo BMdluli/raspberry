@@ -30,8 +30,6 @@ class GoalManager {
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser?.uid ?? ""
         
-        print("Current user \(userID)")
-        
         return try await withCheckedThrowingContinuation { continuation in
             db.collection("goals")
                 .whereField("userId", isEqualTo: userID)
@@ -55,7 +53,6 @@ class GoalManager {
                             // Try decoding each document into the Goal model
                             return try doc.data(as: FirebaseGoal.self)
                         } catch {
-                            print("Error decoding document: \(error)")
                             return nil
                         }
                     }

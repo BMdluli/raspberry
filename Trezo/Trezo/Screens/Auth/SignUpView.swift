@@ -24,6 +24,7 @@ struct SignUpView: View {
                                 .font(.system(size: 16))
                             
                             TextFieldWithLabel(text: $email, title: "Email", placeholder: "Email")
+                                .keyboardType(.emailAddress)
                             SecureTextFieldWithLabel(text: $password, title: "Password", placeholder: "Password")
                             
                             HStack {
@@ -52,7 +53,7 @@ struct SignUpView: View {
                             .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
                             .padding()
                         }
-                        .navigationTitle("Join Trezo Today 🚀")
+                        .navigationTitle("Join Today 🚀")
                         .navigationBarTitleDisplayMode(.large)
                         .padding(.horizontal)
                         .alert("Error", isPresented: $authViewModel.showAlert) {

@@ -5,28 +5,24 @@
 //  Created by Bekithemba Mdluli on 2024/09/18.
 //
 import SwiftUI
-import RevenueCat
-import RevenueCatUI
+
 
 struct ProfileView: View {
     @StateObject var authViewModel = AuthViewModel()
-    @State private var isLoggedOut = false // State to track logout
+    @State private var isLoggedOut = false
     @Binding var showModal: Bool
-    @State private var isPaywallPresented = false
+    @State private var showingConfirmation = false
 
     var body: some View {
-        NavigationStack {
-            VStack {
-
+        ZStack {
+            // Main content
+            NavigationStack {
+                VStack {
                     List {
-                        
                         Section {
-                            Button {
-                                print("Clicked")
-                            } label: {
+                            Button { } label: {
                                 HStack(spacing: 20) {
                                     AnimatedSparklesView()
-                                    
                                     VStack(alignment: .leading) {
                                         Text("COMING SOON")
                                             .foregroundStyle(.white)
@@ -37,25 +33,17 @@ struct ProfileView: View {
                                     }
                                 }
                                 .padding(.all, 0)
-
                             }
-                            
                         }
                         .listRowBackground(Color.primaryPurple)
-                        
-                        
-                        
-                        NavigationLink {
-                            Preferences()
-                        } label: {
+
+                        NavigationLink { Preferences() } label: {
                             Label("Preferences", systemImage: "gearshape")
                         }
-                        NavigationLink {
-                            ArchiveView()
-                        } label: {
+                        NavigationLink { ArchiveView() } label: {
                             Label("Archive", systemImage: "archivebox")
                         }
-                        
+
                         Section {
                             Link(destination: URL(string: "https://apple.com")!) {
                                 Label("Privacy Policy", systemImage: "lock.fill")
@@ -64,13 +52,22 @@ struct ProfileView: View {
                                 Label("Terms of Use", systemImage: "signature")
                             }
                         }
+
                         Button {
                             authViewModel.signOut()
-                            isLoggedOut = true // Trigger logout state
-                            authViewModel.isSignedIn = false
                         } label: {
                             Label("Logout", systemImage: "rectangle.portrait.and.arrow.right")
                                 .foregroundStyle(.brandRed)
+                        }
+
+                        Section {
+                            Button {
+                                showingConfirmation = true
+                            } label: {
+                                Label("Delete Account", systemImage: "trash.fill")
+                                    .foregroundStyle(.brandRed)
+                                    .bold()
+                            }
                         }
                     }
                 }
@@ -88,12 +85,49 @@ struct ProfileView: View {
                         }
                     }
                 }
+                .onChange(of: authViewModel.navigateBackToWelcome) { _, newValue in
+                    if newValue {
+                        isLoggedOut = true
+                    }
+                }
                 .fullScreenCover(isPresented: $isLoggedOut) {
                     ContentView()
                 }
+                .alert("Error", isPresented: $authViewModel.showAlert) {
+                    Button("OK", role: .cancel) { }
+                } message: {
+                    Text(authViewModel.errorMessage ?? "Unknown error")
+                }
+                .confirmationDialog("Delete Account", isPresented: $showingConfirmation) {
+                    Button("Delete Account") {
+                        Task {
+                            await authViewModel.deleteUser()
+                        }
+                    }
+                    Button("Cancel", role: .cancel) { }
+                } message: {
+                    Text("Please note this action is not reversible. Do you wish to delete your account?")
+                }
             }
+            
+            // Loading Overlay (kept at the top)
+            if authViewModel.isLoading {
+                ZStack {
+                    Color.black.opacity(0.5)
+                        .edgesIgnoringSafeArea(.all)
+                        .transition(.opacity)
+                    
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(1.5)
+                }
+                .allowsHitTesting(authViewModel.isLoading) // Prevents interaction with background
+                .animation(.easeInOut, value: authViewModel.isLoading)
+            }
+        }
     }
 }
+
 
 
 

@@ -27,7 +27,7 @@ struct HomeView: View {
                 NavigationStack {
                     VStack {
                         ZStack {
-                            GoalsView(viewModel: viewModel, showModal: showModal, shouldRefresh: $shouldRefresh)
+                            GoalsView(viewModel: viewModel, showModal: $showModal, shouldRefresh: $shouldRefresh)
 
                             // Floating Action Button
                             VStack {
@@ -85,7 +85,6 @@ struct HomeView: View {
                         shouldRefresh = false
                     }
                     
-                    print("CAlled")
                 }
                 .alert("Error", isPresented: $viewModel.showAlert) {
                     Button("OK", role: .cancel) { }
@@ -101,7 +100,6 @@ struct HomeView: View {
                     await viewModel.fetchGoals(archived: false)
                 }
             }
-            print("Home View On Appear called")
         }
     }
 
@@ -144,7 +142,7 @@ struct EmptyView: View {
 
 struct GoalsView: View {
     @State var viewModel: GoalViewModel
-    @State var showModal: Bool
+    @Binding var showModal: Bool
     @Binding var shouldRefresh: Bool
     
     var body: some View {

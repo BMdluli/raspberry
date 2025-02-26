@@ -24,6 +24,7 @@ struct SignInView: View {
                                 .font(.system(size: 16))
                             
                             TextFieldWithLabel(text: $email, title: "Email", placeholder: "Email")
+                                .keyboardType(.emailAddress)
                             SecureTextFieldWithLabel(text: $password, title: "Password", placeholder: "Password")
                             
                             HStack {
