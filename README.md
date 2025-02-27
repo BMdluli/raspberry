@@ -26,7 +26,7 @@ This app allows you to create and track your money goals, This app helps archiev
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/your-username/your-repo.git](https://github.com/BMdluli/raspberry.git)
+   git clone https://github.com/BMdluli/raspberry.git
    ```
 2. Open the project in Xcode:
    ```bash
