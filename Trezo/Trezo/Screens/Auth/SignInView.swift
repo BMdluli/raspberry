@@ -24,7 +24,17 @@ struct SignInView: View {
                                 .font(.system(size: 16))
                             
                             TextFieldWithLabel(text: $email, title: "Email", placeholder: "Email")
+                                .keyboardType(.emailAddress)
                             SecureTextFieldWithLabel(text: $password, title: "Password", placeholder: "Password")
+                            
+                            HStack {
+                                NavigationLink {
+                                    ForgotPasswordView()
+                                } label: {
+                                    Spacer()
+                                    Text("Forgot Password?")
+                                }
+                            }
                             
                             HStack {
                                 Text("Don't have an account?")
@@ -57,6 +67,11 @@ struct SignInView: View {
                         .navigationTitle("Welcome back! 👋")
                         .navigationBarTitleDisplayMode(.large)
                         .padding(.horizontal)
+                        .alert("Error", isPresented: $authViewModel.showAlert) {
+                            Button("OK", role: .cancel) { } // Correct, single button
+                        } message: {
+                            Text(authViewModel.errorMessage ?? "Unknown error") // Prevents force unwrap
+                        }
                     }
                 }
                 // Show loading screen as an overlay if isLoading is true

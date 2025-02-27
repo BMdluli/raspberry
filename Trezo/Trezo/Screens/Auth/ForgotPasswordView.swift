@@ -1,81 +1,74 @@
 //
-//  SignupView.swift
+//  ForgotPasswordView.swift
 //  Trezo
 //
-//  Created by Bekithemba Mdluli on 2024/09/11.
+//  Created by Bekithemba Mdluli on 2025/01/08.
 //
+
 import SwiftUI
 
-struct SignUpView: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
+struct ForgotPasswordView: View {
+    @State var email: String = ""
     @StateObject var authViewModel = AuthViewModel()
-
+    
     var body: some View {
-        NavigationStack {
-            ZStack {
-                if authViewModel.isSignedIn {
-                    HomeView() // Show TabBar on successful sign-in
-                } else {
+        ZStack {
+            if authViewModel.resetSuccess { // Use isSignedIn instead of isLoading for screen switching
+                ConfirmationScreen()// Show ProfileView or TabBar on successful sign-in
+            } else {
+                NavigationStack {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 25) {
-                            Text("Start your savings journey.")
+                            Text("Enter your registered email address, and we'll send you a code to reset your password.")
                                 .foregroundStyle(.gray)
                                 .font(.system(size: 16))
                             
-                            TextFieldWithLabel(text: $email, title: "Email", placeholder: "Email")
-                                .keyboardType(.emailAddress)
-                            SecureTextFieldWithLabel(text: $password, title: "Password", placeholder: "Password")
+                            TextFieldWithLabel(text: $email, title: "Registered email address", placeholder: "Email")
                             
-                            HStack {
-                                Text("Already have an account?")
-                                NavigationLink {
-                                    SignInView()
-                                } label: {
-                                    Text("Sign in")
-                                        .foregroundStyle(.primaryPurple)
-                                }
-                            }
-                            .frame(maxWidth: .infinity)
+                            
+                            
+                            Spacer()
+                            
                             
                             Divider()
                             
                             Button {
                                 Task {
-                                    await authViewModel.signUp(with: email, password: password)
+                                    await authViewModel.resetPassword(with: email)
                                 }
                             } label: {
-                                Text("Sign up")
+                                Text("Send reset link")
                                     .frame(maxWidth: .infinity)
                             }
                             .buttonStyle(TreButtonStyle(backgroundColor: .primaryPurple, textColor: .white))
                             .padding()
+                            
                         }
-                        .navigationTitle("Join Today 🚀")
+                        .navigationTitle("Forgot Password? 🔑")
                         .navigationBarTitleDisplayMode(.large)
                         .padding(.horizontal)
                         .alert("Error", isPresented: $authViewModel.showAlert) {
-                            Button("OK", role: .cancel) { } 
+                            Button("OK", role: .cancel) { }
                         } message: {
                             Text(authViewModel.errorMessage ?? "Unknown error")
                         }
                     }
                 }
-
                 // Show loading screen as an overlay if isLoading is true
                 if authViewModel.isLoading {
                     Color.black.opacity(0.5)
                         .edgesIgnoringSafeArea(.all)
-
+                    
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle(tint: .white))
                         .scaleEffect(1.5) // Adjust size of the spinner
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
 #Preview {
-    SignUpView()
+    ForgotPasswordView()
 }

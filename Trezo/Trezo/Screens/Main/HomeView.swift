@@ -12,6 +12,7 @@ struct HomeView: View {
     @State private var showingSettingsModal = false
     
     @StateObject private var viewModel = GoalViewModel()
+    @State private var shouldRefresh: Bool = false
     
     var tempGoals: [Goal] = []
     
@@ -19,95 +20,90 @@ struct HomeView: View {
                    GridItem(.flexible())]
     
     var body: some View {
-        
-        
-        NavigationStack {
-            VStack {
-                
-                
-                ZStack {
-                    
-                    // Main content
+        VStack {
+            if viewModel.isLoading {
+                LoadingView()
+            } else {
+                NavigationStack {
                     VStack {
-                        
-                        if viewModel.goals.isEmpty {
-                            Spacer()
-                            EmptyView(showModal: $showModal)
-                            Spacer()
-                        } else {
-                            ScrollView {
-                                VStack(spacing: 20) {
-                                    ForEach(viewModel.goals, id: \._id) { goal in
-                                        NavigationLink {
-                                            GoalView(id: goal._id)
-                                        } label: {
-                                            // TODO: Prevent forefround colour from changing
-                                            GoalCardView(goal: goal)
-                                                .foregroundStyle(.black)
-                                        }
+                        ZStack {
+                            GoalsView(viewModel: viewModel, showModal: $showModal, shouldRefresh: $shouldRefresh)
+
+                            // Floating Action Button
+                            VStack {
+                                Spacer()
+                                HStack {
+                                    Spacer()
+                                    Button {
+                                        showModal = true
+                                    } label: {
+                                        Image(systemName: "plus")
+                                            .foregroundStyle(.white)
+                                            .frame(width: 56, height: 56)
+                                            .background(.primaryPurple)
+                                            .clipShape(Circle())
+                                            .shadow(radius: 5)
                                     }
+                                    .padding(.trailing, 16)
+                                    .padding(.bottom, 16)
                                 }
                             }
                         }
+                        .padding(.horizontal)
+                        .background(.treBackground)
+                        .fullScreenCover(isPresented: $showModal) {
+                            CreateGoalView(showModal: $showModal, shouldRefresh: $shouldRefresh)
+                        }
                     }
-                    .padding(.top, 16)
-                    .background(.treBackground)
-                    
-                    // Floating Action Button
-                    VStack {
-                        Spacer()
-                        HStack {
-                            Spacer()
-                            Button {
-                                showModal = true
+
+                    .navigationTitle("Raspberry")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Menu {
+                                Button(action: {
+                                    showingSettingsModal = true
+                                }) {
+                                    Label("Settings", systemImage: "gearshape")
+                                }
                             } label: {
-                                Image(systemName: "plus")
-                                    .foregroundStyle(.white)
-                                    .frame(width: 56, height: 56)
-                                    .background(.primaryPurple)
-                                    .clipShape(Circle())
-                                    .shadow(radius: 5)
+                                Image(systemName: "switch.2")
+                                    .foregroundStyle(.treAlertnateBackground)
                             }
-                            .padding(.trailing, 16)
-                            .padding(.bottom, 16)
                         }
                     }
-                }
-                
-                .padding(.horizontal)
-                .background(.treBackground)
-                .fullScreenCover(isPresented: $showModal) {
-                    CreateGoalView(showModal: $showModal)
-                }
-                .onAppear() {
-                    viewModel.fetchGoals()
-                }
-            }
-            .navigationTitle("Trezo")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Menu {
-                        Button(action: {
-                            showingSettingsModal = true
-                        }) {
-                            Label("Settings", systemImage: "gearshape")
-                        }
-                        
-                        
-                    } label: {
-                        Image(systemName: "switch.2")
-                            .foregroundStyle(.treAlertnateBackground)
+                    .fullScreenCover(isPresented: $showingSettingsModal) {
+                        ProfileView(showModal: $showingSettingsModal)
                     }
                 }
+                .onChange(of: shouldRefresh) { _, newValue in
+                    if newValue {
+                        Task {
+                            await viewModel.fetchGoals(archived: false)
+                        }
+                        viewModel.isCreated = false
+                        shouldRefresh = false
+                    }
+                    
+                }
+                .alert("Error", isPresented: $viewModel.showAlert) {
+                    Button("OK", role: .cancel) { }
+                } message: {
+                    Text(viewModel.errorMessage ?? "Unknown error")
+                }
+                .navigationBarBackButtonHidden(true)
             }
-            .sheet(isPresented: $showingSettingsModal) {
-                ProfileView(showModal: $showingSettingsModal)
+        }
+        .onAppear {
+            Task {
+                if !viewModel.allDataFetched {
+                    await viewModel.fetchGoals(archived: false)
+                }
             }
         }
     }
-}
 
+}
 
 #Preview {
     NavigationStack {
@@ -143,63 +139,39 @@ struct EmptyView: View {
     }
 }
 
-struct GoalCardView: View {
-    var goal: Goal
-    
+
+struct GoalsView: View {
+    @State var viewModel: GoalViewModel
+    @Binding var showModal: Bool
+    @Binding var shouldRefresh: Bool
     
     var body: some View {
-        let total = goal.goalAmountContributed.count > 0 ? goal.goalAmountContributed.reduce(0) { $0 + $1.amount } : 0
-        
-        let percentage = total > 0 ? total / goal.goalAmount : 0
-        
-        HStack(spacing: 20) {
-            
-            ZStack {
-                Circle()
-                    .stroke(.treLightGray, lineWidth: 2)
-                
-                    .frame(width: 72, height: 72)
-                
-                Text(goal.coverImage)
-                    .font(.system(size: 40))
-                .frame(width: 70, height: 70)            }
-            
-            VStack {
-                HStack {
-                    Text(goal.goalName)
-                        .foregroundStyle(.text)
-                    Spacer()
-                    Text(String(format: "R%.1f", goal.goalAmount))
-                        .foregroundStyle(.text)
+        VStack {
+            if viewModel.goals.isEmpty {
+                Spacer()
+                EmptyView(showModal: $showModal)
+                Spacer()
+            } else {
+                ScrollView {
+                    VStack(spacing: 20) {
+                        ForEach(viewModel.goals, id: \.id) { goal in
+                            NavigationLink {
+                                GoalView(shouldRefresh: $shouldRefresh, id: goal.id ?? "")
+                            } label: {
+                                GoalCardView(goal: goal)
+                                    .foregroundStyle(.black)
+                            }
+                        }
+                    }
                 }
-                
-                ProgressView(value: percentage)
-                    .tint(Color(goal.goalColour))
-                
-                HStack {
-                    Text(String(format: "R%.1f", total))
-                        .font(.system(size: 14, weight: .light))
-                        .foregroundStyle(.text)
-                    Spacer()
-                    Text(String(format: "R%.1f", total))
-                        .font(.system(size: 14, weight: .light))
-                        .foregroundStyle(.text)
+                .refreshable {
+                    Task {
+                        await viewModel.fetchGoals(archived: false)
+                    }
                 }
             }
-            
-            
         }
-        .padding(.all, 8)
-        .frame(height: 104)
-        .background(
-            RoundedRectangle(cornerRadius: 15)
-                .fill(.treCardBackground)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 15)
-                        .stroke(.treBackground, lineWidth: 2)
-                )
-        )
-        
-        
+        .padding(.top, 16)
+        .background(.treBackground)
     }
 }
